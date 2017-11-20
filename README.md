@@ -1,5 +1,8 @@
 # MonkeyBusiness
 A game created with Pygame
 
-Dit is best wel makkelijk
+abc
 
+HALLO DIKKE TIETEN
+
+AYOUB IS DIK EN WELSEY STINKT
