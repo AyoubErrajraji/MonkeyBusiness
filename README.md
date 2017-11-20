@@ -1,7 +1,7 @@
 # MonkeyBusiness
 A game created with Pygame
 
-Volgorde Github: <br>
+Volgorde Github:::: <br>
 1 - Verander script in je branch
 
 2- Commit het bestand
@@ -10,8 +10,10 @@ Volgorde Github: <br>
 
 4- Gaar naar de main branch
 
-5- Vraag een Merge aan
+5- Pull main branch
 
-6- selecteer je branch
+6- Vraag een Merge aan
 
-7- Push de main branch
+7- selecteer je branch
+
+8- Push de main branch
