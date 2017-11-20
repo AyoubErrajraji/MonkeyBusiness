@@ -1,8 +1,7 @@
-<<<<<<< HEAD
-import pygame, sys
-=======
+
+import sys
 import pygame
->>>>>>> origin/Richard
+
 
 pygame.init()
 
@@ -23,9 +22,8 @@ while not finished:
         if event.type == pygame.QUIT:
             finished = True
             pygame.quit()
-<<<<<<< HEAD
+
             sys.exit()
-=======
->>>>>>> origin/Richard
+
         
     pygame.display.flip()#Update method / load next screen
