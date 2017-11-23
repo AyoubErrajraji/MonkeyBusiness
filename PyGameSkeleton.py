@@ -1,4 +1,3 @@
-
 import sys, pygame
 
 
@@ -12,7 +11,7 @@ gameName = "Monkey Royale"
 
 screen = pygame.display.set_mode(screenDim)
 pygame.display.set_caption(gameName)
-
+print("Game succefully launched!")
 finished = False
 while not finished:
     #processing all the events
