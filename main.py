@@ -8,7 +8,6 @@ from bananattack_lib import bananattack
 mymenu = slidemenu.run()
 mymenu.runm()
 
-    # Manually minigame runnen
 # Manually minigame runnen
 # mygame = bananattack.run()
 
