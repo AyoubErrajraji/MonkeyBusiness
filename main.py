@@ -4,6 +4,18 @@ Created on Nov 25, 2017
 '''
 from menu_lib import slidemenu
 from bananattack_lib import bananattack
+<<<<<<< HEAD
+=======
+
+if __name__ == "__main__":
+    mymenu = slidemenu.run()
+    mymenu.runm()
+
+    # Manually minigame runnen
+    # mygame = bananattack.run()
+    # mygame.runm()
+
+>>>>>>> master
 
 if __name__ == "__main__":
 
