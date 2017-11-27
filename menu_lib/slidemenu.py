@@ -1,9 +1,14 @@
+'''
+Created on Nov 25, 2017
+@author: lexdewilligen
+'''
+
 import pygame
+import sys
 from pygame import *
 font.init()
 
 from math import cos, radians
-import webbrowser
 from bananattack_lib import bananattack
 
 def menu(menu, pos='center', font1=None, font2=None, color1=(128, 128, 128), color2=None, interline=5, justify=True, light=5, speed=300, lag=30):
@@ -236,4 +241,13 @@ class run(object):
             scr.blit(f.render('Monkey Business', 1, (255, 255, 255)), (450, 180))
             display.update()
             resp = menu(**menu1)[0]
+
+        if resp == 'EXIT':
+            pygame.quit()
+            sys.exit()
+
+
+
+
+
 
