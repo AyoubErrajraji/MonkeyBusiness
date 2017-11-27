@@ -10,5 +10,6 @@ mymenu.runm()
 
 # Manually minigame runnen
 # mygame = bananattack.run()
+# mygame.runm()
 
 
