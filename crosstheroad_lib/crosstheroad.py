@@ -11,5 +11,8 @@ red = (255, 0, 0)
 green = (0, 200, 0)
 yellow = (255, 255, 0)
 
-screenDim = json.load(open('./data/data.json'))
+data = json.load(open('../data/data.json'))
+screenDim = (data["data"]["resolution"]["width"], data["data"]["resolution"]["height"])
+print(screenDim)
+
 screen = pygame.display.set_mode(screenDim)
