@@ -1,30 +1,71 @@
-import pygame
-import sys
+#Project 2 v1.00
+import pygame, sys, time
+from math import *
+from pygame.locals import *
+pygame.font.init()
 
-pygame.init()
-pygame.display.set_caption("MonkeyWar")
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+BLUE = (0, 255, 0)
+RED = (255, 0, 0)
+GREEN = (0, 200, 0)
+BRIGHT_GREEN = (0, 255, 0)
+SAND = (255,255,100)
+
+surface = pygame.display.set_mode((1280,720))
+
+
+def text_objects(text, font):
+    textSurface = font.render(text, True, BLACK)
+    return textSurface, textSurface.get_rect()
 
 class run(object):
-    def runm(self):
-        screen = pygame.display.set_mode((1280, 720))
-        bg = pygame.image.load("data/monkeywar/bg.jpg")
+    def runm(self,resolution=(1280,720)):
+        pygame.init()
 
-        black = (0,0,0)
-        white = (255,255,255)
+        duration = 5000
+        win = projectWin(500, 500, 'MonkeyWar')
+        Quit = False
+        while not Quit:
+            # get Mouse
+            mouse = pygame.mouse.get_pos()
 
-        clock = pygame.time.Clock()
+            # set Background
+            surface.blit(pygame.transform.scale(pygame.image.load('data/monkeywar/bg.jpg').convert(), (1280, 720)),
+                         (0, 0))
 
-        crashed = False
 
-        while not crashed:
-        #menu functies
+            # Display the res
+            pygame.display.update()
+            time.sleep(0.02)
+
+            # Quit handler
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    crashed = True
+                if event.type == QUIT:
+                    Quit = True
+
+        pygame.quit()  # always exit cleanly
+        sys.exit()
 
 
-        pygame.display.flip()
-        pygame.display.update()
-        clock.tick(60)
-        pygame.quit()
-        quit()
+class PlaceHolder:
+    def __init__(self, win, left, top, width, height, color):
+        self.win = win
+        self.rect = pygame.Rect(left, top, width, height)
+        self.color = color
+
+
+class projectWin:
+    def __init__(self, width, height, caption):
+        self.caption = caption
+        pygame.display.set_caption(self.caption)
+        self.width = width
+        self.height = height
+        self.placeHolders = []
+        self.placeHolders.append(PlaceHolder(surface, 1, 236, 10, 10, GREEN))
+        #placeHolder1 = PlaceHolder(surface, 10, 236, 10, 10, GREEN)
+
+
+
+
+
