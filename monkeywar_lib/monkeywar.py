@@ -11,6 +11,7 @@ RED = (255, 0, 0)
 GREEN = (0, 200, 0)
 BRIGHT_GREEN = (0, 255, 0)
 SAND = (255,255,100)
+GREY = (182, 179, 179)
 
 surface = pygame.display.set_mode((1280,720))
 
@@ -29,11 +30,10 @@ class run(object):
         while not Quit:
             # get Mouse
             mouse = pygame.mouse.get_pos()
-
             # set Background
             surface.blit(pygame.transform.scale(pygame.image.load('data/monkeywar/bg.jpg').convert(), (1280, 720)),
                          (0, 0))
-
+            win.ground()
 
             # Display the res
             pygame.display.update()
@@ -64,6 +64,9 @@ class projectWin:
         self.placeHolders = []
         self.placeHolders.append(PlaceHolder(surface, 1, 236, 10, 10, GREEN))
         #placeHolder1 = PlaceHolder(surface, 10, 236, 10, 10, GREEN)
+
+    def ground(self):
+        pygame.draw.rect(surface, GREY, (0, 565, 1270, 165), 0)
 
 
 
