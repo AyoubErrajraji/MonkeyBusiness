@@ -13,14 +13,5 @@ from monkeywar_lib import monkeywar
 mygame = monkeywar.run()
 mygame.runm()
 
-<<<<<<< HEAD
-    # Manually minigame runnen
-    #mygame = monkeywar.run()
-    #mygame.runm()
-=======
-# Manually minigame runnen
-# mygame = bananattack.run()
-# mygame.runm()
->>>>>>> master
 
 
