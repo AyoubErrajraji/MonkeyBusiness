@@ -20,13 +20,9 @@ GREEN = (0, 200, 0)
 BRIGHT_GREEN = (0, 255, 0)
 SAND = (255,255,100)
 
-<<<<<<< HEAD
 
 surface = pygame.display.set_mode((1280,720))
 
-=======
-screen = pygame.display.set_mode((1280,720))
->>>>>>> master
 
 def text_objects(text, font):
     textSurface = font.render(text, True, BLACK)
