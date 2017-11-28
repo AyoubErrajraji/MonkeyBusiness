@@ -6,8 +6,6 @@ from menu_lib import slidemenu
 from bananattack_lib import bananattack
 from monkeywar_lib import monkeywar
 
-mymenu = slidemenu.run()
-mymenu.runm()
 #mymenu = slidemenu.run()
 #mymenu.runm()
 
