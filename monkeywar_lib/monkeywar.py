@@ -33,6 +33,8 @@ class run(object):
             # set Background
             surface.blit(pygame.transform.scale(pygame.image.load('data/monkeywar/bg.jpg').convert(), (1280, 720)),
                          (0, 0))
+
+            #call classes
             win.ground()
 
             # Display the res

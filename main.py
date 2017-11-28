@@ -8,6 +8,12 @@ from monkeywar_lib import monkeywar
 
 mymenu = slidemenu.run()
 mymenu.runm()
+#mymenu = slidemenu.run()
+#mymenu.runm()
+
+#Manually minigame runnen
+mygame = monkeywar.run()
+mygame.runm()
 
 <<<<<<< HEAD
     # Manually minigame runnen
