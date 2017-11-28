@@ -7,10 +7,10 @@ import pygame
 import sys
 from pygame import *
 font.init()
-
 from math import cos, radians
-from bananattack_lib import bananattack
+from bananattack_lib import main as bananattack
 from monkeywar_lib import monkeywar
+
 def menu(menu, pos='center', font1=None, font2=None, color1=(128, 128, 128), color2=None, interline=5, justify=True, light=5, speed=300, lag=30):
 
     class Item(Rect):
@@ -232,8 +232,7 @@ class run(object):
             resp = menu(**menu2)[0]
 
         if resp == 'BananAttack':
-            mygame = bananattack.run()
-            mygame.runm()
+            bananattack.main()
 
         if resp == 'MonkeyWar':
             mygame = monkeywar.run()

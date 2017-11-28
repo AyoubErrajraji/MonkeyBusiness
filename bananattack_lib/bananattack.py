@@ -1,127 +1,118 @@
-'''
-Created on Nov 25, 2017
-@author: lexdewilligen
-Project 2 v1.00
-'''
-
 import pygame
-import sys
-import time
-from math import *
-from pygame.locals import *
-from menu_lib import slidemenu
-pygame.font.init()
+from bananattack_lib import config
+from bananattack_lib import game
+from bananattack_lib import button
+from bananattack_lib import display
 
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-BLUE = (0, 255, 0)
-RED = (255, 0, 0)
-GREEN = (0, 200, 0)
-BRIGHT_GREEN = (0, 255, 0)
-SAND = (255,255,100)
+class BananAttack(game.Game):
+    def __init__(self, name, screen_width, screen_height, screen = None):
+        # setup data members and the screen
+        game.Game.__init__(self, name, screen_width, screen_height, screen)
 
-screen = pygame.display.set_mode((1280,720))
+        # set state to playing
+        self.state = 21
 
-def text_objects(text, font):
-    textSurface = font.render(text, True, BLACK)
-    return textSurface, textSurface.get_rect()
+        # set waves completed to 0
+        self.waves_comp = 0
 
-def button(msg, x, y, w, h, ic, ac, function=None):
-    mouse = pygame.mouse.get_pos()
-    click = pygame.mouse.get_pressed()
-    if x + w > mouse[0] > x and y + h > mouse[1] > y:
-        pygame.draw.rect(screen, ac, (x, y, w, h))
+        ### Button setup ###
+        self.buttons = [button.startWave(),button.pauseGame()]
 
-        if click[0] == 1:
-            if function != None:
-                function()
+        # set available buttons
+        #self.buttons.add_button(button.startWave)
 
-    else:
-        pygame.draw.rect(screen, ic, (x, y, w, h))
+        ### setup font ###
+        self.font = pygame.font.SysFont(config.FONT, config.FONT_SIZE)
+        self.font_color = config.FONT_COLOR
 
-    smallText = pygame.font.SysFont("comicsansms", 20)
-    textSurf, textRect = text_objects(msg, smallText)
-    textRect.center = ((x + (w / 2)), (y + (h / 2)))
-    screen.blit(textSurf, textRect)
+        ### setup location for wave number ###
+        self.wave_x = config.WAVE_X
+        self.wave_y = config.WAVE_Y
 
-def showGrid():
-    for i in range(47, 912, 48): #draw the vertical lines
-        pygame.draw.line(screen, WHITE, (i, 0), (i, 720), 1)
-    for j in range(47, 720, 48): #draw the horizontal lines
-        pygame.draw.line(screen, WHITE, (0, j), (912, j), 1)
+        ### setup location for money ###
+        self.money = config.STARTING_MONEY
+        self.money_x = config.MONEY_X
+        self.money_y = config.MONEY_Y
 
-def returnMenu():
-    mymenu = slidemenu.run()
-    mymenu.runm()
+    # waves can be started while playing, another wave exists, and the field is clear
+    def can_start_wave(self):
+        return self.state == config.TD_CLEAR and self.wave+1 <= len(self.waves)-1
 
-def path():
-    #the two lines are separated for ease of change
-    #line 1
-    pygame.draw.line(screen, SAND, (0, 287), (144, 287), 2)
-    pygame.draw.line(screen, SAND, (143, 287), (143, 144), 2)
-    pygame.draw.line(screen, SAND, (144, 143), (336, 143), 2)
-    pygame.draw.line(screen, SAND, (335, 144), (335, 528), 2)
-    pygame.draw.line(screen, SAND, (336, 527), (144, 527), 2)
-    pygame.draw.line(screen, SAND, (143, 528), (143, 576), 2)
-    pygame.draw.line(screen, SAND, (144, 575), (768, 575), 2)
-    pygame.draw.line(screen, SAND, (767, 576), (767, 480), 2)
-    pygame.draw.line(screen, SAND, (768, 479), (528, 479), 2)
-    pygame.draw.line(screen, SAND, (527, 336), (527, 480), 2)
-    pygame.draw.line(screen, SAND, (528, 335), (768, 335), 2)
-    pygame.draw.line(screen, SAND, (767, 335), (767, 0), 2)
+    # creates and places all of the enemys
+    def begin_wave(self):
+        if not self.can_start_wave():
+            return
+        self.wave += 1
 
-    #line 2
-    pygame.draw.line(screen, SAND, (0, 335), (192, 335), 2)
-    pygame.draw.line(screen, SAND, (191, 336), (191, 192), 2)
-    pygame.draw.line(screen, SAND, (192, 191), (288, 191), 2)
-    pygame.draw.line(screen, SAND, (287, 192), (287, 480), 2)
-    pygame.draw.line(screen, SAND, (288, 479), (96, 479), 2)
-    pygame.draw.line(screen, SAND, (95, 480), (95, 622), 2)
-    pygame.draw.line(screen, SAND, (96, 622), (816, 622), 2)
-    pygame.draw.line(screen, SAND, (815, 624), (815, 432), 2)
-    pygame.draw.line(screen, SAND, (816, 431), (576, 431), 2)
-    pygame.draw.line(screen, SAND, (575, 432), (575, 384), 2)
-    pygame.draw.line(screen, SAND, (576, 383), (816, 383), 2)
-    pygame.draw.line(screen, SAND, (815, 384), (815, 0), 2)
+        # create and place the enemys
+        ### CODE TO WRITE ###
 
-def base(): #what the player has to protect
-    AHLogo = pygame.image.load('data/bananattack/ah.png').convert_alpha()
-    AHLogo = pygame.transform.scale(AHLogo , (48,48))
-    screen.blit(AHLogo, (768, 0))
+        self.state = config.TD_PLAYING
 
-class run(object):
-    def runm(self,resolution=(1280,720)):
-        pygame.init()
+    def drawPath(self):
+        # line 1
+        pygame.draw.line(self.screen, config.SAND, (0, 287), (144, 287), 2)
+        pygame.draw.line(self.screen, config.SAND, (143, 287), (143, 144), 2)
+        pygame.draw.line(self.screen, config.SAND, (144, 143), (336, 143), 2)
+        pygame.draw.line(self.screen, config.SAND, (335, 144), (335, 528), 2)
+        pygame.draw.line(self.screen, config.SAND, (336, 527), (144, 527), 2)
+        pygame.draw.line(self.screen, config.SAND, (143, 528), (143, 576), 2)
+        pygame.draw.line(self.screen, config.SAND, (144, 575), (768, 575), 2)
+        pygame.draw.line(self.screen, config.SAND, (767, 576), (767, 480), 2)
+        pygame.draw.line(self.screen, config.SAND, (768, 479), (528, 479), 2)
+        pygame.draw.line(self.screen, config.SAND, (527, 336), (527, 480), 2)
+        pygame.draw.line(self.screen, config.SAND, (528, 335), (768, 335), 2)
+        pygame.draw.line(self.screen, config.SAND, (767, 335), (767, 0), 2)
 
-        duration = 5000
-        Quit = False
-        while not Quit:
-            # get Mouse
-            mouse = pygame.mouse.get_pos()
+        # line 2
+        pygame.draw.line(self.screen, config.SAND, (0, 335), (192, 335), 2)
+        pygame.draw.line(self.screen, config.SAND, (191, 336), (191, 192), 2)
+        pygame.draw.line(self.screen, config.SAND, (192, 191), (288, 191), 2)
+        pygame.draw.line(self.screen, config.SAND, (287, 192), (287, 480), 2)
+        pygame.draw.line(self.screen, config.SAND, (288, 479), (96, 479), 2)
+        pygame.draw.line(self.screen, config.SAND, (95, 480), (95, 622), 2)
+        pygame.draw.line(self.screen, config.SAND, (96, 622), (816, 622), 2)
+        pygame.draw.line(self.screen, config.SAND, (815, 624), (815, 432), 2)
+        pygame.draw.line(self.screen, config.SAND, (816, 431), (576, 431), 2)
+        pygame.draw.line(self.screen, config.SAND, (575, 432), (575, 384), 2)
+        pygame.draw.line(self.screen, config.SAND, (576, 383), (816, 383), 2)
+        pygame.draw.line(self.screen, config.SAND, (815, 384), (815, 0), 2)
 
-            # set Background
-            screen.blit(pygame.transform.scale(pygame.image.load('data/bananattack/background.jpeg').convert(), (912, 720)),(0, 0))
+    def rightInfoBox(self):
+        pygame.draw.rect(self.screen, config.INFO_BOX_BG_COLOR, (940,10,320,500), 1)
 
-            # Buttons
-            button("Grid", 920, 10, 100, 50, GREEN, BRIGHT_GREEN, showGrid)
-            button("Menu", 1030, 10, 100, 50, GREEN, BRIGHT_GREEN, returnMenu)
+    # paints all of the objects of the game
+    def paint(self, surface):
+        # fill the screen with the background color
+        surface.fill(config.BG_COLOR)
+        surface.blit(pygame.transform.scale(pygame.image.load('data/bananattack/background.jpeg').convert(), (config.SCREEN_WIDTH, config.SCREEN_HEIGHT)), (0, 0))
 
-            # Display the rest
-            path()
-            base()
-            pygame.display.update()
+        # if the game is being played
+        # draw the world, enemys, towers,
+        # and menus
+        if self.state == config.TD_PLAYING:
+            ### Draw Right Info Box ###
+            self.rightInfoBox()
 
-            # Sleep
-            time.sleep(0.02)
+            ### show wave number ###
+            wave = "Waves completed: %d" % (self.waves_comp)
+            temp_surface = self.font.render(wave, 1, self.font_color)
+            surface.blit(temp_surface, (self.wave_x, self.wave_y))
 
-            # Quit handler
-            for event in pygame.event.get():
-                if event.type == QUIT:
-                    Quit = True
+            ### show balance ###
+            money = "Balance: %d" % (self.money)
+            temp_surface = self.font.render(money, 1, self.font_color)
+            surface.blit(temp_surface, (self.money_x, self.money_y))
 
-        # Always exit cleanly
-        pygame.quit()
-        sys.exit()
+            ### Draw path ###
+            self.drawPath()
+
+            ### Draw buttons ###
+            for button in self.buttons:
+                button.paint(surface)
+
+
+
 
 
 
