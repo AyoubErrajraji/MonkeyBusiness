@@ -6,12 +6,17 @@ from menu_lib import slidemenu
 from bananattack_lib import bananattack
 from monkeywar_lib import monkeywar
 
-if __name__ == "__main__":
-    mymenu = slidemenu.run()
-    mymenu.runm()
+mymenu = slidemenu.run()
+mymenu.runm()
 
+<<<<<<< HEAD
     # Manually minigame runnen
     #mygame = monkeywar.run()
     #mygame.runm()
+=======
+# Manually minigame runnen
+# mygame = bananattack.run()
+# mygame.runm()
+>>>>>>> master
 
 
