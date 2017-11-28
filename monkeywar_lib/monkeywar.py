@@ -12,7 +12,9 @@ GREEN = (0, 200, 0)
 BRIGHT_GREEN = (0, 255, 0)
 SAND = (255,255,100)
 GREY = (155,155,155)
-
+clock = pygame.time.Clock()
+ounter, text = 10, '10'.rjust(3)
+pygame.time.set_timer(pygame.USEREVENT, 1000)
 
 surface = pygame.display.set_mode((1280,720))
 
@@ -34,13 +36,19 @@ class run(object):
 
 
 
+
         while not Quit:
+
             # get Mouse
             mouse = pygame.mouse.get_pos()
+
+            #FPS
+            clock.tick(60)
 
             # set Background
             surface.blit(pygame.transform.scale(pygame.image.load('data/monkeywar/bg.jpg').convert(), (1280, 720)),
                          (0, 0))
+
 
             #call classes
             win.ground()
@@ -127,6 +135,7 @@ class Monkey(object):
                 self.x += 10
 
         self.draw((self.x,478))
+
 
 
 
