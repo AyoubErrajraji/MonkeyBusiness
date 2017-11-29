@@ -31,6 +31,11 @@ class Button(draw.Draw):
         # check whether we hover or not
         if mouse_x >= self.position[0] and mouse_x < (self.position[0] + self.width) and mouse_y > self.position[1] and mouse_y < (self.position[1] + self.height):
             self.hover = True
+
+            # do action on click
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    self.task()
         else:
             self.hover = False
 
@@ -59,7 +64,15 @@ class startWave(Button):
         Button.__init__(self, (config.BUTTON_STARTWAVE_X,config.BUTTON_STARTWAVE_Y), config.BUTTON_STARTWAVE_WIDTH, config.BUTTON_STARTWAVE_HEIGHT, config.BUTTON_STARTWAVE_IMG, config.BUTTON_STARTWAVE_HOVER_IMG)
         self.item = None
 
+    def task(self):
+        print("Wave Started")
+
 class pauseGame(Button):
     def __init__(self):
         Button.__init__(self, (config.BUTTON_PAUSEGAME_X,config.BUTTON_PAUSEGAME_Y), config.BUTTON_PAUSEGAME_WIDTH, config.BUTTON_PAUSEGAME_HEIGHT, config.BUTTON_PAUSEGAME_IMG, config.BUTTON_PAUSEGAME_HOVER_IMG)
         self.item = None
+
+    def task(self):
+        print("Game Paused")
+
+
