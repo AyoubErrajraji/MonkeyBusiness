@@ -57,6 +57,7 @@ MOUSE_MIDDLE = 2
 MOUSE_RIGHT = 3
 
 # Wave #
+MAX_WAVES = 3
 WAVE_X = 950
 WAVE_Y = 20
 

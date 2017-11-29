@@ -78,6 +78,8 @@ class startWave(Button):
     def task(self):
         if self.canStartWave:
             self.state = config.BA_PLAYING
+        else:
+            print("Trying to start Wave while MAX_WAVES is reached")
 
 class pauseGame(Button):
     def __init__(self, state):

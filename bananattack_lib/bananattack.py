@@ -17,9 +17,9 @@ class BananAttack(game.Game):
         self.state = config.BA_CLEAR
 
         # set waves
-        self.waves_comp = 0     # number of waves that have ended (are completed)
-        self.wave = 0           # the next wave to start or which is currently running
-        self.waves = 10         # number of waves that exist
+        self.waves_comp = 0             # number of waves that have ended (are completed)
+        self.wave = 0                   # the next wave to start or which is currently running
+        self.waves = config.MAX_WAVES   # number of waves that exist
 
         ### Button setup ###
         self.buttons = []
