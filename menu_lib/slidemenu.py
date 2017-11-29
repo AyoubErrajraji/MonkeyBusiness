@@ -10,6 +10,7 @@ font.init()
 from math import cos, radians
 from bananattack_lib import main as bananattack
 from monkeywar_lib import monkeywar
+from crosstheroad_lib import main as crosstheroad
 
 def menu(menu, pos='center', font1=None, font2=None, color1=(128, 128, 128), color2=None, interline=5, justify=True, light=5, speed=300, lag=30):
 
@@ -178,7 +179,7 @@ class run(object):
         display.flip()
 
         menu1 = {"menu": ['PLAY', 'ABOUT','SETTINGS', 'EXIT'], "font1": f1, "pos":'center', "color1": (154, 180, 61), "light": 6, "speed": 200, "lag": 20}
-        menu2 = {"menu": ['BananAttack', 'Game 2', 'Game 3', 'Game 4', 'Game 5', 'MonkeyWar', 'BACK'], "font1": f1, "font2": f, "pos": 'center', "color1": (154, 180, 61), "light": 5, "speed": 200, "lag": 20}
+        menu2 = {"menu": ['BananAttack', 'Game 2', 'CrossTheRoad', 'Game 4', 'Game 5', 'MonkeyWar', 'BACK'], "font1": f1, "font2": f, "pos": 'center', "color1": (154, 180, 61), "light": 5, "speed": 200, "lag": 20}
         menu3 = {"menu": ['Lex de Willigen', 'Luke Hol', 'Ayoub Errajraji', 'Richard van der Knaap', 'Wesley van Balen', 'Milo Brasser', 'BACK'], "font1": f1,"font2": f, "pos": 'center', "color1": (154, 180, 61), "light": 5, "speed": 200, "lag": 20}
         menu4 = {"menu": ['1920 x 1080', '1280 x 720', 'BACK'], "font1": f1, "pos": 'center', "color1": (154, 180, 61), "light": 6,"speed": 200, "lag": 20}
 
@@ -237,6 +238,9 @@ class run(object):
         if resp == 'MonkeyWar':
             mygame = monkeywar.run()
             mygame.runm()
+
+        if resp == 'CrossTheRoad':
+            crosstheroad.main()
 
         if resp == 'BACK': #menu na play sectie
             scr.fill((0, 0, 0))

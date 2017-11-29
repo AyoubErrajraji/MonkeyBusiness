@@ -1,18 +1,23 @@
-import pygame, sys, time, json
-from math import *
-from pygame.locals import *
+import pygame, sys
 
-pygame.font.init()
 
-white = (255, 255, 255)
-black = (0, 0, 0)
-blue = (0, 255, 0)
-red = (255, 0, 0)
-green = (0, 200, 0)
-yellow = (255, 255, 0)
+class Crosstheroad:
+    def __init__(self, screen, config):
+        self.clock = pygame.time.Clock()
+        self.config = config
+        self.screen = screen
 
-data = json.load(open('../data/data.json'))
-screenDim = (data["data"]["resolution"]["width"], data["data"]["resolution"]["height"])
-print(screenDim)
+        # Set quit to False, so loop will continue
+        self.quit = False
 
-screen = pygame.display.set_mode(screenDim)
+    def run(self):
+        while not self.quit:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    # Set quit to True, so pygame will close
+                    self.quit = True
+                    pygame.quit()
+                    sys.exit()
+
+            self.screen.fill(self.config.blue)
+            pygame.display.update()
