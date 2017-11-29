@@ -4,6 +4,8 @@ from bananattack_lib import game
 from bananattack_lib import button
 from bananattack_lib import display
 
+moregebla = 1
+
 class BananAttack(game.Game):
     def __init__(self, name, screen_width, screen_height, screen = None):
         # setup data members and the screen
