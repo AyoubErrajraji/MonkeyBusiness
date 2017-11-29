@@ -18,11 +18,8 @@ class BananAttack(game.Game):
         ### Button setup ###
         self.buttons = [button.startWave(),button.pauseGame()]
 
-        # set available buttons
-        #self.buttons.add_button(button.startWave)
-
         ### setup font ###
-        self.font = pygame.font.SysFont(config.FONT, config.FONT_SIZE)
+        self.font = pygame.font.Font(config.FONT, config.FONT_SIZE)
         self.font_color = config.FONT_COLOR
 
         ### setup location for wave number ###
