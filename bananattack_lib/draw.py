@@ -1,7 +1,9 @@
+'''
+Created on Nov 25, 2017
+@author: lexdewilligen
+'''
 import pygame
 from bananattack_lib import item
-from bananattack_lib import config
-
 
 class Draw(item.Item):
     def __init__(self, kind, position, width, height, image):

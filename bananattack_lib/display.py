@@ -1,8 +1,11 @@
+'''
+Created on Nov 25, 2017
+@author: lexdewilligen
+'''
 
 from bananattack_lib import config
 from bananattack_lib import draw
 import pygame
-
 
 class Display(draw.Draw):
     def __init__(self, position, width, height, b_color=config.DISPLAY_BG_COLOR, o_color=config.DISPLAY_O_COLOR):
