@@ -6,7 +6,6 @@ import pygame
 from bananattack_lib import config
 from bananattack_lib import game
 from bananattack_lib import button
-from bananattack_lib import display
 
 class BananAttack(game.Game):
     def __init__(self, name, screen_width, screen_height, screen = None):
