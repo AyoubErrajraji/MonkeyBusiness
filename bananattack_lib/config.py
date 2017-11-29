@@ -1,4 +1,4 @@
-### COLORS ###
+# COLORS #
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 BLUE = (0, 255, 0)
@@ -6,14 +6,6 @@ RED = (255, 0, 0)
 GREEN = (0, 200, 0)
 BRIGHT_GREEN = (0, 255, 0)
 SAND = (255,255,100)
-
-### ENEMY ###
-DEFAULT_HEALTH = 100
-DEFAULT_SPEED = 10
-DEFAULT_WIDTH = 30
-DEFAULT_HEIGHT = 30
-DEFAULT_IMAGE = "data/bananattack/sprites/truck_right.png"
-DEFAULT_POSITION = (0,311)
 
 # Screen #
 NAME = "BananAttack"
@@ -31,12 +23,12 @@ SELECTED_O_WIDTH = 2
 # Info Box #
 INFO_BOX_BG_COLOR = (0, 200, 0)
 
-## States ##
-TD_PAUSE = 20
-TD_PLAYING = 21 # wave in progress
-TD_CLEAR = 22 # in between waves
-TD_FAILURE = 23
-TD_SUCCESS = 24
+# States #
+TD_PAUSE = 10
+TD_PLAYING = 20 # wave in progress
+TD_CLEAR = 30 # in between waves
+TD_FAILURE = 40
+TD_SUCCESS = 50
 
 # Display #
 DISPLAY_FONT = "helvetica"
@@ -54,7 +46,6 @@ DISPLAY_NO_IMG_HEIGHT = 32
 DISPLAY_NO_IMG_WIDTH = 32
 
 # Hardware Buttons #
-DUPLICATE_BUTTONS = [303, 304] # left and right shift buttons
 MOUSE_LEFT = 1
 MOUSE_MIDDLE = 2
 MOUSE_RIGHT = 3
@@ -77,25 +68,22 @@ BUTTON_STARTWAVE_X = 950
 BUTTON_STARTWAVE_Y = 430
 
 BUTTON_PAUSEGAME_IMG = "data/bananattack/buttons/pauseGame.png"
-BUTTON_PAUSEGAME_HOVER_IMG = "data/bananattack/buttons/pauseGame.png"
+BUTTON_PAUSEGAME_HOVER_IMG = "data/bananattack/buttons/pauseGameHover.png"
 BUTTON_PAUSEGAME_WIDTH = 100
 BUTTON_PAUSEGAME_HEIGHT = 70
 BUTTON_PAUSEGAME_X = 950
 BUTTON_PAUSEGAME_Y = 330
 
-# Menu settings
-MENU_O_COLOR = O_COLOR
-MENU_BG_COLOR = BG_COLOR
-MENU_X = 950
-MENU_Y = 430
-MENU_WIDTH = 300
-MENU_HEIGHT = 70
-MENU_ITEM_MARGIN_X = 0
-MENU_ITEM_MARGIN_Y = 0
-MENU_OUTLINE_WIDTH = 1
-
 # Kind of draw
 KIND_BUTTON = 36
+
+# ENEMY #
+DEFAULT_HEALTH = 100
+DEFAULT_SPEED = 10
+DEFAULT_WIDTH = 30
+DEFAULT_HEIGHT = 30
+DEFAULT_IMAGE = "data/bananattack/sprites/truck_right.png"
+DEFAULT_POSITION = (0,311)
 
 
 

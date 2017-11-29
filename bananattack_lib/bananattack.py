@@ -10,7 +10,7 @@ class BananAttack(game.Game):
         game.Game.__init__(self, name, screen_width, screen_height, screen)
 
         # set state to playing
-        self.state = 21
+        self.state = config.TD_PLAYING
 
         # set waves completed to 0
         self.waves_comp = 0
@@ -34,7 +34,7 @@ class BananAttack(game.Game):
         self.money_x = config.MONEY_X
         self.money_y = config.MONEY_Y
 
-    # waves can be started while playing, another wave exists, and the field is clear
+    # waves can be started while breaktime (TD_CLEAR) and there is a next wave available
     def can_start_wave(self):
         return self.state == config.TD_CLEAR and self.wave+1 <= len(self.waves)-1
 
