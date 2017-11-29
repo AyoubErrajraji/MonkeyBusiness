@@ -21,6 +21,7 @@ BG_COLOR = (154, 180, 61)
 O_COLOR = (27, 143, 30)
 FONT = "data/bananattack/FEASFBRG.ttf"
 FONT_SIZE = 36
+FONT_BIG_SIZE = 72
 FONT_COLOR = (255, 255, 255)
 SELECTED_O_COLOR = (225, 225, 55)
 SELECTED_O_WIDTH = 2
@@ -29,11 +30,11 @@ SELECTED_O_WIDTH = 2
 INFO_BOX_BG_COLOR = (0, 200, 0)
 
 # States #
-TD_PAUSE = 10
-TD_PLAYING = 20 # wave in progress
-TD_CLEAR = 30 # in between waves
-TD_FAILURE = 40
-TD_SUCCESS = 50
+BA_PAUSE = 10 # game is paused
+BA_PLAYING = 20 # wave in progress
+BA_CLEAR = 30 # in between waves
+BA_FAILURE = 40
+BA_SUCCESS = 50
 
 # Display #
 DISPLAY_FONT = "data/bananattack/FEASFBRG.ttf"
@@ -64,6 +65,10 @@ STARTING_MONEY = 100
 MONEY_X = 950
 MONEY_Y = 60
 
+# State #
+STATE_X = 950
+STATE_Y = 100
+
 # StartWave Button
 BUTTON_STARTWAVE_IMG = "data/bananattack/buttons/startWave.png"
 BUTTON_STARTWAVE_HOVER_IMG = "data/bananattack/buttons/startWaveHover.png"
@@ -78,6 +83,13 @@ BUTTON_PAUSEGAME_WIDTH = 100
 BUTTON_PAUSEGAME_HEIGHT = 100
 BUTTON_PAUSEGAME_X = 950
 BUTTON_PAUSEGAME_Y = 300
+
+BUTTON_PLAYGAME_IMG = "data/bananattack/buttons/playGame.png"
+BUTTON_PLAYGAME_HOVER_IMG = "data/bananattack/buttons/playGameHover.png"
+BUTTON_PLAYGAME_WIDTH = 100
+BUTTON_PLAYGAME_HEIGHT = 100
+BUTTON_PLAYGAME_X = 950
+BUTTON_PLAYGAME_Y = 300
 
 # Kind of draw
 KIND_BUTTON = 36

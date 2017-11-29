@@ -77,6 +77,9 @@ class Game:
                     self.screen.blit(pygame.transform.scale(pygame.image.load('data/bananattack/background.jpeg').convert(),(e.w, e.h)),(0, 0))
 
             if self.on:
+                # Keep running bananattack.py game logic
+                self.game_logic()
+
                 if self.quit == True:
                     pygame.quit()
                     return
