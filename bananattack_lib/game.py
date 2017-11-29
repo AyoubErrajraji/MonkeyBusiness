@@ -1,6 +1,9 @@
+'''
+Created on Nov 25, 2017
+@author: lexdewilligen
+'''
 import pygame
 import pygame.locals
-
 from bananattack_lib import config
 
 class Game:

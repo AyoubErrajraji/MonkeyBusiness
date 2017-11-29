@@ -1,3 +1,8 @@
+'''
+Created on Nov 25, 2017
+@author: lexdewilligen
+'''
+
 # COLORS #
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)

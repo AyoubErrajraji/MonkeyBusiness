@@ -1,7 +1,10 @@
+'''
+Created on Nov 25, 2017
+@author: lexdewilligen
+'''
 from bananattack_lib import config
 from bananattack_lib import draw
 import pygame
-
 
 class Button(draw.Draw):
     def __init__(self, position, width, height, image, image_hover):

@@ -1,3 +1,7 @@
+'''
+Created on Nov 25, 2017
+@author: lexdewilligen
+'''
 from bananattack_lib import bananattack
 from bananattack_lib import config
 import pygame
