@@ -30,6 +30,7 @@ class Button(draw.Draw):
         # set default state
         self.state = 0
 
+    # Overwrite the Draw.paint function because we need to implement hovering
     def paint(self, surface):
         # get mouse positions
         mouse_x, mouse_y = pygame.mouse.get_pos()

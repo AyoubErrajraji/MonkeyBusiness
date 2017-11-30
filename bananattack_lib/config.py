@@ -94,6 +94,7 @@ BUTTON_PLAYGAME_Y = 300
 
 # Kind of draw
 KIND_BUTTON = 36
+KIND_ENEMY = 37
 
 # ENEMY #
 DEFAULT_HEALTH = 100
@@ -104,6 +105,8 @@ DEFAULT_IMAGE = "data/bananattack/sprites/truck_right.png"
 DEFAULT_POSITION = (0,311)
 
 # WAYPOINTS #
+STARTPOINT = (0, 311)
+
 # [order, pos_x, pos_y]
 WAYPOINTS = [
                 [1, 168, 311],

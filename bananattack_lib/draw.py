@@ -44,7 +44,7 @@ class Draw(item.Item):
 
     def set_position(self, position):
         self.position = position
-        self.calc_center
+        self.calc_center()
 
     def get_center(self):
         return self.calc_center()
@@ -54,20 +54,20 @@ class Draw(item.Item):
 
     def set_width(self, width):
         self.width = width
-        self.calc_center
+        self.calc_center()
 
     def get_height(self):
         return self.height
 
     def set_height(self, height):
         self.height = height
-        self.calc_center
+        self.calc_center()
 
     def get_dims(self):
         return (self.get_width(), self.get_height())
 
     def paint(self, surface):
-        surface.blit(self.image, self.position)
+        surface.blit(self.image, self.get_center())
 
     def is_inside(self, position):
         if position[0] >= self.position[0] and position[0] < self.position[0] + self.width:

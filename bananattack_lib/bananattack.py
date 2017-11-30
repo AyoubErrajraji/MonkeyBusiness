@@ -7,6 +7,7 @@ import time
 from bananattack_lib import config
 from bananattack_lib import game
 from bananattack_lib import button
+from bananattack_lib import enemy
 
 class BananAttack(game.Game):
     def __init__(self, name, screen_width, screen_height, screen = None):
@@ -123,9 +124,13 @@ class BananAttack(game.Game):
                     # if button has changed state, stop performing other buttons
                     break
 
+            ### Show waypoints ###
             self.showWaypoints()
 
-    def game_logic(self):
+            ### Draw Enemy ###
+            enemy.Enemy().paint(surface)
+
+    def game_logic(self, keys):
 
         ### Push correct buttons ###
         # State 10
@@ -144,6 +149,15 @@ class BananAttack(game.Game):
         if self.state == config.BA_CLEAR:
             self.buttons = [button.pauseGame(self.state), button.startWave(self.state, self.can_start_wave())]
 
+        for key in keys:
+            if key == pygame.K_LEFT:
+                print("LEFT")
+                position = enemy.Enemy().get_position()
+                enemy.Enemy().move((position[0] + 5, position[1]))
+            if key == pygame.K_RIGHT:
+                position = enemy.Enemy().get_position()
+                enemy.Enemy().move((position[0] + 5, position[1]))
+
     def drawPath(self):
         # line 1
         pygame.draw.line(self.screen, config.SAND, (0, 287), (144, 287), 2)
@@ -155,7 +169,6 @@ class BananAttack(game.Game):
         pygame.draw.line(self.screen, config.SAND, (144, 575), (768, 575), 2)
         pygame.draw.line(self.screen, config.SAND, (767, 576), (767, 480), 2)
         pygame.draw.line(self.screen, config.SAND, (768, 479), (528, 479), 2)
-
         pygame.draw.line(self.screen, config.SAND, (527, 336), (527, 480), 2)
         pygame.draw.line(self.screen, config.SAND, (528, 335), (768, 335), 2)
         pygame.draw.line(self.screen, config.SAND, (767, 335), (767, 0), 2)
@@ -170,7 +183,6 @@ class BananAttack(game.Game):
         pygame.draw.line(self.screen, config.SAND, (96, 622), (816, 622), 2)
         pygame.draw.line(self.screen, config.SAND, (815, 624), (815, 432), 2)
         pygame.draw.line(self.screen, config.SAND, (816, 431), (576, 431), 2)
-
         pygame.draw.line(self.screen, config.SAND, (575, 432), (575, 384), 2)
         pygame.draw.line(self.screen, config.SAND, (576, 383), (816, 383), 2)
         pygame.draw.line(self.screen, config.SAND, (815, 384), (815, 0), 2)
