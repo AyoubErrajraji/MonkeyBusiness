@@ -12,5 +12,6 @@ purple = (128, 0, 128)
 #General info
 gameName = "Monkey War"
 name = "Cross the Road"
-screenDim = (1280, 720)
+screenDim = (850, 600)
 FPS = 60
+grid = 50
