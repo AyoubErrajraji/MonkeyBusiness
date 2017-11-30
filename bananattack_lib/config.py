@@ -103,6 +103,22 @@ DEFAULT_HEIGHT = 30
 DEFAULT_IMAGE = "data/bananattack/sprites/truck_right.png"
 DEFAULT_POSITION = (0,311)
 
+# WAYPOINTS #
+# [order, pos_x, pos_y]
+WAYPOINTS = [
+                [1, 168, 311],
+                [2, 167, 168],
+                [3, 312, 167],
+                [4, 311, 504],
+                [5, 120, 503],
+                [6, 119, 598],
+                [7, 792, 598],
+                [8, 791, 456],
+                [9, 552, 455],
+                [10, 551, 360],
+                [11, 792, 359],
+                [12, 791, 000]
+            ]
 
 
 

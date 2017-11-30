@@ -73,7 +73,6 @@ class Game:
                 # update window size if resized
                 if e.type == pygame.VIDEORESIZE:
                     self.new_screen(e.w, e.h)
-                    self.screen.fill(config.BG_COLOR)
                     self.screen.blit(pygame.transform.scale(pygame.image.load('data/bananattack/background.jpeg').convert(),(e.w, e.h)),(0, 0))
 
             if self.on:

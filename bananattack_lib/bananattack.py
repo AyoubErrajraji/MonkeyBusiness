@@ -81,7 +81,6 @@ class BananAttack(game.Game):
     # paints all of the objects of the game
     def paint(self, surface):
         # fill the screen with the background color
-        surface.fill(config.BG_COLOR)
         surface.blit(pygame.transform.scale(pygame.image.load('data/bananattack/background.jpeg').convert(), (config.SCREEN_WIDTH, config.SCREEN_HEIGHT)), (0, 0))
 
         # if the game is being played
@@ -124,6 +123,8 @@ class BananAttack(game.Game):
                     # if button has changed state, stop performing other buttons
                     break
 
+            self.showWaypoints()
+
     def game_logic(self):
 
         ### Push correct buttons ###
@@ -154,6 +155,7 @@ class BananAttack(game.Game):
         pygame.draw.line(self.screen, config.SAND, (144, 575), (768, 575), 2)
         pygame.draw.line(self.screen, config.SAND, (767, 576), (767, 480), 2)
         pygame.draw.line(self.screen, config.SAND, (768, 479), (528, 479), 2)
+
         pygame.draw.line(self.screen, config.SAND, (527, 336), (527, 480), 2)
         pygame.draw.line(self.screen, config.SAND, (528, 335), (768, 335), 2)
         pygame.draw.line(self.screen, config.SAND, (767, 335), (767, 0), 2)
@@ -168,6 +170,7 @@ class BananAttack(game.Game):
         pygame.draw.line(self.screen, config.SAND, (96, 622), (816, 622), 2)
         pygame.draw.line(self.screen, config.SAND, (815, 624), (815, 432), 2)
         pygame.draw.line(self.screen, config.SAND, (816, 431), (576, 431), 2)
+
         pygame.draw.line(self.screen, config.SAND, (575, 432), (575, 384), 2)
         pygame.draw.line(self.screen, config.SAND, (576, 383), (816, 383), 2)
         pygame.draw.line(self.screen, config.SAND, (815, 384), (815, 0), 2)
@@ -185,6 +188,11 @@ class BananAttack(game.Game):
         text = "Game Paused!"
         temp_surface = self.big_font.render(text, 1, self.font_color)
         self.screen.blit(temp_surface, (450, 280))
+
+    def showWaypoints(self):
+        for waypoint in config.WAYPOINTS:
+            pygame.draw.circle(self.screen, config.SAND, (waypoint[1], waypoint[2]), 2)
+
 
 
 
