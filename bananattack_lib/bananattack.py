@@ -43,6 +43,9 @@ class BananAttack(game.Game):
         self.state_x = config.STATE_X
         self.state_y = config.STATE_Y
 
+        ### Enemy setup ###
+        self.enemies = [enemy.Enemy()]
+
     # waves can be started while breaktime (TD_CLEAR) and there is a next wave available
     def can_start_wave(self):
         if self.waves_comp < self.waves and self.state ==  config.BA_CLEAR:
@@ -56,15 +59,36 @@ class BananAttack(game.Game):
         self.wave += 1
         print("Wave number: ", self.wave)
 
-        # create and place the enemys
-        ### CODE TO WRITE ###
-        n = 5
-        while n > 0:
-            if self.state != config.BA_PLAYING:
-                break
-            print(n)
-            time.sleep(1)
-            n -= 1
+        ### Draw Enemy ###
+        for enemy in self.enemies:
+            while enemy.waypoints_reached < len(config.WAYPOINTS):
+                speed = config.DEFAULT_SPEED
+
+                # Update enemy's location
+                if enemy.get_position()[0] < enemy.trackNextWaypoint()[1]:
+                    if enemy.trackNextWaypoint()[1] - enemy.get_position()[0] >= 10:
+                        enemy.move((enemy.get_position()[0] + speed, enemy.get_position()[1]))
+                    else:
+                        enemy.move((enemy.get_position()[0] + enemy.trackNextWaypoint()[1] - enemy.get_position()[0], enemy.get_position()[1]))
+                if enemy.get_position()[0] > enemy.trackNextWaypoint()[1]:
+                    enemy.move((enemy.get_position()[0] - speed, enemy.get_position()[1]))
+                if enemy.get_position()[1] < enemy.trackNextWaypoint()[2]:
+                    enemy.move((enemy.get_position()[0], enemy.get_position()[1] + speed))
+                if enemy.get_position()[1] > enemy.trackNextWaypoint()[2]:
+                    enemy.move((enemy.get_position()[0], enemy.get_position()[1] - speed))
+
+                # If enemy position is on waypoint
+                if enemy.get_position()[0] == enemy.trackNextWaypoint()[1]:
+                    print("Done")
+                    enemy.setWaypointsReached(12)
+
+                # Paint game + new enemy location
+                self.paint(self.screen)
+                enemy.paint(self.screen)
+
+                # Update Screen
+                pygame.display.update()
+                time.sleep(.1)
 
         # if done -> set state to BA_CLEAR
         print("Wave Completed!")
@@ -124,11 +148,12 @@ class BananAttack(game.Game):
                     # if button has changed state, stop performing other buttons
                     break
 
+            ### Draw enemies ###
+            for enemy in self.enemies:
+                enemy.paint(surface)
+
             ### Show waypoints ###
             self.showWaypoints()
-
-            ### Draw Enemy ###
-            enemy.Enemy().paint(surface)
 
     def game_logic(self, keys):
 
@@ -143,20 +168,13 @@ class BananAttack(game.Game):
 
             # Start wave if it isn't started yet
             if not self.wave_started():
+                # Add enemies to self.enemies
                 self.begin_wave()
 
         # State 30
         if self.state == config.BA_CLEAR:
             self.buttons = [button.pauseGame(self.state), button.startWave(self.state, self.can_start_wave())]
 
-        for key in keys:
-            if key == pygame.K_LEFT:
-                print("LEFT")
-                position = enemy.Enemy().get_position()
-                enemy.Enemy().move((position[0] + 5, position[1]))
-            if key == pygame.K_RIGHT:
-                position = enemy.Enemy().get_position()
-                enemy.Enemy().move((position[0] + 5, position[1]))
 
     def drawPath(self):
         # line 1

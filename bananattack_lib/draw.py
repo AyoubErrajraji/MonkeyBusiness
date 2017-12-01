@@ -8,7 +8,7 @@ from bananattack_lib import item
 class Draw(item.Item):
     def __init__(self, kind, position, width, height, image):
         item.Item.__init__(self, kind)
-        self.position = position  # topleft
+        self.position = position
         self.image = pygame.image.load(image)
         self.width = width
         self.height = height
@@ -44,7 +44,6 @@ class Draw(item.Item):
 
     def set_position(self, position):
         self.position = position
-        self.calc_center()
 
     def get_center(self):
         return self.calc_center()

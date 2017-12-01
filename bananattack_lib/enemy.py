@@ -9,14 +9,22 @@ from bananattack_lib import draw
 class Enemy(draw.Draw):
     def __init__(self):
         self.image = config.DEFAULT_IMAGE
-        self.position = config.STARTPOINT
+        self.waypoints_reached = 0
 
-        draw.Draw.__init__(self, config.KIND_ENEMY, self.position, 48, 48, self.image)
+        draw.Draw.__init__(self, config.KIND_ENEMY, config.STARTPOINT, 48, 48, self.image)
+        print("Enemy Created")
 
     def trackNextWaypoint(self):
-        code = "ToBeWritten"
+        for waypoint in config.WAYPOINTS:
+            if waypoint[0] == self.waypoints_reached+1:
+                return waypoint
+                break
 
-    def move(self,position):
+    def setWaypointsReached(self, number):
+        self.waypoints_reached += number
+
+    def move(self, position):
         # set new position
         self.set_position(position)
-        print(position)
+        print("NewPos: ", position)
+
