@@ -66,21 +66,32 @@ class BananAttack(game.Game):
 
                 # Update enemy's location
                 if enemy.get_position()[0] < enemy.trackNextWaypoint()[1]:
-                    if enemy.trackNextWaypoint()[1] - enemy.get_position()[0] >= 10:
+                    if enemy.trackNextWaypoint()[1] - enemy.get_position()[0] >= speed:
                         enemy.move((enemy.get_position()[0] + speed, enemy.get_position()[1]))
                     else:
-                        enemy.move((enemy.get_position()[0] + enemy.trackNextWaypoint()[1] - enemy.get_position()[0], enemy.get_position()[1]))
+                        enemy.move((enemy.get_position()[0] + (enemy.trackNextWaypoint()[1] - enemy.get_position()[0]), enemy.get_position()[1]))
+
                 if enemy.get_position()[0] > enemy.trackNextWaypoint()[1]:
-                    enemy.move((enemy.get_position()[0] - speed, enemy.get_position()[1]))
+                    if enemy.get_position()[0] - enemy.trackNextWaypoint()[1] >= speed:
+                        enemy.move((enemy.get_position()[0] - speed, enemy.get_position()[1]))
+                    else:
+                        enemy.move((enemy.get_position()[0] - (enemy.get_position()[0] - enemy.trackNextWaypoint()[1]), enemy.get_position()[1]))
+
                 if enemy.get_position()[1] < enemy.trackNextWaypoint()[2]:
-                    enemy.move((enemy.get_position()[0], enemy.get_position()[1] + speed))
+                    if enemy.trackNextWaypoint()[2] - enemy.get_position()[1] >= speed:
+                        enemy.move((enemy.get_position()[0], enemy.get_position()[1] + speed))
+                    else:
+                        enemy.move((enemy.get_position()[0], enemy.get_position()[1] + (enemy.trackNextWaypoint()[2] - enemy.get_position()[1])))
+
                 if enemy.get_position()[1] > enemy.trackNextWaypoint()[2]:
-                    enemy.move((enemy.get_position()[0], enemy.get_position()[1] - speed))
+                    if enemy.get_position()[1] - enemy.trackNextWaypoint()[2] >= speed:
+                        enemy.move((enemy.get_position()[0], enemy.get_position()[1] - speed))
+                    else:
+                        enemy.move((enemy.get_position()[0], enemy.get_position()[1] - (enemy.get_position()[1] - enemy.trackNextWaypoint()[2])))
 
                 # If enemy position is on waypoint
-                if enemy.get_position()[0] == enemy.trackNextWaypoint()[1]:
-                    print("Done")
-                    enemy.setWaypointsReached(12)
+                if enemy.get_position()[0] == enemy.trackNextWaypoint()[1] and enemy.get_position()[1] == enemy.trackNextWaypoint()[2]:
+                    enemy.setWaypointsReached(1)
 
                 # Paint game + new enemy location
                 self.paint(self.screen)
