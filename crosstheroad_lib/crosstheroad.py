@@ -75,8 +75,8 @@ class Crosstheroad:
         if self.config.cars > self.i:
             print(randint(0, 3))
             self.cars.append(Car(0 - (self.i * (self.config.grid*2)) - (self.i * (self.config.grid * randint(1, 4))), self.config.screenDim[1]-self.config.grid*2, self.config.grid*2, self.config.grid, self.screen, self.config))
+            # added car to carlist
             self.i = self.i + 1
-            print("Added car to carlist")
 
     def background(self, color):
         self.screen.fill(color)
@@ -91,16 +91,16 @@ class Crosstheroad:
 
     def update(self):
         if pygame.key.get_pressed()[pygame.K_LEFT] != 0:
-            print("Key Left pressed")
+            # print("Key Left pressed")
             self.monkey.move(-1, 0)
         elif pygame.key.get_pressed()[pygame.K_RIGHT] != 0:
-            print("Key Right pressed")
+            # print("Key Right pressed")
             self.monkey.move(1, 0)
         elif pygame.key.get_pressed()[pygame.K_UP] != 0:
-            print("Key Up pressed")
+            # print("Key Up pressed")
             self.monkey.move(0, -1)
         elif pygame.key.get_pressed()[pygame.K_DOWN] != 0:
-            print("Key Down pressed")
+            # print("Key Down pressed")
             self.monkey.move(0, 1)
 
 
