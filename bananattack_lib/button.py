@@ -1,7 +1,10 @@
+'''
+Created on Nov 25, 2017
+@author: lexdewilligen
+'''
 from bananattack_lib import config
 from bananattack_lib import draw
 import pygame
-
 
 class Button(draw.Draw):
     def __init__(self, position, width, height, image, image_hover):
@@ -24,6 +27,10 @@ class Button(draw.Draw):
         # object to be sent on click
         self.item = None
 
+        # set default state
+        self.state = 0
+
+    # Overwrite the Draw.paint function because we need to implement hovering
     def paint(self, surface):
         # get mouse positions
         mouse_x, mouse_y = pygame.mouse.get_pos()
@@ -58,21 +65,44 @@ class Button(draw.Draw):
     def set_item(self, item):
         self.item = item
 
+    def get_state(self):
+        return self.state
+
 # Available Buttons
 class startWave(Button):
-    def __init__(self):
+    def __init__(self, state, canStartWave):
         Button.__init__(self, (config.BUTTON_STARTWAVE_X,config.BUTTON_STARTWAVE_Y), config.BUTTON_STARTWAVE_WIDTH, config.BUTTON_STARTWAVE_HEIGHT, config.BUTTON_STARTWAVE_IMG, config.BUTTON_STARTWAVE_HOVER_IMG)
         self.item = None
+        self.state = state
+        self.canStartWave = canStartWave
 
     def task(self):
-        print("Wave Started")
+        if self.canStartWave:
+            self.state = config.BA_PLAYING
+        else:
+            print("Trying to start Wave while MAX_WAVES is reached")
 
 class pauseGame(Button):
-    def __init__(self):
+    def __init__(self, state):
         Button.__init__(self, (config.BUTTON_PAUSEGAME_X,config.BUTTON_PAUSEGAME_Y), config.BUTTON_PAUSEGAME_WIDTH, config.BUTTON_PAUSEGAME_HEIGHT, config.BUTTON_PAUSEGAME_IMG, config.BUTTON_PAUSEGAME_HOVER_IMG)
         self.item = None
+        self.state = state
 
     def task(self):
-        print("Game Paused")
+        self.state = config.BA_PAUSE
+
+class playGame(Button):
+    def __init__(self, state, running = False):
+        Button.__init__(self, (config.BUTTON_PLAYGAME_X,config.BUTTON_PLAYGAME_Y), config.BUTTON_PLAYGAME_WIDTH, config.BUTTON_PLAYGAME_HEIGHT, config.BUTTON_PLAYGAME_IMG, config.BUTTON_PLAYGAME_HOVER_IMG)
+        self.item = None
+        self.state = state
+        self.running = running
+
+    def task(self):
+        if self.running:
+            self.state = config.BA_PLAYING
+        else:
+            self.state = config.BA_CLEAR
+
 
 

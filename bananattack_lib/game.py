@@ -1,6 +1,9 @@
+'''
+Created on Nov 25, 2017
+@author: lexdewilligen
+'''
 import pygame
 import pygame.locals
-
 from bananattack_lib import config
 
 class Game:
@@ -70,10 +73,12 @@ class Game:
                 # update window size if resized
                 if e.type == pygame.VIDEORESIZE:
                     self.new_screen(e.w, e.h)
-                    self.screen.fill(config.BG_COLOR)
                     self.screen.blit(pygame.transform.scale(pygame.image.load('data/bananattack/background.jpeg').convert(),(e.w, e.h)),(0, 0))
 
             if self.on:
+                # Keep running bananattack.py game logic
+                self.game_logic(keys)
+
                 if self.quit == True:
                     pygame.quit()
                     return
