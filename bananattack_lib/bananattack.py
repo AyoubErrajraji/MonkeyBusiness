@@ -7,19 +7,27 @@ import time
 from bananattack_lib import config
 from bananattack_lib import game
 from bananattack_lib import button
+from bananattack_lib import enemy
 
 class BananAttack(game.Game):
     def __init__(self, name, screen_width, screen_height, screen = None):
-        # setup data members and the screen
+        ### setup data members and the screen ###
         game.Game.__init__(self, name, screen_width, screen_height, screen)
 
-        # set state to playing
+        ### Set state to playing ###
         self.state = config.BA_CLEAR
 
-        # set waves
+        ### Enemy setup ###
+        self.enemies = [
+            [],
+            [enemy.Enemy()],
+            [enemy.Enemy(), enemy.Enemy(), enemy.Enemy()]
+        ]
+
+        ### Set waves ###
         self.waves_comp = 0             # number of waves that have ended (are completed)
         self.wave = 0                   # the next wave to start or which is currently running
-        self.waves = config.MAX_WAVES   # number of waves that exist
+        self.waves = len(self.enemies)   # number of waves that exist
 
         ### Button setup ###
         self.buttons = []
@@ -44,26 +52,44 @@ class BananAttack(game.Game):
 
     # waves can be started while breaktime (TD_CLEAR) and there is a next wave available
     def can_start_wave(self):
-        if self.waves_comp < self.waves and self.state ==  config.BA_CLEAR:
+        if self.waves_comp < self.waves-1 and self.state ==  config.BA_CLEAR:
             return True
         else:
             return False
 
-    # creates and places all of the enemys
+    # creates and places all of the enemies
     def begin_wave(self):
-        # mark next waves as started
+
+        # Mark next wave as started
         self.wave += 1
         print("Wave number: ", self.wave)
 
-        # create and place the enemys
-        ### CODE TO WRITE ###
-        n = 5
-        while n > 0:
-            if self.state != config.BA_PLAYING:
-                break
-            print(n)
-            time.sleep(1)
-            n -= 1
+        # Deploy enemies #
+        for index, object in enumerate(self.enemies[self.wave]):
+            object.deploy((config.STARTPOINT[0] - (config.DEFAULT_DELAY * index), config.STARTPOINT[1]))
+            print(index)
+
+        length = len(self.enemies[self.wave])
+        completed = 0
+
+        ### Draw Enemy ###
+        while completed < length:
+            for enemy in self.enemies[self.wave]:
+                if enemy.waypoints_reached < len(config.WAYPOINTS):
+
+                    # Move enemy
+                    enemy.move()
+
+                    # Paint game + new enemy location
+                    self.paint(self.screen)
+
+                    # Update Screen
+                    pygame.display.update()
+
+                else:
+                    # Kill enemies -> hasReached base
+                    self.enemies[self.wave].pop(0)
+                    completed += 1
 
         # if done -> set state to BA_CLEAR
         print("Wave Completed!")
@@ -108,10 +134,6 @@ class BananAttack(game.Game):
             ### Draw path ###
             self.drawPath()
 
-            ### Pause Overlay ###
-            if self.state == config.BA_PAUSE:
-                self.pauseOverlay()
-
             ### Draw buttons ###
             for button in self.buttons:
                 button.paint(surface)
@@ -123,9 +145,18 @@ class BananAttack(game.Game):
                     # if button has changed state, stop performing other buttons
                     break
 
+            ### Draw enemies ###
+            for index, enemy in enumerate(self.enemies[self.wave]):
+                enemy.paint(surface)
+
+            ### Show waypoints ###
             self.showWaypoints()
 
-    def game_logic(self):
+            ### Pause Overlay ###
+            if self.state == config.BA_PAUSE:
+                self.pauseOverlay()
+
+    def game_logic(self, keys):
 
         ### Push correct buttons ###
         # State 10
@@ -138,11 +169,13 @@ class BananAttack(game.Game):
 
             # Start wave if it isn't started yet
             if not self.wave_started():
+                # Add enemies to self.enemies
                 self.begin_wave()
 
         # State 30
         if self.state == config.BA_CLEAR:
             self.buttons = [button.pauseGame(self.state), button.startWave(self.state, self.can_start_wave())]
+
 
     def drawPath(self):
         # line 1
@@ -155,7 +188,6 @@ class BananAttack(game.Game):
         pygame.draw.line(self.screen, config.SAND, (144, 575), (768, 575), 2)
         pygame.draw.line(self.screen, config.SAND, (767, 576), (767, 480), 2)
         pygame.draw.line(self.screen, config.SAND, (768, 479), (528, 479), 2)
-
         pygame.draw.line(self.screen, config.SAND, (527, 336), (527, 480), 2)
         pygame.draw.line(self.screen, config.SAND, (528, 335), (768, 335), 2)
         pygame.draw.line(self.screen, config.SAND, (767, 335), (767, 0), 2)
@@ -170,7 +202,6 @@ class BananAttack(game.Game):
         pygame.draw.line(self.screen, config.SAND, (96, 622), (816, 622), 2)
         pygame.draw.line(self.screen, config.SAND, (815, 624), (815, 432), 2)
         pygame.draw.line(self.screen, config.SAND, (816, 431), (576, 431), 2)
-
         pygame.draw.line(self.screen, config.SAND, (575, 432), (575, 384), 2)
         pygame.draw.line(self.screen, config.SAND, (576, 383), (816, 383), 2)
         pygame.draw.line(self.screen, config.SAND, (815, 384), (815, 0), 2)

@@ -57,7 +57,6 @@ MOUSE_MIDDLE = 2
 MOUSE_RIGHT = 3
 
 # Wave #
-MAX_WAVES = 3
 WAVE_X = 950
 WAVE_Y = 20
 
@@ -94,16 +93,19 @@ BUTTON_PLAYGAME_Y = 300
 
 # Kind of draw
 KIND_BUTTON = 36
+KIND_ENEMY = 37
 
 # ENEMY #
 DEFAULT_HEALTH = 100
-DEFAULT_SPEED = 10
+DEFAULT_SPEED = 30
 DEFAULT_WIDTH = 30
 DEFAULT_HEIGHT = 30
 DEFAULT_IMAGE = "data/bananattack/sprites/truck_right.png"
-DEFAULT_POSITION = (0,311)
+DEFAULT_DELAY = 100
 
 # WAYPOINTS #
+STARTPOINT = (0, 311)
+
 # [order, pos_x, pos_y]
 WAYPOINTS = [
                 [1, 168, 311],

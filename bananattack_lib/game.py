@@ -77,7 +77,7 @@ class Game:
 
             if self.on:
                 # Keep running bananattack.py game logic
-                self.game_logic()
+                self.game_logic(keys)
 
                 if self.quit == True:
                     pygame.quit()
