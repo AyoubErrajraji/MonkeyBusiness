@@ -44,7 +44,6 @@ class Draw(item.Item):
 
     def set_position(self, position):
         self.position = position
-        print("NewPos: ", position)
 
     def get_center(self):
         return self.calc_center()
