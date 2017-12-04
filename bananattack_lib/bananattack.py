@@ -62,17 +62,15 @@ class BananAttack(game.Game):
 
         # Mark next wave as started
         self.wave += 1
-        print("Wave number: ", self.wave)
 
         # Deploy enemies #
         for index, object in enumerate(self.enemies[self.wave]):
             object.deploy((config.STARTPOINT[0] - (config.DEFAULT_DELAY * index), config.STARTPOINT[1]))
-            print(index)
 
         length = len(self.enemies[self.wave])
         completed = 0
 
-        ### Draw Enemy ###
+        # Draw Enemy #
         while completed < length:
             for enemy in self.enemies[self.wave]:
                 if enemy.waypoints_reached < len(config.WAYPOINTS):
@@ -91,8 +89,7 @@ class BananAttack(game.Game):
                     self.enemies[self.wave].pop(0)
                     completed += 1
 
-        # if done -> set state to BA_CLEAR
-        print("Wave Completed!")
+        # Wave Done
         self.waves_comp += 1
         self.state = config.BA_CLEAR
         print("State updated to: %d by %s from %s" % (config.BA_CLEAR, button, " the bottom of the begin_wave function"))
