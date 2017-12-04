@@ -68,13 +68,13 @@ class Crosstheroad:
         # Set quit to False, so loop will continue
         self.quit = False
         self.monkey = Monkey(self.config.screenDim[0]/2 - self.config.grid/2, self.config.screenDim[1]-self.config.grid, self.config.grid, self.config.grid, self.screen, self.config)
-        self.car = []
+        self.cars = []
         self.i = 0
 
     def addCars(self):
         if self.config.cars > self.i:
             print(randint(0, 3))
-            self.car.append(Car(0 - (self.i * (self.config.grid*2)) - (self.i * (self.config.grid * randint(1, 4))), self.config.screenDim[1]-self.config.grid*2, self.config.grid*2, self.config.grid, self.screen, self.config))
+            self.cars.append(Car(0 - (self.i * (self.config.grid*2)) - (self.i * (self.config.grid * randint(1, 4))), self.config.screenDim[1]-self.config.grid*2, self.config.grid*2, self.config.grid, self.screen, self.config))
             self.i = self.i + 1
             print("Added car to carlist")
 
@@ -85,9 +85,9 @@ class Crosstheroad:
         self.background(self.config.yellow)
         self.monkey.show()
         self.addCars()
-        for index in range(len(self.car)):
-            self.car[index].show()
-            self.car[index].update()
+        for index in range(len(self.cars)):
+            self.cars[index].show()
+            self.cars[index].update()
 
     def update(self):
         if pygame.key.get_pressed()[pygame.K_LEFT] != 0:

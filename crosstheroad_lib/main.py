@@ -13,5 +13,4 @@ def main():
     game = crosstheroad.Crosstheroad(screen, config)
     game.run()
 
-
 main()
