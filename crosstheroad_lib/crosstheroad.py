@@ -1,4 +1,5 @@
 import pygame, sys
+from random import randint
 
 
 class Rectangle:
@@ -41,7 +42,21 @@ class Monkey(Rectangle):
 
 
 class Car(Rectangle):
-    pass
+    def __init__(self, x, y, w, h, screen, config):
+        Rectangle.__init__(self, x, y, w, h)
+        self.screen = screen
+        self.config = config
+        self.speed = 4
+
+    def update(self):
+        self.x = self.x + self.speed
+
+        if self.x > self.config.screenDim[0]:
+            self.x = - self.w
+
+    def show(self):
+        cr = pygame.Rect(self.x, self.y, self.w, self.h)
+        pygame.draw.rect(self.screen, self.config.green, cr)
 
 
 class Crosstheroad:
@@ -53,6 +68,15 @@ class Crosstheroad:
         # Set quit to False, so loop will continue
         self.quit = False
         self.monkey = Monkey(self.config.screenDim[0]/2 - self.config.grid/2, self.config.screenDim[1]-self.config.grid, self.config.grid, self.config.grid, self.screen, self.config)
+        self.car = []
+        self.i = 0
+
+    def addCars(self):
+        if self.config.cars > self.i:
+            print(randint(0, 3))
+            self.car.append(Car(0 - (self.i * (self.config.grid*2)) - (self.i * (self.config.grid * randint(1, 4))), self.config.screenDim[1]-self.config.grid*2, self.config.grid*2, self.config.grid, self.screen, self.config))
+            self.i = self.i + 1
+            print("Added car to carlist")
 
     def background(self, color):
         self.screen.fill(color)
@@ -60,6 +84,10 @@ class Crosstheroad:
     def blit(self):
         self.background(self.config.yellow)
         self.monkey.show()
+        self.addCars()
+        for index in range(len(self.car)):
+            self.car[index].show()
+            self.car[index].update()
 
     def update(self):
         if pygame.key.get_pressed()[pygame.K_LEFT] != 0:
@@ -74,6 +102,7 @@ class Crosstheroad:
         elif pygame.key.get_pressed()[pygame.K_DOWN] != 0:
             print("Key Down pressed")
             self.monkey.move(0, 1)
+
 
     def run(self):
         while not self.quit:

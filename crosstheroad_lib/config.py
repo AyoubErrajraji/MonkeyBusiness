@@ -15,3 +15,4 @@ name = "Cross the Road"
 screenDim = (850, 600)
 FPS = 60
 grid = 50
+cars = 4
