@@ -39,6 +39,7 @@ class Monkey(Rectangle):
             self.y += ydir * self.config.grid
             self.x += xdir * self.config.grid
 
+
 class Car(Rectangle):
     pass
 
@@ -82,7 +83,7 @@ class Crosstheroad:
                     self.quit = True
                     pygame.quit()
                     sys.exit()
+                self.update()
 
             self.blit()
-            self.update()
             pygame.display.update()
