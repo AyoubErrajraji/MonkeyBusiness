@@ -38,7 +38,6 @@ class Game:
     def main_loop(self):
         clock = pygame.time.Clock()
         keys = set()
-        mouse_pos = (0, 0)
         while True:
             clock.tick(config.FRAMES_PER_SECOND)
 
@@ -52,8 +51,8 @@ class Game:
 
                 # did the user just press the escape key?
                 if e.type == pygame.KEYDOWN and e.key == pygame.K_ESCAPE:
-                    pygame.quit()
-                    return
+                    if self.state == config.BA_CLEAR:
+                        self.state = config.BA_PAUSE
 
                 # track which keys are currently set
                 if e.type == pygame.KEYDOWN:
