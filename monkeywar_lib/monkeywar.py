@@ -1,6 +1,5 @@
 #Project 2 v1.00
 import pygame, sys, time
-from math import *
 from pygame.locals import *
 pygame.font.init()
 WHITE = (255, 255, 255)
