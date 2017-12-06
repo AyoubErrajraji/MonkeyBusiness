@@ -41,7 +41,7 @@ class Monkey(Rectangle):
             if not self.x == 0:
                 self.x += xdir * self.config.grid
         elif xdir == 1:
-            if not self.x == self.config.screenDim[0] - self.config.grid:
+            if not self.x == self.config.screenDim[0] - self.config.grid - self.config.sideMenu[0]:
                 self.x += xdir * self.config.grid
         elif ydir == -1:
             if not self.y == 0:
@@ -57,15 +57,16 @@ class Car(Rectangle):
         self.screen = screen
         self.config = config
         self.speed = speed
+        self.state = "alive"
 
     def update(self):
         self.x = self.x + self.speed
 
-        if self.x > self.config.screenDim[0] and self.speed > 0:
+        if self.x > self.config.screenDim[0] - self.config.sideMenu[0] and self.speed > 0:
             self.x = - self.w
 
         if self.x + self.w < 0 and self.speed < 0:
-            self.x = self.config.screenDim[0] + self.w
+            self.x = self.config.screenDim[0] + self.w - self.config.sideMenu[0]
 
     def show(self):
         cr = pygame.Rect(self.x, self.y, self.w, self.h)
@@ -77,12 +78,20 @@ class Crosstheroad:
         self.clock = pygame.time.Clock()
         self.config = config
         self.screen = screen
+        self.state = "alive"
 
         # Set quit to False, so loop will continue
         self.quit = False
-        self.monkey = Monkey(self.config.screenDim[0]/2 - self.config.grid/2, self.config.screenDim[1]-self.config.grid, self.config.grid, self.config.grid, self.screen, self.config)
+        self.monkey = Monkey((self.config.screenDim[0] - self.config.sideMenu[0])/2 - self.config.grid/2, self.config.screenDim[1]-self.config.grid, self.config.grid, self.config.grid, self.screen, self.config)
         self.cars = []
         self.i = 0
+
+    def sideMenu(self):
+        sm = pygame.Rect(self.config.screenDim[0] - self.config.sideMenu[0], 0, self.config.sideMenu[0], self.config.sideMenu[1])
+        pygame.draw.rect(self.screen, self.config.yellow, sm)
+        font = pygame.font.SysFont("helvetica", 15)
+        state = font.render(self.state, 1, self.config.black)
+        self.screen.blit(state, (self.config.screenDim[0] - self.config.sideMenu[0]/2 - state.get_rect().width, self.config.sideMenu[1] - 100))
 
     def addCars(self):
         # Add first row of cars
@@ -119,6 +128,7 @@ class Crosstheroad:
         for index in range(len(self.cars)):
             self.cars[index].show()
             self.cars[index].update()
+        self.sideMenu()
 
     def update(self):
         if pygame.key.get_pressed()[pygame.K_LEFT] != 0:
@@ -137,7 +147,7 @@ class Crosstheroad:
     def collisionDet(self):
         for index in range(len(self.cars)):
             if not self.monkey.intersects(self.cars[index].x, self.cars[index].y, self.cars[index].w, self.cars[index].h):
-                print("You died")
+                self.state = "died"
 
     def run(self):
         while not self.quit:
