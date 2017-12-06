@@ -1,6 +1,7 @@
 import pygame
 import sys
 import math
+import clock
 
 class run():
     def runm(self):
