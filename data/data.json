@@ -1,6 +1,8 @@
 {
     "data": {
-                "resolution": "(1280, 720)"
-            }
-    
+        "resolution": {
+                "width": 1280,
+                "height": 720
+        }
+    } 
 }
