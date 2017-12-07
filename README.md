@@ -1,8 +1,3 @@
-# MonkeyBusiness
-A game created with Pygame
-
-abc
-
-HALLO DIKKE TIETEN
-
-AYOUB IS DIK EN WELSEY STINKT
+# Monkey Business
+A game created with _pygame_ by us!
+En het mergen werkt nu ook goed :)
