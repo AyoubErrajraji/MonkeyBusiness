@@ -8,3 +8,4 @@ monkeywar_lib/__pycache__/monkeywar.cpython-36.pyc
 *.pyc
 .idea/workspace.xml
 .idea/Bloons Tower Defence.iml
+menu_lib/__pycache__/slidemenu.cpython-36.pyc
