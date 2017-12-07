@@ -4,14 +4,16 @@ Created on Nov 25, 2017
 '''
 
 import pygame
-import sys
 from pygame import *
 font.init()
+import sys
 from math import cos, radians
 from bananattack_lib import main as bananattack
 from monkeywar_lib import monkeywar
 from crosstheroad_lib import main as crosstheroad
 from finalfight_lib import game as finalfight
+from menu_lib import config
+from os.path import dirname, join
 
 def menu(menu, pos='center', font1=None, font2=None, color1=(128, 128, 128), color2=None, interline=5, justify=True, light=5, speed=300, lag=30):
 
@@ -20,6 +22,23 @@ def menu(menu, pos='center', font1=None, font2=None, color1=(128, 128, 128), col
         def __init__(self, menu, label):
             Rect.__init__(self, menu)
             self.label = label
+
+    def showMonkeyStats():
+        scr = display.get_surface()
+        screen = scr.get_rect()
+        font1 = font.Font(join('data/menu/FEASFBRG.ttf'), 45)
+
+        # Show balance #
+        balance = "Balance: %d" % (config.BALANCE)
+        temp_surface = font1.render(balance, 1, (154, 180, 61))
+        scr.blit(temp_surface, ((screen.w // 8) - 110, (screen.h // 6)*2.1))
+        display.flip()
+
+        # Show monkey #
+        balance = "%s" % (config.MONKEY)
+        temp_surface = font1.render(balance, 1, (154, 180, 61))
+        scr.blit(temp_surface, ((screen.w // 8) - 110, (screen.h // 6) * 2.5))
+        display.flip()
 
     def show():
         i = Rect((0, 0), font2.size(menu[idx].label))
@@ -116,6 +135,7 @@ def menu(menu, pos='center', font1=None, font2=None, color1=(128, 128, 128), col
         event.Event(MOUSEMOTION, {'pos': mpos.topleft if mpos.collidelistall(menu) else menu[0].center}))
     idx = -1
     display.set_caption("Monkey Business") #window titel
+    showMonkeyStats()
 
     while True:
 
@@ -154,29 +174,25 @@ def menu(menu, pos='center', font1=None, font2=None, color1=(128, 128, 128), col
         event.post(ev)
     return ret
 
-
 class run(object):
 
     def runm(self,resolution=(1280,720)):
 
         time.Clock()
-        from os.path import dirname, join
 
         here = dirname(__file__)
         scr = display.set_mode(resolution)
+        screen = scr.get_rect()
         print(menu.__doc__)
         f = font.Font(join('data/menu/FEASFBRG.ttf'), 65)
         f1 = font.Font(join('data/menu/FEASFBRG.ttf'), 45)
         f2 = font.Font(join('data/menu/FEASFBRG.ttf'), 35)
-        mainmenu = f.render('Monkey Business', 1, (255, 255, 255))
-        r = mainmenu.get_rect()
-        r.centerx, r.top = 650, 180
 
         # Achtergrond instellen
         background_main = image.load('data/menu/bg.png').convert()
         scr.blit(background_main, (0, 0))
         bg = scr.copy()
-        scr.blit(mainmenu, r)
+        scr.blit(f.render('Monkey Business', 1, (255, 255, 255)), ((screen.w // 2) - 200, screen.h // 4))
         display.flip()
 
         menu1 = {"menu": ['PLAY', 'ABOUT','SETTINGS', 'EXIT'], "font1": f1, "pos":'center', "color1": (154, 180, 61), "light": 6, "speed": 200, "lag": 20}
@@ -200,7 +216,7 @@ class run(object):
         if resp == 'BACK': #menu na about sectie
             scr.fill((0,0,0))
             scr.blit(background_main, (0, 0))
-            scr.blit(f.render('Monkey Business', 1, (255, 255, 255)), (450, 180))
+            scr.blit(f.render('Monkey Business', 1, (255, 255, 255)), ((screen.w // 2)-200, screen.h // 4))
             display.update()
             resp = menu(**menu1)[0]
 
@@ -223,14 +239,15 @@ class run(object):
         if resp == 'BACK': #menu na settings sectie
             scr.fill((0, 0, 0))
             scr.blit(background_main, (0, 0))
-            scr.blit(f.render('Monkey Business', 1, (255, 255, 255)), (450, 180))
+            scr.blit(f.render('Monkey Business', 1, (255, 255, 255)), ((screen.w // 2) - 200, screen.h // 4))
             display.update()
             resp = menu(**menu1)[0]
 
         if resp == 'PLAY':
-            display.update(scr.blit(bg, r, r))
-            display.update(
-                scr.blit(f.render('PLAY', 1, (255, 255, 255)), (580, 120)))
+            scr.fill((0, 0, 0))
+            scr.blit(background_main, (0, 0))
+            scr.blit(f.render('PLAY', 1, (255, 255, 255)), (580, 120))
+            display.update()
             resp = menu(**menu2)[0]
 
         if resp == 'BananAttack':
@@ -250,7 +267,7 @@ class run(object):
         if resp == 'BACK': #menu na play sectie
             scr.fill((0, 0, 0))
             scr.blit(background_main, (0, 0))
-            scr.blit(f.render('Monkey Business', 1, (255, 255, 255)), (450, 180))
+            scr.blit(f.render('Monkey Business', 1, (255, 255, 255)), ((screen.w // 2) - 200, screen.h // 4))
             display.update()
             resp = menu(**menu1)[0]
 
