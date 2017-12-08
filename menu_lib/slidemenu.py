@@ -187,7 +187,6 @@ class run(object):
         display.flip()
 
         menu1 = {"menu": ['PLAY', 'ABOUT','SETTINGS', 'EXIT'], "font1": f1, "pos":'center', "color1": (154, 180, 61), "light": 6, "speed": 200, "lag": 20}
-        menu2 = {"menu": ['BananAttack', 'Game 2', 'CrossTheRoad', 'FinalFight', 'Game 5', 'MonkeyWar', 'BACK'], "font1": f1, "font2": f, "pos": 'center', "color1": (154, 180, 61), "light": 5, "speed": 200, "lag": 20}
         menu2 = {"menu": ['BananAttack', 'EscapeTheGuards', 'CrossTheRoad', 'FinalFight', 'BananaFightClub', 'MonkeyWar', 'BACK'], "font1": f1, "font2": f, "pos": 'center', "color1": (154, 180, 61), "light": 5, "speed": 200, "lag": 20}
         menu3 = {"menu": ['Lex de Willigen', 'Luke Hol', 'Ayoub Errajraji', 'Richard van der Knaap', 'Wesley van Balen', 'Milo Brasser', 'BACK'], "font1": f1,"font2": f, "pos": 'center', "color1": (154, 180, 61), "light": 5, "speed": 200, "lag": 20}
         menu4 = {"menu": ['1920 x 1080', '1280 x 720', 'BACK'], "font1": f1, "pos": 'center', "color1": (154, 180, 61), "light": 6,"speed": 200, "lag": 20}

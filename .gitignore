@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .DS_Store
 *.xml
 *.iml
@@ -8,3 +9,18 @@ monkeywar_lib/__pycache__/monkeywar.cpython-36.pyc
 *.pyc
 .idea/workspace.xml
 .idea/Bloons Tower Defence.iml
+=======
+.DS_Store
+*.xml
+*.iml
+.idea/workspace.xml
+bananattack_lib/__pycache__/bananattack.cpython-36.pyc
+menu_lib/__pycache__/slidemenu.cpython-36.pyc
+monkeywar_lib/__pycache__/monkeywar.cpython-36.pyc
+*.pyc
+.idea/workspace.xml
+.idea/Bloons Tower Defence.iml
+menu_lib/__pycache__/slidemenu.cpython-36.pyc
+menu_lib/__pycache__/slidemenu.cpython-36.pyc
+escapetheguards_lib/__pycache__/etg.cpython-36.pyc
+>>>>>>> master
