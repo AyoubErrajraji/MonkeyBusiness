@@ -12,7 +12,6 @@ yellow = (204,204,0)
 
 
 ### SCREEN: ###
-<<<<<<< HEAD
 screen_width = 1280
 screen_height = 720
 
@@ -20,10 +19,7 @@ screen_height = 720
 screenDim = (screen_width, screen_height)
 
 screen = pygame.display.set_mode(screenDim)
-=======
+
 display_width = 1280
 display_height = 720
 
-barrelsideImg = pygame.image.load('barrelside.png')
-barrelsideImg = pygame.transform.scale(barrelsideImg, (200,250))
->>>>>>> master
