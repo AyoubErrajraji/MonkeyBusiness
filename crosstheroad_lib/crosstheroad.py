@@ -147,7 +147,7 @@ class Crosstheroad:
     def collisionDet(self):
         for index in range(len(self.cars)):
             if not self.monkey.intersects(self.cars[index].x, self.cars[index].y, self.cars[index].w, self.cars[index].h):
-                self.state = "died"
+                self.state = "dead"
 
     def run(self):
         while not self.quit:
