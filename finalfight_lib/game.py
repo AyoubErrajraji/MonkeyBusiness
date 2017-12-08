@@ -1,6 +1,7 @@
 import pygame
 import sys
 
+
 class run():
     def runm(self):
         width = 1280

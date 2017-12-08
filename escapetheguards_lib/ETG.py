@@ -1,9 +1,13 @@
-import pygame, config, sys
+from escapetheguards_lib import config
 
-pygame.init()
+class run():
+    def runm(self):
+        code = "ToBeWritten"
+        iets = config.black
 
-pygame.display.set_caption('Escape The Guards')
+        # Hier moet je de main loop van je spel aanroepen
 
+<<<<<<< HEAD
 clock = pygame.time.Clock()
 pause = False
 
@@ -280,3 +284,6 @@ settings_game()
 game_loop()
 pygame.quit()
 sys.exit()
+=======
+    # Hier staan je andere functies van je spel, let goed op dat ze in class run staan
+>>>>>>> AyoubErrajraji

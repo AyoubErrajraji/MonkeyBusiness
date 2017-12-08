@@ -10,8 +10,8 @@ gray = (206,206,206)
 brown = (102,51,0)
 yellow = (204,204,0)
 
-
 ### SCREEN: ###
+<<<<<<< HEAD
 <<<<<<< HEAD
 display_width = 1280
 display_height = 720
@@ -34,3 +34,7 @@ containerImg = pygame.image.load('container1.png')
 >>>>>>> master
 barrelsideImg = pygame.image.load('barrelside.png')
 barrelsideImg = pygame.transform.scale(barrelsideImg, (200,250))
+=======
+display_width = 1280
+display_height = 720
+>>>>>>> AyoubErrajraji
