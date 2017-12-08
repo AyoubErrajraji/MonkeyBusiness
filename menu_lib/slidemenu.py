@@ -12,6 +12,13 @@ from bananattack_lib import main as bananattack
 from monkeywar_lib import monkeywar
 from crosstheroad_lib import main as crosstheroad
 from finalfight_lib import game as finalfight
+<<<<<<< HEAD
+=======
+from fightclub_lib import fightclub
+from escapetheguards_lib import etg as escapetheguards
+from menu_lib import config
+from os.path import dirname, join
+>>>>>>> master
 
 def menu(menu, pos='center', font1=None, font2=None, color1=(128, 128, 128), color2=None, interline=5, justify=True, light=5, speed=300, lag=30):
 
@@ -181,6 +188,7 @@ class run(object):
 
         menu1 = {"menu": ['PLAY', 'ABOUT','SETTINGS', 'EXIT'], "font1": f1, "pos":'center', "color1": (154, 180, 61), "light": 6, "speed": 200, "lag": 20}
         menu2 = {"menu": ['BananAttack', 'Game 2', 'CrossTheRoad', 'FinalFight', 'Game 5', 'MonkeyWar', 'BACK'], "font1": f1, "font2": f, "pos": 'center', "color1": (154, 180, 61), "light": 5, "speed": 200, "lag": 20}
+        menu2 = {"menu": ['BananAttack', 'EscapeTheGuards', 'CrossTheRoad', 'FinalFight', 'BananaFightClub', 'MonkeyWar', 'BACK'], "font1": f1, "font2": f, "pos": 'center', "color1": (154, 180, 61), "light": 5, "speed": 200, "lag": 20}
         menu3 = {"menu": ['Lex de Willigen', 'Luke Hol', 'Ayoub Errajraji', 'Richard van der Knaap', 'Wesley van Balen', 'Milo Brasser', 'BACK'], "font1": f1,"font2": f, "pos": 'center', "color1": (154, 180, 61), "light": 5, "speed": 200, "lag": 20}
         menu4 = {"menu": ['1920 x 1080', '1280 x 720', 'BACK'], "font1": f1, "pos": 'center', "color1": (154, 180, 61), "light": 6,"speed": 200, "lag": 20}
 
@@ -236,8 +244,16 @@ class run(object):
         if resp == 'BananAttack':
             bananattack.main()
 
+        if resp == 'EscapeTheGuards':
+            mygame = escapetheguards.run()
+            mygame.runm()
+
         if resp == 'FinalFight':
             mygame = finalfight.run()
+            mygame.runm()
+
+        if resp == 'BananaFightClub':
+            mygame = fightclub.run()
             mygame.runm()
 
         if resp == 'MonkeyWar':
