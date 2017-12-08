@@ -1,5 +1,4 @@
 import pygame, sys
-from random import randint
 
 
 class Rectangle:
@@ -120,7 +119,8 @@ class Crosstheroad:
         self.screen.fill(color)
 
     def blit(self):
-        self.background(self.config.black)
+        background = pygame.image.load("src/background.jpg").convert()
+        self.screen.blit(background, (0,0))
         self.monkey.show()
         self.addCars()
         # Debugging console info
