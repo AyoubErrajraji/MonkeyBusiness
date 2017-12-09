@@ -12,13 +12,13 @@ from bananattack_lib import main as bananattack
 from monkeywar_lib import monkeywar
 from crosstheroad_lib import main as crosstheroad
 from finalfight_lib import game as finalfight
-<<<<<<< HEAD
-=======
+#<<<<<<< HEAD
+#=======
 from fightclub_lib import fightclub
 from escapetheguards_lib import etg as escapetheguards
 from menu_lib import config
 from os.path import dirname, join
->>>>>>> master
+#>>>>>>> master
 
 def menu(menu, pos='center', font1=None, font2=None, color1=(128, 128, 128), color2=None, interline=5, justify=True, light=5, speed=300, lag=30):
 
