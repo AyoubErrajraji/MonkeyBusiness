@@ -69,6 +69,11 @@ MONEY_Y = 60
 STATE_X = 950
 STATE_Y = 100
 
+# State #
+SCORE_X = 950
+SCORE_Y = 140
+SCORE = 542
+
 # StartWave Button
 BUTTON_STARTWAVE_IMG = "data/bananattack/buttons/startWave.png"
 BUTTON_STARTWAVE_HOVER_IMG = "data/bananattack/buttons/startWaveHover.png"

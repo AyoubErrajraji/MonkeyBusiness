@@ -8,6 +8,7 @@ from pygame import *
 font.init()
 import sys
 from math import cos, radians
+import json
 from bananattack_lib import main as bananattack
 from monkeywar_lib import monkeywar
 from crosstheroad_lib import main as crosstheroad
@@ -17,30 +18,13 @@ from escapetheguards_lib import etg as escapetheguards
 from menu_lib import config
 from os.path import dirname, join
 
-def menu(menu, pos='center', font1=None, font2=None, color1=(128, 128, 128), color2=None, interline=5, justify=True, light=5, speed=300, lag=30):
+def menu(menu, clickList, pos='center', font1=None, font2=None, color1=(128, 128, 128), color2=None, interline=5, justify=True, light=5, speed=300, lag=30):
 
     class Item(Rect):
 
         def __init__(self, menu, label):
             Rect.__init__(self, menu)
             self.label = label
-
-    def showMonkeyStats():
-        scr = display.get_surface()
-        screen = scr.get_rect()
-        font1 = font.Font(join('data/menu/FEASFBRG.ttf'), 45)
-
-        # Show balance #
-        balance = "Balance: %d" % (config.BALANCE)
-        temp_surface = font1.render(balance, 1, (154, 180, 61))
-        scr.blit(temp_surface, ((screen.w // 8) - 110, (screen.h // 6)*2.1))
-        display.flip()
-
-        # Show monkey #
-        balance = "%s" % (config.MONKEY)
-        temp_surface = font1.render(balance, 1, (154, 180, 61))
-        scr.blit(temp_surface, ((screen.w // 8) - 110, (screen.h // 6) * 2.5))
-        display.flip()
 
     def show():
         i = Rect((0, 0), font2.size(menu[idx].label))
@@ -137,7 +121,6 @@ def menu(menu, pos='center', font1=None, font2=None, color1=(128, 128, 128), col
         event.Event(MOUSEMOTION, {'pos': mpos.topleft if mpos.collidelistall(menu) else menu[0].center}))
     idx = -1
     display.set_caption("Monkey Business") #window titel
-    showMonkeyStats()
 
     while True:
 
@@ -148,7 +131,10 @@ def menu(menu, pos='center', font1=None, font2=None, color1=(128, 128, 128), col
                 idx = idx_
                 r = show()
         elif ev.type == MOUSEBUTTONUP and r.collidepoint(ev.pos):
-            ret = menu[idx].label, idx
+            if menu[idx].label in clickList:
+                ret = menu[idx].label, idx                              #clickable menu item
+            else:
+                ret = menu[idx].label, idx                              #nonclickable menu item
             break
         elif ev.type == KEYDOWN:
             try:
@@ -174,9 +160,26 @@ def menu(menu, pos='center', font1=None, font2=None, color1=(128, 128, 128), col
 
     for ev in events:
         event.post(ev)
-    return ret
+
+    if ret != None:
+        return ret
 
 class run(object):
+    def getMemory(self, key):
+        with open("menu_lib/memory.json", "r+") as jsonFile:
+            data = json.load(jsonFile)
+
+            return data[key]
+
+    def setMemory(self, key, value):
+        with open("menu_lib/memory.json", "r+") as jsonFile:
+            data = json.load(jsonFile)
+
+            data[key] = value
+
+            jsonFile.seek(0)  # rewind
+            json.dump(data, jsonFile)
+            jsonFile.truncate()
 
     def runm(self,resolution=(1280,720)):
 
@@ -197,20 +200,18 @@ class run(object):
         scr.blit(f.render('Monkey Business', 1, (255, 255, 255)), ((screen.w // 2) - 200, screen.h // 4))
         display.flip()
 
-        menu1 = {"menu": ['PLAY', 'ABOUT','SETTINGS', 'EXIT'], "font1": f1, "pos":'center', "color1": (154, 180, 61), "light": 6, "speed": 200, "lag": 20}
-        menu2 = {"menu": ['BananAttack', 'EscapeTheGuards', 'CrossTheRoad', 'FinalFight', 'BananaFightClub', 'MonkeyWar', 'BACK'], "font1": f1, "font2": f, "pos": 'center', "color1": (154, 180, 61), "light": 5, "speed": 200, "lag": 20}
-        menu3 = {"menu": ['Lex de Willigen', 'Luke Hol', 'Ayoub Errajraji', 'Richard van der Knaap', 'Wesley van Balen', 'Milo Brasser', 'BACK'], "font1": f1,"font2": f, "pos": 'center', "color1": (154, 180, 61), "light": 5, "speed": 200, "lag": 20}
-        menu4 = {"menu": ['1920 x 1080', '1280 x 720', 'BACK'], "font1": f1, "pos": 'center', "color1": (154, 180, 61), "light": 6,"speed": 200, "lag": 20}
-
-        menus = (menu1, menu2, menu3, menu4)
-        playlist = [menu1, menu2, menu3, menu4]
+        menu1 = {"menu": ['PLAY', 'ABOUT','SETTINGS','STATS', 'EXIT'], "clickList": ['PLAY', 'ABOUT','SETTINGS','STATS', 'EXIT'], "font1": f1, "pos":'center', "color1": (154, 180, 61), "light": 6, "speed": 200, "lag": 20}
+        menu2 = {"menu": ['BananAttack', 'EscapeTheGuards', 'CrossTheRoad', 'FinalFight', 'BananaFightClub', 'MonkeyWar', 'BACK'], "clickList": ['BananAttack', 'EscapeTheGuards', 'CrossTheRoad', 'FinalFight', 'BananaFightClub', 'MonkeyWar', 'BACK'], "font1": f1, "font2": f, "pos": 'center', "color1": (154, 180, 61), "light": 5, "speed": 200, "lag": 20}
+        menu3 = {"menu": ['Lex de Willigen', 'Luke Hol', 'Ayoub Errajraji', 'Richard van der Knaap', 'Wesley van Balen', 'Milo Brasser', 'BACK'], "clickList": ['BACK'], "font1": f1,"font2": f, "pos": 'center', "color1": (154, 180, 61), "light": 5, "speed": 200, "lag": 20}
+        menu4 = {"menu": ['1920 x 1080', '1280 x 720', 'BACK'], "clickList": ['1920 x 1080', '1280 x 720', 'BACK'], "font1": f1, "pos": 'center', "color1": (154, 180, 61), "light": 6,"speed": 200, "lag": 20}
+        menu5 = {"menu": ["User: %s" % (self.getMemory("player")), "Balance: %d" % (self.getMemory("balance")), "Monkey: %s" % (self.getMemory("monkey")), 'BACK'], "clickList": ['BACK'], "font1": f1, "pos":'center', "color1": (154, 180, 61), "light": 6, "speed": 200, "lag": 20}
 
         resp = "re-show"
         while resp == "re-show":
             resp = menu(**menu1)[0]
 
         if resp == 'ABOUT':
-            display.update(scr.blit(bg, r, r))
+            display.update(scr.blit(bg, (0, 0)))
             display.update(
                 scr.blit(f.render('ABOUT', 1, (255, 255, 255)), (550, 120)))
             resp = menu(**menu3)[0]
@@ -223,7 +224,7 @@ class run(object):
             resp = menu(**menu1)[0]
 
         if resp == 'SETTINGS':
-            display.update(scr.blit(bg, r, r))
+            display.update(scr.blit(bg, (0, 0)))
             display.update(
                 scr.blit(f.render('SETTINGS', 1, (255, 255, 255)), (550, 220)))
             resp = menu(**menu4)[0]
@@ -244,6 +245,12 @@ class run(object):
             scr.blit(f.render('Monkey Business', 1, (255, 255, 255)), ((screen.w // 2) - 200, screen.h // 4))
             display.update()
             resp = menu(**menu1)[0]
+
+        if resp == 'STATS':
+            display.update(scr.blit(bg, (0, 0)))
+            display.update(
+                scr.blit(f.render('STATS', 1, (255, 255, 255)), (550, 200)))
+            resp = menu(**menu5)[0]
 
         if resp == 'PLAY':
             scr.fill((0, 0, 0))
