@@ -10,6 +10,16 @@ gray = (206,206,206)
 brown = (102,51,0)
 yellow = (204,204,0)
 
+
 ### SCREEN: ###
+screen_width = 1280
+screen_height = 720
+
+
+screenDim = (screen_width, screen_height)
+
+screen = pygame.display.set_mode(screenDim)
+
 display_width = 1280
 display_height = 720
+
