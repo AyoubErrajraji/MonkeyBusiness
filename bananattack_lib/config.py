@@ -72,7 +72,6 @@ STATE_Y = 100
 # State #
 SCORE_X = 950
 SCORE_Y = 140
-SCORE = 542
 
 # StartWave Button
 BUTTON_STARTWAVE_IMG = "data/bananattack/buttons/startWave.png"
