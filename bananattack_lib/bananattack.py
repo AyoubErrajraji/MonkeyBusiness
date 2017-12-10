@@ -53,7 +53,7 @@ class BananAttack(game.Game):
         ### setup location for state ###
         self.score_x = config.SCORE_X
         self.score_y = config.SCORE_Y
-        self.score = config.SCORE
+        self.score = self.getMemory("score")
 
     # waves can be started while breaktime (TD_CLEAR) and there is a next wave available
     def can_start_wave(self):
@@ -178,7 +178,6 @@ class BananAttack(game.Game):
             if not self.wave_started():
                 # Add enemies to self.enemies
                 self.begin_wave()
-                self.score = self.getMemory("score")
                 self.setMemory("score", 894)
 
         # State 30
