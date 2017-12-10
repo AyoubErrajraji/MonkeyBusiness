@@ -3,7 +3,7 @@ Created on Nov 25, 2017
 @author: lexdewilligen
 '''
 import pygame
-import time
+import json
 from bananattack_lib import config
 from bananattack_lib import game
 from bananattack_lib import button
@@ -49,6 +49,11 @@ class BananAttack(game.Game):
         ### setup location for state ###
         self.state_x = config.STATE_X
         self.state_y = config.STATE_Y
+
+        ### setup location for state ###
+        self.score_x = config.SCORE_X
+        self.score_y = config.SCORE_Y
+        self.score = config.SCORE
 
     # waves can be started while breaktime (TD_CLEAR) and there is a next wave available
     def can_start_wave(self):
@@ -128,6 +133,11 @@ class BananAttack(game.Game):
             temp_surface = self.font.render(state, 1, self.font_color)
             surface.blit(temp_surface, (self.state_x, self.state_y))
 
+            ### show score ###
+            score = "Score: %d" % (self.score)
+            temp_surface = self.font.render(score, 1, self.font_color)
+            surface.blit(temp_surface, (self.score_x, self.score_y))
+
             ### Draw path ###
             self.drawPath()
 
@@ -168,11 +178,28 @@ class BananAttack(game.Game):
             if not self.wave_started():
                 # Add enemies to self.enemies
                 self.begin_wave()
+                self.score = self.getMemory("score")
+                self.setMemory("score", 894)
 
         # State 30
         if self.state == config.BA_CLEAR:
             self.buttons = [button.pauseGame(self.state), button.startWave(self.state, self.can_start_wave())]
 
+    def getMemory(self, key):
+        with open("bananattack_lib/memory.json", "r+") as jsonFile:
+            data = json.load(jsonFile)
+
+            return data[key]
+
+    def setMemory(self, key, value):
+        with open("bananattack_lib/memory.json", "r+") as jsonFile:
+            data = json.load(jsonFile)
+
+            data[key] = value
+
+            jsonFile.seek(0)  # rewind
+            json.dump(data, jsonFile)
+            jsonFile.truncate()
 
     def drawPath(self):
         # line 1

@@ -8,6 +8,7 @@ from pygame import *
 font.init()
 import sys
 from math import cos, radians
+import json
 from bananattack_lib import main as bananattack
 from monkeywar_lib import monkeywar
 from crosstheroad_lib import main as crosstheroad
@@ -25,21 +26,43 @@ def menu(menu, pos='center', font1=None, font2=None, color1=(128, 128, 128), col
             Rect.__init__(self, menu)
             self.label = label
 
+    def getMemory(key):
+        with open("menu_lib/memory.json", "r+") as jsonFile:
+            data = json.load(jsonFile)
+
+            return data[key]
+
+    def setMemory(key, value):
+        with open("menu_lib/memory.json", "r+") as jsonFile:
+            data = json.load(jsonFile)
+
+            data[key] = value
+
+            jsonFile.seek(0)  # rewind
+            json.dump(data, jsonFile)
+            jsonFile.truncate()
+
     def showMonkeyStats():
         scr = display.get_surface()
         screen = scr.get_rect()
         font1 = font.Font(join('data/menu/FEASFBRG.ttf'), 45)
 
+        # Show username #
+        username = "User: %s" % (getMemory("player"))
+        temp_surface = font1.render(username, 1, (154, 180, 61))
+        scr.blit(temp_surface, ((screen.w // 8) - 110, (screen.h // 6) * 2.1))
+        display.flip()
+
         # Show balance #
-        balance = "Balance: %d" % (config.BALANCE)
+        balance = "Balance: %d" % (getMemory("balance"))
         temp_surface = font1.render(balance, 1, (154, 180, 61))
-        scr.blit(temp_surface, ((screen.w // 8) - 110, (screen.h // 6)*2.1))
+        scr.blit(temp_surface, ((screen.w // 8) - 110, (screen.h // 6)*2.5))
         display.flip()
 
         # Show monkey #
-        balance = "%s" % (config.MONKEY)
-        temp_surface = font1.render(balance, 1, (154, 180, 61))
-        scr.blit(temp_surface, ((screen.w // 8) - 110, (screen.h // 6) * 2.5))
+        monkey = "%s" % (getMemory("monkey"))
+        temp_surface = font1.render(monkey, 1, (154, 180, 61))
+        scr.blit(temp_surface, ((screen.w // 8) - 110, (screen.h // 6) * 2.9))
         display.flip()
 
     def show():
