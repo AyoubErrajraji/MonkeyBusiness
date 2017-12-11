@@ -66,7 +66,7 @@ class run():
             Flag((600), (300))
 
             if x > 580 and x <630 and y > 280 and y < 330 :
-                CharwithFlag(x, y)
+                Character = CharwithFlag
             else:
                 Character(x, y)
 
