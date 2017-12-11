@@ -93,8 +93,11 @@ class Crosstheroad:
         sm = pygame.Rect(self.config.screenDim[0] - self.config.sideMenu[0], 0, self.config.sideMenu[0], self.config.sideMenu[1])
         pygame.draw.rect(self.screen, self.config.yellow, sm)
         font = pygame.font.SysFont("helvetica", 15)
-        state = font.render(str(self.score), 1, self.config.black)
-        self.screen.blit(state, (self.config.screenDim[0] - self.config.sideMenu[0]/2 - state.get_rect().width, self.config.sideMenu[1] - 100))
+        score = font.render(str(self.score), 1, self.config.black)
+        self.screen.blit(score, (self.config.screenDim[0] - self.config.sideMenu[0]/2 - score.get_rect().width, self.config.sideMenu[1] - 100))
+        fps = font.render("fps" + str(self.clock.get_fps()), 1, self.config.black)
+        self.screen.blit(fps, (self.config.screenDim[0] - self.config.sideMenu[0]/2 - score.get_rect().width, self.config.sideMenu[1] - 300))
+
 
     def addCars(self):
         # Add first row of cars
