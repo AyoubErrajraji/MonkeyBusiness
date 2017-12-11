@@ -20,6 +20,7 @@ class run():
         bckImg =  pygame.image.load("data/fightclub/background.png").convert()
         bckImg = pygame.transform.scale(bckImg, (width, height))
 
+
         def Background(x, y):
             gameDisplay.blit(bckImg, (x, y))
 

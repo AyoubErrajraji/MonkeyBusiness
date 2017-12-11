@@ -36,11 +36,79 @@ class Player(Game):
         playerHeight = self.player.get_rect().height
         self.player = pygame.transform.scale(self.player, (playerWidth, playerHeight))
 
+    def blitPlayer(self):
+        self.screen.blit(self.player, (200, 550))
+
+    def movePlayer(self):
+        """ Handles Keys """
+        key = pygame.key.get_pressed()
+        dist = 1  # distance moved in 1 frame, try changing it to 5
+        if key[pygame.K_DOWN]:  # down key
+            self.y += dist  # move down
+        elif key[pygame.K_UP]:  # up key
+            self.y -= dist  # move up
+        if key[pygame.K_RIGHT]:  # right key
+            self.x += dist  # move right
+        elif key[pygame.K_LEFT]:  # left key
+            self.x -= dist  # move left
+
+    def draw(self, surface):
+        """ Draw on surface """
+        # blit yourself at your current position
+        surface.blit(self.image, (self.x, self.y))
+
+class Boss(Game):
+    def __init__(self,screen):
+        Game.__init__(self, screen)
+        self.bossX = 350
+        self.bossY = 300
+        self.boss = None
+
+    def loadBoss(self,name):
+        self.boss = pygame.image.load(name).convert_alpha()
+        bossWidth = self.boss.get_rect().width
+        bossHeight = self.boss.get_rect().height
+        self.boss = pygame.transform.scale(self.boss, (bossWidth, bossHeight))
+
+    def blitBoss(self):
+        screen.blit(boss, (350, 300))
 
 
+class Wolk(Game):
+    def __init__(self, screen):
+        Game.__init__(self, screen)
+        self.wolkX = 430
+        self.wolkY = 130
+        self.wolk = None
+
+    def loadWolk(self, name):
+        self.wolk = pygame.image.load(name).convert_alpha()
+        wolkWidth = self.wolk.get_rect().width
+        wolkHeight = self.wolk.get_rect().height
+        self.wolk = pygame.transform.scale(self.wolk, (wolkWidth,wolkHeight))
+
+    def blitwolk(self):
+        screen.blit(self.wolk, (250, 200))
 
 
+def getMemory(self, key):
+    with open("finalfight_lib/memory.json.txt", "r+") as jsonFile:
+        data = json.load(jsonFile)
 
+        return data[key]
+
+
+def setMemory(self, key, value):
+    with open("finalfight_lib/memory.json.txt", "r+") as jsonFile:
+        data = json.load(jsonFile)
+
+        data[key] = value
+
+        jsonFile.seek(0)  # rewind
+        json.dump(data, jsonFile)
+        jsonFile.truncate()
+    self.score = self.getMemory("score")
+    self.setMemory("score", 894)
 
 width = 900
 height = 700
@@ -49,6 +117,14 @@ screenDim = (width, height)
 screen = pygame.display.set_mode(screenDim)
 
 pygame.display.set_caption("Final Fight")
+
+newPlayer = Player(screen)
+newBoss = Boss(screen)
+newWolk = Wolk(screen)
+background = Background(screen)
+
+background.loadForrest("darkForrest.jpg")
+
 
 forrestImage = pygame.image.load("darkForrest.jpg").convert()
 forrestImage = pygame.transform.scale(forrestImage,(width,height))
@@ -72,6 +148,7 @@ playerWidth = player.get_rect().width
 playerHeight = player.get_rect().height
 player = pygame.transform.scale(player,(150,150))
 screen.blit(player,(200,550))
+
 
 
 finished = False

@@ -1,5 +1,23 @@
 import pygame
 import sys
+import json
+
+def getMemory(key):
+    with open("finalfight_lib/memory.json", "r+") as jsonFile:
+        data = json.load(jsonFile)
+
+        return data[key]
+
+
+def setMemory(key, value):
+    with open("finalfight_lib/memory.json", "r+") as jsonFile:
+        data = json.load(jsonFile)
+
+        data[key] = value
+
+        jsonFile.seek(0)  # rewind
+        json.dump(data, jsonFile)
+        jsonFile.truncate()
 
 class run():
     def runm(self):
@@ -35,6 +53,14 @@ class run():
         screen.blit(player,(200,550))
 
 
+        pygame.font.init()
+        font = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 30)
+        score = "score: %d" % getMemory("score")
+        temp_surface = font.render(score, 1, (255,255,255))
+        screen.blit(temp_surface,(1150,10))
+
+        setMemory("score", 768)
+
         finished = False
 
         while not finished:
@@ -44,5 +70,6 @@ class run():
                     pygame.quit()
                     sys.exit()
                 pygame.display.flip()
+
 
 
