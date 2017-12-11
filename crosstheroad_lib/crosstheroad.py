@@ -35,6 +35,10 @@ class Monkey(Rectangle):
         mr = pygame.Rect(self.x, self.y, self.w, self.h)
         pygame.draw.rect(self.screen, self.config.blue, mr)
 
+    def reset(self):
+        self.x = (self.config.screenDim[0] - self.config.sideMenu[0])/2 - (self.config.grid/2)
+        self.y = self.config.screenDim[1] - self.config.grid
+
     def move(self, xdir, ydir):
         if xdir == -1:
             if not self.x == 0:
@@ -114,6 +118,27 @@ class Crosstheroad:
             self.cars.append(Car(0 + (self.config.grid * 3), self.config.screenDim[1] - self.config.grid * 5, self.config.grid * 2, self.config.grid, self.screen, self.config, -4.75))
             self.cars.append(Car(0 + (self.config.grid * 9), self.config.screenDim[1] - self.config.grid * 5, self.config.grid * 2, self.config.grid, self.screen, self.config, -4.75))
             self.cars.append(Car(0 + (self.config.grid * 14), self.config.screenDim[1] - self.config.grid * 5, self.config.grid * 2, self.config.grid, self.screen, self.config, -4.75))
+        # Add sixth row of cars (busses), 5th is safe
+        if len(self.cars) < 17:
+            self.cars.append(Car(0 + self.config.grid, self.config.screenDim[1] - self.config.grid * 7, self.config.grid * 2, self.config.grid, self.screen, self.config, 4.5))
+            self.cars.append(Car(0 + (self.config.grid * 6), self.config.screenDim[1] - self.config.grid * 7, self.config.grid * 2, self.config.grid, self.screen, self.config, 4.5))
+            self.cars.append(Car(0 + (self.config.grid * 10), self.config.screenDim[1] - self.config.grid * 7, self.config.grid * 2, self.config.grid, self.screen, self.config, 4.5))
+            self.cars.append(Car(0 + (self.config.grid * 16), self.config.screenDim[1] - self.config.grid * 7, self.config.grid * 2, self.config.grid, self.screen, self.config, 4.5))
+        if len(self.cars) < 19:
+            self.cars.append(Car(0 + (self.config.grid * 3), self.config.screenDim[1] - self.config.grid * 8, self.config.grid * 3, self.config.grid, self.screen, self.config, -2.75))
+            self.cars.append(Car(0 + (self.config.grid * 12), self.config.screenDim[1] - self.config.grid * 8, self.config.grid * 3, self.config.grid, self.screen, self.config, -2.75))
+        # Add 7th row of cars
+        if len(self.cars) < 22:
+            self.cars.append(Car(0 + (self.config.grid * 2), self.config.screenDim[1] - self.config.grid * 9, self.config.grid * 2, self.config.grid, self.screen, self.config, 6))
+            self.cars.append(Car(0 + (self.config.grid * 9), self.config.screenDim[1] - self.config.grid * 9, self.config.grid * 2, self.config.grid, self.screen, self.config, 6))
+            self.cars.append(Car(0 + (self.config.grid * 16), self.config.screenDim[1] - self.config.grid * 9, self.config.grid * 2, self.config.grid, self.screen, self.config, 6))
+        # Add 8th row of cars
+        if len(self.cars) < 26:
+            self.cars.append(Car(0 + self.config.grid, self.config.screenDim[1] - self.config.grid * 10, self.config.grid * 2, self.config.grid, self.screen, self.config, 5))
+            self.cars.append(Car(0 + (self.config.grid * 6), self.config.screenDim[1] - self.config.grid * 10, self.config.grid * 2, self.config.grid, self.screen, self.config, 5))
+            self.cars.append(Car(0 + (self.config.grid * 10), self.config.screenDim[1] - self.config.grid * 10, self.config.grid * 2, self.config.grid, self.screen, self.config, 5))
+            self.cars.append(Car(0 + (self.config.grid * 16), self.config.screenDim[1] - self.config.grid * 10, self.config.grid * 2, self.config.grid, self.screen, self.config, 5))
+
 
     def background(self, color):
         self.screen.fill(color)
@@ -147,7 +172,7 @@ class Crosstheroad:
     def collisionDet(self):
         for index in range(len(self.cars)):
             if not self.monkey.intersects(self.cars[index].x, self.cars[index].y, self.cars[index].w, self.cars[index].h):
-                self.state = "dead"
+                self.monkey.reset()
 
     def run(self):
         while not self.quit:
@@ -159,7 +184,7 @@ class Crosstheroad:
                     sys.exit()
                 self.update()
             self.collisionDet()
-            self.clock.tick(30)
+            self.clock.tick(60)
 
             self.blit()
             pygame.display.update()
