@@ -29,7 +29,7 @@ class run():
 
         pygame.display.set_caption("Final Fight")
 
-        forrestImage = pygame.image.load("data/finalfight/darkForrest.jpg").convert()
+        forrestImage = pygame.image.load("data/finalfight/openplek.png").convert()
         forrestImage = pygame.transform.scale(forrestImage,(width,height))
         screen.blit(forrestImage,(0,0))
 
@@ -38,19 +38,19 @@ class run():
         bossWidth = boss.get_rect().width
         bossHeight = boss.get_rect().height
         boss = pygame.transform.scale(boss,(bossWidth,bossHeight))
-        screen.blit(boss,(350,300))
+        screen.blit(boss,(520,300))
 
         wolk = pygame.image.load("data/finalfight/spreekwolk.png").convert_alpha()
         wolkWidth = wolk.get_rect().width
         wolkHeight = wolk.get_rect().height
-        wolk = pygame.transform.scale(wolk,(250,200))
-        screen.blit(wolk,(430,130))
+        wolk = pygame.transform.scale(wolk,(350,200))
+        screen.blit(wolk,(590,130))
 
         player = pygame.image.load("data/finalfight/monkey.png").convert_alpha()
         playerWidth = player.get_rect().width
         playerHeight = player.get_rect().height
         player = pygame.transform.scale(player,(150,150))
-        screen.blit(player,(200,550))
+        screen.blit(player,(300,550))
 
 
         pygame.font.init()
