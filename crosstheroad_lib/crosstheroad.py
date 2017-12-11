@@ -119,7 +119,7 @@ class Crosstheroad:
         self.screen.fill(color)
 
     def blit(self):
-        background = pygame.image.load("src/background.jpg").convert()
+        background = pygame.image.load("crosstheroad_lib/src/background.jpg").convert()
         self.screen.blit(background, (0,0))
         self.monkey.show()
         self.addCars()
