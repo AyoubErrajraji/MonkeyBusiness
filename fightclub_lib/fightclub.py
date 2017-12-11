@@ -13,6 +13,7 @@ class run():
 
         #Loading Images
         mainImg = pygame.image.load('data/fightclub/monkey.png').convert_alpha()
+        charwFlagImg = pygame.image.load('data/fightclub/charwflag.png').convert_alpha()
 
         flagImg = pygame.image.load("data/fightclub/flag.png").convert_alpha()
 
@@ -20,10 +21,14 @@ class run():
         bckImg = pygame.transform.scale(bckImg, (width, height))
 
         def Background(x, y):
-            gameDisplay.blit(bckImg, (x,y))
+            gameDisplay.blit(bckImg, (x, y))
 
         def Character(x, y):
             gameDisplay.blit(mainImg, (x, y))
+
+        def CharwithFlag(x, y):
+            gameDisplay.blit(charwFlagImg, (x, y))
+
         x = (width * 0.8)
         y = (height * 0.8)
         x_change = 0
@@ -53,13 +58,17 @@ class run():
                     if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                         y_change = 0
 
-
             x += x_change
             y += y_change
 
             Background(0,0)
             Character(x,y)
-            Flag((1260/2), (700/2))
+            Flag((600), (300))
+
+            if x > 580 and x <630 and y > 280 and y < 330 :
+                CharwithFlag(x, y)
+            else:
+                Character(x, y)
 
             pygame.display.update()
             clock.tick(60)
