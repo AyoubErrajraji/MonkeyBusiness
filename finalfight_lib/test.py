@@ -149,9 +149,6 @@ playerHeight = player.get_rect().height
 player = pygame.transform.scale(player,(150,150))
 screen.blit(player,(200,550))
 
-score = "score %d" #%  (score)
-temp_screen = font.render(score, 1, font_color)
-screen.blit(temp_screen, (score_x,score_y))
 
 
 finished = False
