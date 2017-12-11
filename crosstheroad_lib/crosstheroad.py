@@ -81,7 +81,7 @@ class Crosstheroad:
         self.clock = pygame.time.Clock()
         self.config = config
         self.screen = screen
-        self.state = "alive"
+        self.score = 0
 
         # Set quit to False, so loop will continue
         self.quit = False
@@ -93,7 +93,7 @@ class Crosstheroad:
         sm = pygame.Rect(self.config.screenDim[0] - self.config.sideMenu[0], 0, self.config.sideMenu[0], self.config.sideMenu[1])
         pygame.draw.rect(self.screen, self.config.yellow, sm)
         font = pygame.font.SysFont("helvetica", 15)
-        state = font.render(self.state, 1, self.config.black)
+        state = font.render(str(self.score), 1, self.config.black)
         self.screen.blit(state, (self.config.screenDim[0] - self.config.sideMenu[0]/2 - state.get_rect().width, self.config.sideMenu[1] - 100))
 
     def addCars(self):
@@ -134,11 +134,13 @@ class Crosstheroad:
             self.cars.append(Car(0 + (self.config.grid * 16), self.config.screenDim[1] - self.config.grid * 9, self.config.grid * 2, self.config.grid, self.screen, self.config, 6))
         # Add 8th row of cars
         if len(self.cars) < 26:
-            self.cars.append(Car(0 + self.config.grid, self.config.screenDim[1] - self.config.grid * 10, self.config.grid * 2, self.config.grid, self.screen, self.config, 5))
-            self.cars.append(Car(0 + (self.config.grid * 6), self.config.screenDim[1] - self.config.grid * 10, self.config.grid * 2, self.config.grid, self.screen, self.config, 5))
-            self.cars.append(Car(0 + (self.config.grid * 10), self.config.screenDim[1] - self.config.grid * 10, self.config.grid * 2, self.config.grid, self.screen, self.config, 5))
-            self.cars.append(Car(0 + (self.config.grid * 16), self.config.screenDim[1] - self.config.grid * 10, self.config.grid * 2, self.config.grid, self.screen, self.config, 5))
-
+            self.cars.append(Car(0 + self.config.grid, self.config.screenDim[1] - self.config.grid * 10, self.config.grid * 2, self.config.grid, self.screen, self.config, -5))
+            self.cars.append(Car(0 + (self.config.grid * 6), self.config.screenDim[1] - self.config.grid * 10, self.config.grid * 2, self.config.grid, self.screen, self.config, -5))
+            self.cars.append(Car(0 + (self.config.grid * 10), self.config.screenDim[1] - self.config.grid * 10, self.config.grid * 2, self.config.grid, self.screen, self.config, -5))
+            self.cars.append(Car(0 + (self.config.grid * 16), self.config.screenDim[1] - self.config.grid * 10, self.config.grid * 2, self.config.grid, self.screen, self.config, -5))
+        # Add 9th row (last) of cars
+        if len(self.cars) < 27:
+            self.cars.append(Car(0 + (self.config.grid * 8), self.config.screenDim[1] - self.config.grid * 11, self.config.grid * 10, self.config.grid, self.screen, self.config, 25))
 
     def background(self, color):
         self.screen.fill(color)
@@ -168,11 +170,15 @@ class Crosstheroad:
         elif pygame.key.get_pressed()[pygame.K_DOWN] != 0:
             # print("Key Down pressed")
             self.monkey.move(0, 1)
+        if self.monkey.y < 80:
+            self.score += 1
+            self.monkey.reset()
 
     def collisionDet(self):
         for index in range(len(self.cars)):
             if not self.monkey.intersects(self.cars[index].x, self.cars[index].y, self.cars[index].w, self.cars[index].h):
                 self.monkey.reset()
+                self.score = 0
 
     def run(self):
         while not self.quit:
