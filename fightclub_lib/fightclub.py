@@ -1,10 +1,13 @@
 import pygame
 pygame.init()
 
+
 class run():
     def runm(self):
         width = 1280
         height = 720
+
+        color = (0, 255, 0)
 
         gameDisplay = pygame.display.set_mode((width, height))
         pygame.display.set_caption('Banana Fight Club')
@@ -16,8 +19,10 @@ class run():
         charwFlagImg = pygame.image.load('data/fightclub/charwflag.png').convert_alpha()
 
         flagImg = pygame.image.load("data/fightclub/flag.png").convert_alpha()
+        noFlagImg = pygame.image.load("data/fightclub/noflag.png").convert_alpha()
+        targetImg = pygame.image.load("data/fightclub/target.png").convert_alpha()
 
-        bckImg =  pygame.image.load("data/fightclub/background.png").convert()
+        bckImg = pygame.image.load("data/fightclub/background.png").convert()
         bckImg = pygame.transform.scale(bckImg, (width, height))
 
 
@@ -35,8 +40,16 @@ class run():
         x_change = 0
         y_change = 0
         character_speed = 0
+
         def Flag(x, y):
-            gameDisplay.blit(flagImg, (x,y))
+            gameDisplay.blit(flagImg, (x, y))
+
+        def noFlag(x, y):
+            gameDisplay.blit(noFlagImg, (x, y))
+
+        def Target(x, y):
+            gameDisplay.blit(targetImg, (x, y))
+
 
         #Game Loop
         while done == False :
@@ -62,18 +75,20 @@ class run():
             x += x_change
             y += y_change
 
-            Background(0,0)
-            Character(x,y)
-            Flag((600), (300))
 
-            if x > 580 and x <630 and y > 280 and y < 330 :
+            Background(0,0)
+            Character(x, y)
+            Flag(600, 300)
+
+            #Flag Collision
+            if x > 580 and x < 630 and y > 280 and y < 330 :
                 Character = CharwithFlag
-            else:
-                Character(x, y)
+                Flag = noFlag
+            if Character == CharwithFlag:
+                Target(1024, 576)
 
             pygame.display.update()
             clock.tick(60)
 
         pygame.quit()
         quit()
-
