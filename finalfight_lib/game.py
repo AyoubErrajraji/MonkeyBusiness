@@ -1,6 +1,7 @@
 import pygame
 import sys
 import json
+import os
 
 def getMemory(key):
     with open("finalfight_lib/memory.json", "r+") as jsonFile:
@@ -61,6 +62,10 @@ class run():
 
         setMemory("score", 768)
 
+        pygame.init()
+        player = Player()  # create an instance
+        clock = pygame.time.Clock()
+
         finished = False
 
         while not finished:
@@ -70,6 +75,14 @@ class run():
                     pygame.quit()
                     sys.exit()
                 pygame.display.flip()
+
+            player.handle_keys()  # handle the keys
+
+            #screen.fill((255, 255, 255))  # fill the screen with white
+            #player.draw(screen)  # draw the bird to the screen
+            pygame.display.update()  # update the screen
+
+            clock.tick(40)
 
 
 
