@@ -14,6 +14,8 @@ clock = pygame.time.Clock()
 ounter, text = 10, '10'.rjust(3)
 pygame.time.set_timer(pygame.USEREVENT, 1000)
 surface = pygame.display.set_mode((1280,720))
+count = 5
+count2 = 15
 
 
 def text_objects(text, font):
@@ -26,10 +28,12 @@ class run(object):
 
     def runm(self,resolution=(1280,720)):
         pygame.init()
+        fase = 0
         duration = 5000
         win = projectWin(500, 500, 'MonkeyWar')
         Quit = False
-        seconds = 20
+        seconds = 5
+        seconds2 = 15
         timestart = 0
         secondMonkey = Monkey(1080, "data/monkeywar/tankl.png", "ARROWS")
         firstMonkey = Monkey(100, "data/monkeywar/tankr.png","WASD")
@@ -47,31 +51,59 @@ class run(object):
             surface.blit(pygame.transform.scale(pygame.image.load('data/monkeywar/bg.png').convert(), (1280, 720)),
                          (0, 0))
 
+            #print(fase)
 
             #call classes
             win.ground()
             if timestart == 1:
-                secondMonkey.move()
-                firstMonkey.move()
+                if fase == 1:
+                    secondMonkey.move()
+                    firstMonkey.move()
 
-            #Display time
-            temp_surface = self.font.render(str(seconds), 1, BLACK)
-            surface.blit(temp_surface, (620, 100))  # print how many seconds
-            if pygame.key.get_pressed()[pygame.K_SPACE]:
-                timestart = 1
-                self.running = 1
-                start_ticks = pygame.time.get_ticks()  # starter tick
+            if timestart ==2:
+                if fase == 2:
+                    secondMonkey.shoot()
+                    firstMonkey.shoot()
 
-            if self.running == 1:
-                # Timer
-                count = 20
-                start = (pygame.time.get_ticks() - start_ticks) / 1000  # calculate how many seconds
-                seconds = round(count - start)
-                print(self.running)
-                pygame.display.update()
-                if seconds <= 0:  # if less than 0 seconds run next phase
-                    self.running = False
-                    break
+
+            #Display time fase 1
+            if fase <= 1:
+                temp_surface = self.font.render(str(seconds), 1, BLACK)
+                surface.blit(temp_surface, (620, 100))  # print how many seconds
+                if pygame.key.get_pressed()[pygame.K_SPACE]:
+                    timestart = 1
+                    self.running = 1
+                    start_ticks = pygame.time.get_ticks()  # starter tick
+                    fase = 1
+
+                if self.running == 1:
+                    # Timer
+                    start = (pygame.time.get_ticks() - start_ticks) / 1000  # calculate how many seconds
+                    seconds = round(count - start)
+                    #print(self.running)
+                    pygame.display.update()
+                    if seconds <= 0:  # if less than 0 seconds run next phase
+                        fase = 2
+
+
+                # Display time fase 2
+            if fase == 2:
+                temp_surface = self.font.render(str(seconds2), 1, BLACK)
+                surface.blit(temp_surface, (620, 100))  # print how many seconds
+                if fase == 2:
+                    timestart = 2
+                    self.running = 2
+                    start_ticks2 = pygame.time.get_ticks()  # starter tick
+                    print(start_ticks2)
+
+                if self.running == 2:
+                    # Timer2
+                    start2 = (pygame.time.get_ticks() - start_ticks2) / 1000  # calculate how many seconds
+                    seconds2 = round(count2 - start2)
+                    # print(self.running)
+                    pygame.display.update()
+                    if seconds2 <= 0:  # if less than 0 seconds run next phase
+                        fase = 3
 
             # update display
             pygame.display.update()
@@ -119,6 +151,19 @@ class Monkey(object):
         sprite = pygame.image.load(self.image).convert_alpha()
         surface.blit(pygame.transform.scale(sprite, (110, 80)), position)
 
+    def shoot(self):
+        keyinput = pygame.key.get_pressed()
+
+        if keyinput[pygame.K_ESCAPE]:
+            raise SystemExit
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                raise SystemExit
+
+        self.draw((self.x, 478))
+
     def move(self):
         pygame.event.pump()
 
@@ -133,6 +178,7 @@ class Monkey(object):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 raise SystemExit
+
 
         # check arrow keys
         # move sprite in direction of arrow by 2 pixels
