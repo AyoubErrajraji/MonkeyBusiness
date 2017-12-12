@@ -10,6 +10,7 @@ class Button(draw.Draw):
     def __init__(self, position, width, height, image, image_hover):
         # image shown when the mouse is on the button
         self.image_hover = pygame.image.load(image_hover)
+        self.image_hover = pygame.transform.scale(self.image_hover, (width, height))
 
         draw.Draw.__init__(self, config.KIND_BUTTON, position, width, height, image)
 
@@ -103,6 +104,15 @@ class playGame(Button):
             self.state = config.BA_PLAYING
         else:
             self.state = config.BA_CLEAR
+
+class monkeyButton(Button):
+    def __init__(self, state):
+        Button.__init__(self, (config.BUTTON_MONKEYBUTTON_X,config.BUTTON_MONKEYBUTTON_Y), config.BUTTON_MONKEYBUTTON_WIDTH, config.BUTTON_MONKEYBUTTON_HEIGHT, config.BUTTON_MONKEYBUTTON_IMG, config.BUTTON_MONKEYBUTTON_HOVER_IMG)
+        self.item = None
+        self.state = state
+
+    def task(self):
+        #self.rects.append(monkey.Monkey())
 
 
 

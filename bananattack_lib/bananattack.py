@@ -8,6 +8,7 @@ from bananattack_lib import config
 from bananattack_lib import game
 from bananattack_lib import button
 from bananattack_lib import enemy
+from bananattack_lib import monkey
 
 class BananAttack(game.Game):
     def __init__(self, name, screen_width, screen_height, screen = None):
@@ -54,6 +55,11 @@ class BananAttack(game.Game):
         self.score_x = config.SCORE_X
         self.score_y = config.SCORE_Y
         self.score = self.getMemory("score")
+
+        ### setup monkeys ###
+        self.rects = []
+
+        self.selected = None
 
     # waves can be started while breaktime (TD_CLEAR) and there is a next wave available
     def can_start_wave(self):
@@ -141,20 +147,13 @@ class BananAttack(game.Game):
             ### Draw path ###
             self.drawPath()
 
-            ### Draw buttons ###
-            for button in self.buttons:
-                button.paint(surface)
-                if button.get_state() != self.state and button.get_state() != 0:
-                    self.state = button.get_state()
-
-                    print("State updated to: %d by %s from %s" % (button.get_state(),button," the bottom of the paint function"))
-
-                    # if button has changed state, stop performing other buttons
-                    break
-
             ### Draw enemies ###
             for index, enemy in enumerate(self.enemies[self.wave]):
                 enemy.paint(surface)
+
+            ### Draw monkeys ###
+            for monkey in self.rects:
+                monkey.paint(surface)
 
             ### Show waypoints ###
             self.showWaypoints()
@@ -162,6 +161,18 @@ class BananAttack(game.Game):
             ### Pause Overlay ###
             if self.state == config.BA_PAUSE:
                 self.pauseOverlay()
+
+            ### Draw buttons ###
+            for button in self.buttons:
+                button.paint(surface)
+                if button.get_state() != self.state and button.get_state() != 0:
+                    self.state = button.get_state()
+
+                    print("State updated to: %d by %s from %s" % (
+                    button.get_state(), button, " the bottom of the paint function"))
+
+                    # if button has changed state, stop performing other buttons
+                    break
 
     def game_logic(self, keys):
 
@@ -182,7 +193,7 @@ class BananAttack(game.Game):
 
         # State 30
         if self.state == config.BA_CLEAR:
-            self.buttons = [button.pauseGame(self.state), button.startWave(self.state, self.can_start_wave())]
+            self.buttons = [button.pauseGame(self.state), button.startWave(self.state, self.can_start_wave()), button.monkeyButton(self.state)]
 
     def getMemory(self, key):
         with open("bananattack_lib/memory.json", "r+") as jsonFile:
