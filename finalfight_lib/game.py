@@ -66,7 +66,7 @@ class run():
         forrestImage = pygame.transform.scale(forrestImage,(width,height))
         screen.blit(forrestImage,(0,0))
 
-        rescale = 2
+        #rescale = 2
         boss = pygame.image.load("data/finalfight/boss2.png").convert_alpha()
         bossWidth = boss.get_rect().width
         bossHeight = boss.get_rect().height
@@ -74,14 +74,14 @@ class run():
         screen.blit(boss,(520,300))
 
         wolk = pygame.image.load("data/finalfight/spreekwolk.png").convert_alpha()
-        wolkWidth = wolk.get_rect().width
-        wolkHeight = wolk.get_rect().height
+        #wolkWidth = wolk.get_rect().width
+        #wolkHeight = wolk.get_rect().height
         wolk = pygame.transform.scale(wolk,(350,200))
         screen.blit(wolk,(590,130))
 
         player = pygame.image.load("data/finalfight/monkey.png").convert_alpha()
-        playerWidth = player.get_rect().width
-        playerHeight = player.get_rect().height
+        #playerWidth = player.get_rect().width
+        #playerHeight = player.get_rect().height
         player = pygame.transform.scale(player,(150,150))
         screen.blit(player,(300,550))
 
@@ -127,6 +127,12 @@ class run():
 
 
                 elif state == PAUSE:
+
+                    screen.blit(forrestImage, (0, 0))
+                    #screen.blit(boss, (520, 300))
+
+                    #screen.blit(player, (300, 550))
+                    screen.blit(temp_surface, (1150, 10))
                     screen.blit(pause_text, (600, 360))
             #player.handle_keys()  # handle the keys
 
