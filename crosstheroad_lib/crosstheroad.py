@@ -75,7 +75,7 @@ class Car(Rectangle):
             cr = pygame.Rect(self.x, self.y, self.w, self.h)
             pygame.draw.rect(self.screen, self.config.green, cr)
         else:
-            img = pygame.image.load(self.img)
+            img = pygame.image.load(self.img).convert_alpha()
             self.screen.blit(img, (self.x, self.y))
 
 
@@ -197,7 +197,7 @@ class Crosstheroad:
                     sys.exit()
                 self.update()
             self.collisionDet()
-            self.clock.tick(60)
+            self.clock.tick(30)
 
             self.blit()
             pygame.display.update()
