@@ -1,6 +1,7 @@
 import pygame
 import sys
 #import math
+#import itertools
 pygame.init()
 
 class Game:
@@ -89,26 +90,6 @@ class Wolk(Game):
 
     def blitwolk(self):
         screen.blit(self.wolk, (250, 200))
-
-
-def getMemory(self, key):
-    with open("finalfight_lib/memory.json.txt", "r+") as jsonFile:
-        data = json.load(jsonFile)
-
-        return data[key]
-
-
-def setMemory(self, key, value):
-    with open("finalfight_lib/memory.json.txt", "r+") as jsonFile:
-        data = json.load(jsonFile)
-
-        data[key] = value
-
-        jsonFile.seek(0)  # rewind
-        json.dump(data, jsonFile)
-        jsonFile.truncate()
-    self.score = self.getMemory("score")
-    self.setMemory("score", 894)
 
 width = 900
 height = 700

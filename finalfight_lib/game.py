@@ -2,6 +2,8 @@ import pygame
 import sys
 import json
 import os
+import math
+import itertools
 
 def getMemory(key):
     with open("finalfight_lib/memory.json", "r+") as jsonFile:
@@ -21,26 +23,34 @@ def setMemory(key, value):
         jsonFile.truncate()
 
 
-class Player(object):  # represents the bird, not the game
-    def __init__(self):
-        """ The constructor of the class """
-        self.image = pygame.image.load('data/finalfight/monkey.png')
-        # the bird's position
-        self.x = 0
-        self.y = 0
+#class Player(object):  # represents the bird, not the game
+   # def __init__(self):
+ #       """ The constructor of the class """
+  #      self.image = pygame.image.load('data/finalfight/monkey.png')
+   #     # the bird's position
+    #    self.x = 0
+     #   self.y = 0
 
-    def handle_keys(self):
-        """ Handles Keys """
-        key = pygame.key.get_pressed()
-        dist = 1 # distance moved in 1 frame, try changing it to 5
-        if key[pygame.K_DOWN]: # down key
-            self.y += dist # move down
-        elif key[pygame.K_UP]: # up key
-            self.y -= dist # move up
-        if key[pygame.K_RIGHT]: # right key
-            self.x += dist # move right
-        elif key[pygame.K_LEFT]: # left key
-            self.x -= dist # move left
+    #def handle_keys(self):
+     #   """ Handles Keys """
+      #  key = pygame.key.get_pressed()
+       # dist = 1 # distance moved in 1 frame, try changing it to 5
+        #if key[pygame.K_DOWN]: # down key
+         #   self.y += dist # move down
+        #elif key[pygame.K_UP]: # up key
+        #    self.y -= dist # move up
+        #if key[pygame.K_RIGHT]: # right key
+         #   self.x += dist # move right
+        #elif key[pygame.K_LEFT]: # left key
+         #   self.x -= dist # move left
+def magnitude(v):
+    return math.sqrt(sum(v[i]*v[i] for i in range(len(v))))
+
+def sub(u, v):
+    return [u[i]-v[i] for i in range(len(u))]
+
+def normalize(v):
+    return [v[i]/magnitude(v)  for i in range(len(v))]
 
 class run():
     def runm(self):
@@ -85,26 +95,44 @@ class run():
         setMemory("score", 768)
 
         pygame.init()
-        player = Player()  # create an instance
+
+        screen = pygame.display.set_mode((width, height))
         clock = pygame.time.Clock()
 
-        finished = False
 
-        while not finished:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    finished = True
-                    pygame.quit()
-                    sys.exit()
+        pause_text = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 60).render('Pause', True, pygame.color.Color('White'))
+
+        RUNNING, PAUSE = 0, 1
+        state = RUNNING
+
+        #player = Player()  # create an instance
+        clock = pygame.time.Clock()
+
+        while True:
+            for e in pygame.event.get():
+                if e.type == pygame.QUIT: break
+                if e.type == pygame.KEYDOWN:
+                    if e.key == pygame.K_p: state = PAUSE
+                    if e.key == pygame.K_s: state = RUNNING
+            else:
+                screen.fill((0, 0, 0))
+
+                if state == RUNNING:
+                    screen.blit(forrestImage, (0, 0))
+                    screen.blit(boss, (520, 300))
+                    screen.blit(wolk, (590, 130))
+                    screen.blit(player, (300, 550))
+                    screen.blit(temp_surface, (1150, 10))
+
+
+
+                elif state == PAUSE:
+                    screen.blit(pause_text, (600, 360))
+            #player.handle_keys()  # handle the keys
+
                 pygame.display.flip()
-
-            player.handle_keys()  # handle the keys
-
-            #screen.fill((255, 255, 255))  # fill the screen with white
-            #player.draw(screen)  # draw the bird to the screen
-            pygame.display.update()  # update the screen
-
-            clock.tick(40)
-
+                clock.tick(60)
+                continue
+            break
 
 
