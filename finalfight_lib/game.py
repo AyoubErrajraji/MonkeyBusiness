@@ -5,6 +5,7 @@ import os
 import math
 import itertools
 
+
 def getMemory(key):
     with open("finalfight_lib/memory.json", "r+") as jsonFile:
         data = json.load(jsonFile)
@@ -97,10 +98,12 @@ class run():
         pygame.init()
 
         screen = pygame.display.set_mode((width, height))
-        clock = pygame.time.Clock()
+        #clock = pygame.time.Clock()
 
 
-        pause_text = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 60).render('Pause', True, pygame.color.Color('White'))
+        pause_text = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 60).render('Paused', True, pygame.color.Color('White'))
+        s = pygame.Surface((width, height), pygame.SRCALPHA)  # per-pixel alpha
+        s.fill((0, 0, 0, 150))
 
         RUNNING, PAUSE = 0, 1
         state = RUNNING
@@ -129,10 +132,11 @@ class run():
                 elif state == PAUSE:
 
                     screen.blit(forrestImage, (0, 0))
-                    #screen.blit(boss, (520, 300))
+                    screen.blit(boss, (520, 300))
 
-                    #screen.blit(player, (300, 550))
+                    screen.blit(player, (300, 550))
                     screen.blit(temp_surface, (1150, 10))
+                    screen.blit(s, (0, 0))
                     screen.blit(pause_text, (600, 360))
             #player.handle_keys()  # handle the keys
 
