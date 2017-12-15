@@ -239,16 +239,16 @@ class run():
                 elif state == PAUSE:
                     background.blitForrest()
                     #newWolk.blitwolk()
-                    newBoss.blitBoss(screen)
+                    #newBoss.blitBoss(screen)
                     #newPlayer.blitPlayer()
-                    player.draw(screen)
+                    #player.draw(screen)
                     newScore.blitScore(screen)
                     screen.blit(s, (0, 0))
                     screen.blit(pause_text, (600, 360))
 
 
             player.movePlayer()  # handle the keys
-            player.draw(screen)
+            #player.draw(screen)
             pygame.display.flip()
 
             clock.tick(60)
