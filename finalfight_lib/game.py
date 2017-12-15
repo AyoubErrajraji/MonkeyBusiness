@@ -31,21 +31,24 @@ class Background(Game):
     def blitForrest(self):
         self.screen.blit(self.forrestImage, (0, 0))
 
-class Player(Game):
+class Player(Game):  # represents the bird, not the game
     def __init__(self,screen):
-        Game.__init__(self,screen)
-        self.playerX = 200
-        self.playerY = 550
-        self.player = None
+        Game.__init__(self, screen)
+        """ The constructor of the class """
+        self.image = pygame.image.load("data/finalfight/monkey.png")
+        self.image = pygame.transform.scale(self.image, (150, 150))
+        # the bird's position
+        self.x = 300
+        self.y = 550
 
-    def loadPlayer(self,name):
-        self.player = pygame.image.load(name).convert_alpha()
-        playerWidth = self.player.get_rect().width
-        playerHeight = self.player.get_rect().height
-        self.player = pygame.transform.scale(self.player, (150, 150))
+    #def loadPlayer(self,name):
+        #self.player = pygame.image.load(name).convert_alpha()
+       # playerWidth = self.player.get_rect().width
+      #  playerHeight = self.player.get_rect().height
+     #   self.player = pygame.transform.scale(self.player, (150, 150))
 
-    def blitPlayer(self):
-        self.screen.blit(self.player, (300, 550))
+    #def blitPlayer(self):
+    #    self.screen.blit(self.player, (300, 550))
 
     def movePlayer(self):
         """ Handles Keys """
@@ -60,10 +63,10 @@ class Player(Game):
         elif key[pygame.K_LEFT]:  # left key
             self.x -= dist  # move left
 
-    #def draw(self, screen):
-        #""" Draw on surface """
-        # blit yourself at your current position
-        #screen.blit(self.image, (self.x, self.y))
+    def draw(self, screen):
+        """ Draw on surface """
+         #blit yourself at your current position
+        screen.blit(self.image, (self.x, self.y))
 
 class Boss(Game):
     def __init__(self,screen):
@@ -160,8 +163,9 @@ class run():
 
         pygame.display.set_caption("Final Fight")
 
-
-        newPlayer = Player(screen)
+        pygame.init()
+        #newPlayer = Player(screen)
+        player = Player(screen)
         newBoss = Boss(screen)
         newWolk = Wolk(screen)
         background = Background(screen)
@@ -170,7 +174,7 @@ class run():
 
         background.loadForrest("data/finalfight/openplek.png")
 
-        newPlayer.loadPlayer("data/finalfight/monkey.png")
+        #newPlayer.loadPlayer("data/finalfight/monkey.png")
 
         #newPlayer.movePlayer()
 
@@ -190,13 +194,13 @@ class run():
 
         newBoss.blitBoss(screen)
 
-        newPlayer.blitPlayer()
+        #newPlayer.blitPlayer()
+
+        #newPlayer.movePlayer()  # handle the keys
 
         newScore.blitScore(screen)
 
-        Score.setMemory("score", 768)
-
-        clock = pygame.time.Clock()
+        Score.setMemory("score", 876)
 
         RUNNING, PAUSE = 0, 1
         state = RUNNING
@@ -206,11 +210,15 @@ class run():
         s = pygame.Surface((width, height), pygame.SRCALPHA)  # per-pixel alpha
         s.fill((0, 0, 0, 150))
 
+        clock = pygame.time.Clock()
 
         while True:
 
             for e in pygame.event.get():
-                if e.type == pygame.QUIT: break
+                if e.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                   # RUNNING = False
                 if e.type == pygame.KEYDOWN:
                     if e.key == pygame.K_p: state = PAUSE
                     if e.key == pygame.K_s: state = RUNNING
@@ -221,7 +229,8 @@ class run():
                     background.blitForrest()
                     newWolk.blitwolk(screen)
                     newBoss.blitBoss(screen)
-                    newPlayer.blitPlayer()
+                    #newPlayer.blitPlayer()
+                    player.draw(screen)
                     newScore.blitScore(screen)
 
 
@@ -231,19 +240,20 @@ class run():
                     background.blitForrest()
                     #newWolk.blitwolk()
                     newBoss.blitBoss(screen)
-                    newPlayer.blitPlayer()
+                    #newPlayer.blitPlayer()
+                    player.draw(screen)
                     newScore.blitScore(screen)
                     screen.blit(s, (0, 0))
                     screen.blit(pause_text, (600, 360))
 
 
+            player.movePlayer()  # handle the keys
+            player.draw(screen)
+            pygame.display.flip()
 
-                pygame.display.flip()
-                clock.tick(60)
-                continue
-            #player.handle_keys()  # handle the keys
+            clock.tick(60)
 
-            break
+
 
 
         #key = pygame.key.get_pressed()
