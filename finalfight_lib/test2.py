@@ -1,62 +1,55 @@
-''' pg_sprite_keys1.py
-move a sprite rect with the arrow keys
-see also ...
-http://www.pygame.org/docs/ref/sprite.html
-http://www.pygame.org/docs/ref/time.html
-'''
-import pygame as pg
-pg.init()
-# set screen size
-width = 640
-height = 480
-screen = pg.display.set_mode((width, height))
-pg.display.set_caption("move with arrow keys (escape key to exit)")
-# color (r, g, b) tuple, values 0 to 255
-white = (255, 255, 255)
-background = pg.Surface(screen.get_size())
-background.fill(white)
-# pick an image file you have in the working folder
-# or use full path
-# load image of sprite
-sprite = pg.image.load("monkey.png")
-sprite = pg.transform.scale(sprite,(150,150))
-# get image space, rectangle ulc, lrc coordinates
-sprite_rect = sprite.get_rect()
-# test
-print(sprite_rect)  # <rect(0, 0, 64, 64)>
-# initial position of sprite, center of screen
-sprite_rect.centerx = (width//2)
-sprite_rect.centery = (height//2)
-screen.blit(background, (0, 0))
-screen.blit(sprite, sprite_rect)
-pg.display.flip()
-clock = pg.time.Clock()
-# create the obligatory event loop
-while 1:
-    # limit runtime speed to 30 frames/second
-    clock.tick(30)
-    pg.event.pump()
-    # a key has been pressed
-    keyinput = pg.key.get_pressed()
-    # press escape key to quit game
-    if keyinput[pg.K_ESCAPE]:
-        raise SystemExit
-    # optional exit on window corner x click
-    for event in pg.event.get():
-        if event.type == pg.QUIT:
-            pg.quit()
-            raise SystemExit
-    # check arrow keys
-    # move sprite in direction of arrow by 2 pixels
-    if keyinput[pg.K_LEFT]:
-        sprite_rect.centerx -= 2
-    elif keyinput[pg.K_RIGHT]:
-        sprite_rect.centerx += 2
-    elif keyinput[pg.K_UP]:
-        sprite_rect.centery -= 2
-    elif keyinput[pg.K_DOWN]:
-        sprite_rect.centery += 2
-    screen.blit(background, (0,0))
-    screen.blit(sprite, sprite_rect)
-    # update display
-    pg.display.flip()
+import pygame
+import os
+
+# it is better to have an extra variable, than an extremely long line.
+img_path = os.path.join('monkey.png')
+
+class Bird(object):  # represents the bird, not the game
+    def __init__(self):
+        """ The constructor of the class """
+        self.image = pygame.image.load("monkey.png")
+        self.image = pygame.transform.scale(self, (150, 150))
+        # the bird's position
+        self.x = 0
+        self.y = 0
+
+    def handle_keys(self):
+        """ Handles Keys """
+        key = pygame.key.get_pressed()
+        dist = 1 # distance moved in 1 frame, try changing it to 5
+        if key[pygame.K_DOWN]: # down key
+            self.y += dist # move down
+        elif key[pygame.K_UP]: # up key
+            self.y -= dist # move up
+        if key[pygame.K_RIGHT]: # right key
+            self.x += dist # move right
+        elif key[pygame.K_LEFT]: # left key
+            self.x -= dist # move left
+
+    def draw(self, surface):
+        """ Draw on surface """
+        # blit yourself at your current position
+        surface.blit(self.image, (self.x, self.y))
+
+
+pygame.init()
+screen = pygame.display.set_mode((640, 400))
+player = Bird() # create an instance
+
+clock = pygame.time.Clock()
+
+running = True
+while running:
+    # handle every event since the last frame.
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit() # quit the screen
+            running = False
+
+    player.handle_keys() # handle the keys
+
+    screen.fill((255,255,255)) # fill the screen with white
+    player.draw(screen) # draw the bird to the screen
+    pygame.display.update() # update the screen
+
+    clock.tick(40)
