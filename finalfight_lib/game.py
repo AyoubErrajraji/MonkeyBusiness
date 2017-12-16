@@ -226,6 +226,7 @@ class run():
                 screen.fill((0, 0, 0))
 
                 if state == RUNNING:
+                    player.movePlayer()
                     background.blitForrest()
                     newWolk.blitwolk(screen)
                     newBoss.blitBoss(screen)
@@ -239,15 +240,22 @@ class run():
                 elif state == PAUSE:
                     background.blitForrest()
                     #newWolk.blitwolk()
-                    #newBoss.blitBoss(screen)
+                    newBoss.blitBoss(screen)
                     #newPlayer.blitPlayer()
-                    #player.draw(screen)
+                    player.draw(screen)
                     newScore.blitScore(screen)
                     screen.blit(s, (0, 0))
                     screen.blit(pause_text, (600, 360))
 
+ #               if state == RUNNING:
+#                    player.movePlayer()
 
-            player.movePlayer()  # handle the keys
+                #elif state == PAUSE:
+                    #player.draw(screen)
+
+
+
+            #player.movePlayer()  # handle the keys
             #player.draw(screen)
             pygame.display.flip()
 

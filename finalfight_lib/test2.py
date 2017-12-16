@@ -1,55 +1,49 @@
-import pygame
-import os
+import pygame, math, itertools
 
-# it is better to have an extra variable, than an extremely long line.
-img_path = os.path.join('monkey.png')
+def magnitude(v):
+    return math.sqrt(sum(v[i]*v[i] for i in range(len(v))))
 
-class Bird(object):  # represents the bird, not the game
-    def __init__(self):
-        """ The constructor of the class """
-        self.image = pygame.image.load("monkey.png")
-        self.image = pygame.transform.scale(self, (150, 150))
-        # the bird's position
-        self.x = 0
-        self.y = 0
+def sub(u, v):
+    return [u[i]-v[i] for i in range(len(u))]
 
-    def handle_keys(self):
-        """ Handles Keys """
-        key = pygame.key.get_pressed()
-        dist = 1 # distance moved in 1 frame, try changing it to 5
-        if key[pygame.K_DOWN]: # down key
-            self.y += dist # move down
-        elif key[pygame.K_UP]: # up key
-            self.y -= dist # move up
-        if key[pygame.K_RIGHT]: # right key
-            self.x += dist # move right
-        elif key[pygame.K_LEFT]: # left key
-            self.x -= dist # move left
-
-    def draw(self, surface):
-        """ Draw on surface """
-        # blit yourself at your current position
-        surface.blit(self.image, (self.x, self.y))
-
+def normalize(v):
+    return [v[i]/magnitude(v)  for i in range(len(v))]
 
 pygame.init()
-screen = pygame.display.set_mode((640, 400))
-player = Bird() # create an instance
-
+screen = pygame.display.set_mode((300, 300))
 clock = pygame.time.Clock()
 
-running = True
-while running:
-    # handle every event since the last frame.
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit() # quit the screen
-            running = False
+path = itertools.cycle([(26, 43), (105, 110), (45, 225), (145, 295), (266, 211), (178, 134), (250, 56), (147, 12)])
+target = next(path)
+ball, speed = pygame.rect.Rect(target[0], target[1], 10, 10), 3.6
+pause_text = pygame.font.SysFont('Consolas', 32).render('Pause', True, pygame.color.Color('White'))
 
-    player.handle_keys() # handle the keys
+RUNNING, PAUSE = 0, 1
+state = RUNNING
 
-    screen.fill((255,255,255)) # fill the screen with white
-    player.draw(screen) # draw the bird to the screen
-    pygame.display.update() # update the screen
+while True:
+    for e in pygame.event.get():
+        if e.type == pygame.QUIT: break
+        if e.type == pygame.KEYDOWN:
+            if e.key == pygame.K_p: state = PAUSE
+            if e.key == pygame.K_s: state = RUNNING
+    else:
+        screen.fill((0, 0, 0))
 
-    clock.tick(40)
+        if state == RUNNING:
+            target_vector = sub(target, ball.center)
+
+            if magnitude(target_vector) < 2:
+                target = next(path)
+            else:
+                ball.move_ip([c * speed for c in normalize(target_vector)])
+
+            pygame.draw.rect(screen, pygame.color.Color('Yellow'), ball)
+
+        elif state == PAUSE:
+            screen.blit(pause_text, (100, 100))
+
+        pygame.display.flip()
+        clock.tick(60)
+        continue
+    break
