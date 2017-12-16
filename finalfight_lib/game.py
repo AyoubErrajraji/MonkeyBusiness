@@ -205,16 +205,23 @@ class run():
         RUNNING, PAUSE = 0, 1
         state = RUNNING
 
-        pause_text = pygame.font.Font("finalfight_lib/FEASFBRG.ttf", 60).render('Paused', True,
-                                                                                         pygame.color.Color('White'))
+        pause_text = pygame.font.Font("finalfight_lib/FEASFBRG.ttf", 60).render('Paused', True, pygame.color.Color('White'))
+
         s = pygame.Surface((width, height), pygame.SRCALPHA)  # per-pixel alpha
         s.fill((0, 0, 0, 150))
 
         clock = pygame.time.Clock()
 
+        counter, text = 3, '3'.rjust(3)
+        pygame.time.set_timer(pygame.USEREVENT, 1000)
+        font = pygame.font.Font("finalfight_lib/FEASFBRG.ttf", 60)
+
         while True:
 
             for e in pygame.event.get():
+                counter -= 1
+                text = str(counter).rjust(3) if counter > 0 else 'Go!'
+
                 if e.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
@@ -224,15 +231,19 @@ class run():
                     if e.key == pygame.K_s: state = RUNNING
             else:
                 screen.fill((0, 0, 0))
-
+                #screen.blit(font.render(text, True, (0, 0, 0)), (32, 48))
+                #pygame.display.flip()
+                #clock.tick(60)
                 if state == RUNNING:
                     player.movePlayer()
+
                     background.blitForrest()
                     newWolk.blitwolk(screen)
                     newBoss.blitBoss(screen)
                     #newPlayer.blitPlayer()
                     player.draw(screen)
                     newScore.blitScore(screen)
+                    screen.blit(font.render(text, True, (0, 0, 0)), (620, 100))
 
 
 
@@ -240,9 +251,9 @@ class run():
                 elif state == PAUSE:
                     background.blitForrest()
                     #newWolk.blitwolk()
-                    newBoss.blitBoss(screen)
+                    #newBoss.blitBoss(screen)
                     #newPlayer.blitPlayer()
-                    player.draw(screen)
+                    #player.draw(screen)
                     newScore.blitScore(screen)
                     screen.blit(s, (0, 0))
                     screen.blit(pause_text, (600, 360))
