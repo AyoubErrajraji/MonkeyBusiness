@@ -185,7 +185,7 @@ class run(object):
             json.dump(data, jsonFile)
             jsonFile.truncate()
 
-    def runm(self,resolution=(1280,720)):
+    def runm(self,balance=None,resolution=(1280,720)):
 
         time.Clock()
         from os.path import dirname, join
@@ -199,6 +199,10 @@ class run(object):
         mainmenu = f.render('Monkey Business', 1, (255, 255, 255))
         r = mainmenu.get_rect()
         r.centerx, r.top = 650, 180
+
+        # Update Balance
+        if balance != None:
+            self.setMemory("balance",self.getMemory("balance") + balance)
 
         # Achtergrond instellen
         background_main = image.load('data/menu/bg.png').convert()
@@ -246,13 +250,6 @@ class run(object):
             mymenu = run()
             mymenu.runm(resolution)
 
-        if resp == 'BACK': #menu na settings sectie
-            scr.fill((0, 0, 0))
-            scr.blit(background_main, (0, 0))
-            scr.blit(f.render('Monkey Business', 1, (255, 255, 255)), (450, 180))
-            display.update()
-            resp = menu(**menu1)[0]
-
         if resp == 'STATS':
             display.update(scr.blit(bg, (0, 0)))
             display.update(
@@ -287,16 +284,16 @@ class run(object):
         if resp == 'CrossTheRoad':
             crosstheroad.main()
 
-        if resp == 'BACK': #menu na play sectie
+        if resp == 'EXIT':
+            pygame.quit()
+            sys.exit()
+
+        else:
             scr.fill((0, 0, 0))
             scr.blit(background_main, (0, 0))
             scr.blit(f.render('Monkey Business', 1, (255, 255, 255)), (450, 180))
             display.update()
             resp = menu(**menu1)[0]
-
-        if resp == 'EXIT':
-            pygame.quit()
-            sys.exit()
 
 
 
