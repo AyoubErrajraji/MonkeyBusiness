@@ -95,6 +95,13 @@ BUTTON_PLAYGAME_HEIGHT = 100
 BUTTON_PLAYGAME_X = 950
 BUTTON_PLAYGAME_Y = 300
 
+BUTTON_EXITGAME_IMG = "data/bananattack/buttons/exitGame.png"
+BUTTON_EXITGAME_HOVER_IMG = "data/bananattack/buttons/exitGameHover.png"
+BUTTON_EXITGAME_WIDTH = 300
+BUTTON_EXITGAME_HEIGHT = 100
+BUTTON_EXITGAME_X = 480
+BUTTON_EXITGAME_Y = 350
+
 BUTTON_MONKEYBUTTON_IMG = "data/bananattack/buttons/monkeyButton.png"
 BUTTON_MONKEYBUTTON_HOVER_IMG = "data/bananattack/buttons/monkeyButtonHover.png"
 BUTTON_MONKEYBUTTON_WIDTH = 100

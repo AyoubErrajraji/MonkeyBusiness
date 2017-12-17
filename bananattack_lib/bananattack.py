@@ -179,7 +179,7 @@ class BananAttack(game.Game):
         ### Push correct buttons ###
         # State 10
         if self.state == config.BA_PAUSE:
-            self.buttons = [button.playGame(self.state, self.wave_started())]
+            self.buttons = [button.playGame(self.state, self.wave_started()),button.exitGame(self.state)]
 
         # State 20
         if self.state == config.BA_PLAYING:

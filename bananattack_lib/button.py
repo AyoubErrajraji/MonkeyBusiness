@@ -4,6 +4,7 @@ Created on Nov 25, 2017
 '''
 from bananattack_lib import config
 from bananattack_lib import draw
+from menu_lib import slidemenu
 import pygame
 
 class Button(draw.Draw):
@@ -105,6 +106,16 @@ class playGame(Button):
         else:
             self.state = config.BA_CLEAR
 
+class exitGame(Button):
+    def __init__(self, state):
+        Button.__init__(self, (config.BUTTON_EXITGAME_X,config.BUTTON_EXITGAME_Y), config.BUTTON_EXITGAME_WIDTH, config.BUTTON_EXITGAME_HEIGHT, config.BUTTON_EXITGAME_IMG, config.BUTTON_EXITGAME_HOVER_IMG)
+        self.item = None
+        self.state = state
+
+    def task(self):
+        mymenu = slidemenu.run()
+        mymenu.runm(100) #voeg 100 balance punten toe aan het hoofdmenu
+
 class monkeyButton(Button):
     def __init__(self, state):
         Button.__init__(self, (config.BUTTON_MONKEYBUTTON_X,config.BUTTON_MONKEYBUTTON_Y), config.BUTTON_MONKEYBUTTON_WIDTH, config.BUTTON_MONKEYBUTTON_HEIGHT, config.BUTTON_MONKEYBUTTON_IMG, config.BUTTON_MONKEYBUTTON_HOVER_IMG)
@@ -112,7 +123,10 @@ class monkeyButton(Button):
         self.state = state
 
     def task(self):
-        #self.rects.append(monkey.Monkey())
+        self.rects.append(monkey.Monkey())
+
+    #operator overloading
+    #interrupt
 
 
 
