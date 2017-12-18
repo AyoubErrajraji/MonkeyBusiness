@@ -1,6 +1,7 @@
 #Project 2 v1.00
 import pygame, sys, time
 from pygame.locals import *
+
 pygame.font.init()
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -14,7 +15,7 @@ clock = pygame.time.Clock()
 ounter, text = 10, '10'.rjust(3)
 pygame.time.set_timer(pygame.USEREVENT, 1000)
 surface = pygame.display.set_mode((1280,720))
-count = 15
+count = 5
 count2 = 15
 
 
@@ -62,12 +63,12 @@ class run(object):
 
             if timestart ==2:
                 if fase == 2:
-                    secondMonkey.shoot()
-                    firstMonkey.shoot()
+                    secondMonkey.aim()
+                    firstMonkey.aim()
 
             if fase ==3:
-                secondMonkey.fire()
-                firstMonkey.fire()
+                secondMonkey.shoot()
+                firstMonkey.shoot()
 
 
 
@@ -154,24 +155,34 @@ class Monkey(object):
         self.image = image
         self.movement = movement
 
+    def halfcircle(self, position):
+        pygame.draw.circle(surface, BLACK, (position), 150, 3)
+
     def draw(self, position):
         sprite = pygame.image.load(self.image).convert_alpha()
         surface.blit(pygame.transform.scale(sprite, (110, 80)), position)
 
-    def shoot(self):
+
+    def aim(self):
         keyinput = pygame.key.get_pressed()
 
         if keyinput[pygame.K_ESCAPE]:
             raise SystemExit
+
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 raise SystemExit
 
-        self.draw((self.x, 478))
+        
 
-    def fire(self):
+
+
+        self.draw((self.x, 478))
+        self.halfcircle((self.x+55, 478))
+
+    def shoot(self):
         keyinput = pygame.key.get_pressed()
 
         if keyinput[pygame.K_ESCAPE]:
