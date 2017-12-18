@@ -2,25 +2,16 @@
 Created on Nov 25, 2017
 @author: lexdewilligen
 '''
+
 from menu_lib import slidemenu
 from bananattack_lib import main as bananattack
-<<<<<<< HEAD
-from monkeywar_lib import monkeywar
-
-#mymenu = slidemenu.run()
-#mymenu.runm()
-
-# Manually minigame runnen
-mygame = monkeywar.run()
-mygame.runm()
-=======
 from escapetheguards_lib import etg as escapetheguards
 from crosstheroad_lib import main as crosstheroad
 from finalfight_lib import game as finalfight
 from fightclub_lib import fightclub
 from monkeywar_lib import monkeywar
 
-debug = 0
+debug = 6
 
 if debug == 0:
     mymenu = slidemenu.run()
@@ -41,7 +32,7 @@ elif debug == 5:
 elif debug == 6:
     mymenu = monkeywar.run()
     mymenu.runm()
->>>>>>> master
+
 
 
 
