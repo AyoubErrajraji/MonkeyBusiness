@@ -8,11 +8,15 @@ yellow = (255, 255, 0)
 orange = (255, 165, 0)
 purple = (128, 0, 128)
 
+    # Opacity colors
+sevopblack = (0, 0, 0, 150)
+
 
 #General info
 gameName = "Monkey War"
 name = "Cross the Road"
-screenDim = (850, 600)
+screenDim = (1280, 720)
+sideMenu = (430, 720)
 FPS = 60
 grid = 50
 cars = 4
