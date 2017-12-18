@@ -103,6 +103,7 @@ class BananAttack(game.Game):
                         completed += 1
 
                 # did the user just press the escape key?
+                pygame.event.get()
                 if pygame.key.get_pressed()[pygame.K_ESCAPE] == 1:
                     self.state = config.BA_PAUSE
                     self.buttons = [button.playGame(self.state, self.wave_started()), button.exitGame(self.state)]
