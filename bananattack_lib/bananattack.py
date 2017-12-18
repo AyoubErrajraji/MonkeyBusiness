@@ -108,9 +108,8 @@ class BananAttack(game.Game):
                     self.state = config.BA_PAUSE
                     self.buttons = [button.playGame(self.state, self.wave_started()), button.exitGame(self.state)]
                     self.paint(self.screen)
-                    print("Escape")
+                    print("State updated to: %d by Escape from %s" % (self.state, " the event in step"))
                 else:
-                    print("Not true :(")
                     # Recursion
                     step(completed)
 
