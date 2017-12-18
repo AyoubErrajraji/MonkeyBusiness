@@ -14,7 +14,7 @@ clock = pygame.time.Clock()
 ounter, text = 10, '10'.rjust(3)
 pygame.time.set_timer(pygame.USEREVENT, 1000)
 surface = pygame.display.set_mode((1280,720))
-count = 5
+count = 15
 count2 = 15
 
 
@@ -32,7 +32,7 @@ class run(object):
         duration = 5000
         win = projectWin(500, 500, 'MonkeyWar')
         Quit = False
-        seconds = 5
+        seconds = 15
         seconds2 = 15
         timestart = 0
         secondMonkey = Monkey(1080, "data/monkeywar/tankl.png", "ARROWS")
@@ -65,19 +65,26 @@ class run(object):
                     secondMonkey.shoot()
                     firstMonkey.shoot()
 
+            if fase ==3:
+                secondMonkey.fire()
+                firstMonkey.fire()
+
+
+
+
 
             #Display time fase 1
             if fase <= 1:
                 temp_surface = self.font.render(str(seconds), 1, BLACK)
                 surface.blit(temp_surface, (620, 100))  # print how many seconds
-                if pygame.key.get_pressed()[pygame.K_SPACE]:
+                if pygame.key.get_pressed()[pygame.K_SPACE] and fase < 1:
                     timestart = 1
                     self.running = 1
                     start_ticks = pygame.time.get_ticks()  # starter tick
                     fase = 1
 
                 if self.running == 1:
-                    # Timer
+                    # Timer 
                     start = (pygame.time.get_ticks() - start_ticks) / 1000  # calculate how many seconds
                     seconds = round(count - start)
                     #print(self.running)
@@ -93,17 +100,16 @@ class run(object):
                 if fase == 2:
                     timestart = 2
                     self.running = 2
-                    start_ticks2 = pygame.time.get_ticks()  # starter tick
-                    print(start_ticks2)
 
                 if self.running == 2:
                     # Timer2
-                    start2 = (pygame.time.get_ticks() - start_ticks2) / 1000  # calculate how many seconds
-                    seconds2 = round(count2 - start2)
-                    # print(self.running)
+                    current_tick= pygame.time.get_ticks()
+                    start2 = (pygame.time.get_ticks() - start_ticks) / 1000  # calculate how many seconds
+                    seconds2 = round(count2+count - start2)
                     pygame.display.update()
                     if seconds2 <= 0:  # if less than 0 seconds run next phase
                         fase = 3
+
 
             # update display
             pygame.display.update()
@@ -115,6 +121,7 @@ class run(object):
             for event in pygame.event.get():
                 if event.type == QUIT:
                     Quit = True
+            print(fase)
 
         pygame.quit()  # always exit cleanly
         sys.exit()
@@ -152,6 +159,19 @@ class Monkey(object):
         surface.blit(pygame.transform.scale(sprite, (110, 80)), position)
 
     def shoot(self):
+        keyinput = pygame.key.get_pressed()
+
+        if keyinput[pygame.K_ESCAPE]:
+            raise SystemExit
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                raise SystemExit
+
+        self.draw((self.x, 478))
+
+    def fire(self):
         keyinput = pygame.key.get_pressed()
 
         if keyinput[pygame.K_ESCAPE]:
