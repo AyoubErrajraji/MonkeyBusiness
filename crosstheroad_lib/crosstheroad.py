@@ -25,6 +25,22 @@ class Rectangle:
                 bottom <= otop)
 
 
+class Button(Rectangle):
+    def __int__(self, x, y, w, h, img, hvr_img, screen):
+        Rectangle.__init__(self, x, y, w, h)
+        self.img = img
+        self.hvr_img = hvr_img
+        self.x = x
+        self.y = y
+        self.w = w
+        self.h = h
+        self.screen = screen
+
+    def show(self):
+        img = pygame.image.load(self.img).convert_alpha()
+        self.screen.blit(img, (self.x, self.y))
+
+
 class Monkey(Rectangle):
     def __init__(self, x, y, w, h, screen, config):
         Rectangle.__init__(self, x, y, w, h)
@@ -164,20 +180,20 @@ class Crosstheroad:
             self.cars[index].update()
         self.sideMenu()
 
-    def update(self):
-        if pygame.key.get_pressed()[pygame.K_LEFT] != 0:
+    def update(self, e):
+        if e.type == pygame.KEYDOWN and e.key == pygame.K_LEFT:
             # print("Key Left pressed")
             self.monkey.move(-1, 0)
-        elif pygame.key.get_pressed()[pygame.K_RIGHT] != 0:
+        elif e.type == pygame.KEYDOWN and e.key == pygame.K_RIGHT:
             # print("Key Right pressed")
             self.monkey.move(1, 0)
-        elif pygame.key.get_pressed()[pygame.K_UP] != 0:
+        elif e.type == pygame.KEYDOWN and e.key == pygame.K_UP:
             # print("Key Up pressed")
             self.monkey.move(0, -1)
-        elif pygame.key.get_pressed()[pygame.K_DOWN] != 0:
+        elif e.type == pygame.KEYDOWN and e.key == pygame.K_DOWN:
             # print("Key Down pressed")
             self.monkey.move(0, 1)
-        if self.monkey.y < 80:
+        if self.monkey.y < 75:
             self.score += 1
             self.monkey.reset()
 
@@ -195,7 +211,7 @@ class Crosstheroad:
                     self.quit = True
                     pygame.quit()
                     sys.exit()
-                self.update()
+                self.update(event)
             self.collisionDet()
             self.clock.tick(30)
 
