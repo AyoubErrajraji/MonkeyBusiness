@@ -152,6 +152,14 @@ class Pause(Game):
         s = pygame.Surface((1280, 720), pygame.SRCALPHA)  # per-pixel alpha
         s.fill((0, 0, 0, 150))
 
+    def loadExitButton(self, name):
+        self.exitButton = pygame.image.load(name).convert_alpha()
+
+        self.exitButton = pygame.transform.scale(self.exitButton, (150, 50))
+
+    def blitExitButton(self, screen):
+        screen.blit(self.exitButton, (605, 420))
+
 
 class run():
     def runm(self):
@@ -180,6 +188,8 @@ class run():
 
         #newPlayer.draw(screen)
 
+        newPause.loadExitButton("data/finalfight/exitButton.png")
+
         newBoss.loadBoss("data/finalfight/boss2.png")
 
         newWolk.loadWolk("data/finalfight/spreekwolk.png")
@@ -198,11 +208,13 @@ class run():
 
         #newPlayer.movePlayer()  # handle the keys
 
+        newPause.blitExitButton(screen)
+
         newScore.blitScore(screen)
 
         Score.setMemory("score", 876)
 
-        RUNNING, PAUSE = 0, 1
+        RUNNING, notRUNNING, PAUSE = 0, 1, 2
         state = RUNNING
 
         pause_text = pygame.font.Font("finalfight_lib/FEASFBRG.ttf", 60).render('Paused', True, pygame.color.Color('White'))
@@ -230,11 +242,18 @@ class run():
                     if e.key == pygame.K_p : state = PAUSE
                     if e.key == pygame.K_s : state = RUNNING
 
+
             else:
                 screen.fill((0, 0, 0))
                 #screen.blit(font.render(text, True, (0, 0, 0)), (32, 48))
                 #pygame.display.flip()
                 #clock.tick(60)
+                #if text == 'GO!':
+                 #   state = RUNNING
+                #elif counter > 0:
+                 #   state = notRUNNING
+
+
                 if state == RUNNING:
                     player.movePlayer()
 
@@ -246,6 +265,16 @@ class run():
                     newScore.blitScore(screen)
                     screen.blit(font.render(text, True, (0, 0, 0)), (620, 100))
 
+                #if state == notRUNNING:
+                    #player.movePlayer()
+
+                 #   background.blitForrest()
+                    #newWolk.blitwolk(screen)
+                  #  newBoss.blitBoss(screen)
+                    #newPlayer.blitPlayer()
+                   # player.draw(screen)
+                    #newScore.blitScore(screen)
+                    #screen.blit(font.render(text, True, (0, 0, 0)), (620, 100))
 
 
 
@@ -258,6 +287,7 @@ class run():
                     newScore.blitScore(screen)
                     screen.blit(s, (0, 0))
                     screen.blit(pause_text, (600, 360))
+                    newPause.blitExitButton(screen)
 
  #               if state == RUNNING:
 #                    player.movePlayer()
