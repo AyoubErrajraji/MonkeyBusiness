@@ -1,5 +1,6 @@
 import pygame, sys
 
+
 class Rectangle:
     def __init__(self, x, y, w, h):
         self.x = x
@@ -101,7 +102,6 @@ class Crosstheroad:
         fps = font.render("fps" + str(self.clock.get_fps()), 1, self.config.black)
         self.screen.blit(fps, (self.config.screenDim[0] - self.config.sideMenu[0]/2 - score.get_rect().width, self.config.sideMenu[1] - 300))
 
-
     def addCars(self):
         # Add first row of cars
         if len(self.cars) < 3:
@@ -147,7 +147,7 @@ class Crosstheroad:
             self.cars.append(Car(0 + (self.config.grid * 16), self.config.screenDim[1] - self.config.grid * 10, self.config.grid * 2, self.config.grid, self.screen, self.config, -5, 'crosstheroad_lib/src/car7.png'))
         # Add 10th row (last) of cars
         if len(self.cars) < 27:
-            self.cars.append(Car(0 + (self.config.grid * 8), self.config.screenDim[1] - self.config.grid * 11, self.config.grid * 10, self.config.grid, self.screen, self.config, 25, 'none'))
+            self.cars.append(Car(0 + (self.config.grid * 8), self.config.screenDim[1] - self.config.grid * 11, self.config.grid * 10, self.config.grid, self.screen, self.config, 25, 'crosstheroad_lib/src/train.png'))
 
     def background(self, color):
         self.screen.fill(color)
