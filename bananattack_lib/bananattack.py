@@ -78,32 +78,48 @@ class BananAttack(game.Game):
         for index, object in enumerate(self.enemies[self.wave]):
             object.deploy((config.STARTPOINT[0] - (config.DEFAULT_DELAY * index), config.STARTPOINT[1]))
 
-        length = len(self.enemies[self.wave])
         completed = 0
 
         # Draw Enemy #
-        while completed < length:
-            for enemy in self.enemies[self.wave]:
-                if enemy.waypoints_reached < len(config.WAYPOINTS):
+        def step(completed):
+            length = len(self.enemies[self.wave])
 
-                    # Move enemy
-                    enemy.move()
+            if completed < length:
+                for enemy in self.enemies[self.wave]:
+                    if enemy.waypoints_reached < len(config.WAYPOINTS):
 
-                    # Paint game + new enemy location
+                        # Move enemy
+                        enemy.move()
+
+                        # Paint game + new enemy location
+                        self.paint(self.screen)
+
+                        # Update Screen
+                        pygame.display.update()
+
+                    else:
+                        # Kill enemies -> hasReached base
+                        self.enemies[self.wave].pop(0)
+                        completed += 1
+
+                # did the user just press the escape key?
+                if pygame.key.get_pressed()[pygame.K_ESCAPE] == 1:
+                    self.state = config.BA_PAUSE
+                    self.buttons = [button.playGame(self.state, self.wave_started()), button.exitGame(self.state)]
                     self.paint(self.screen)
-
-                    # Update Screen
-                    pygame.display.update()
-
+                    print("Escape")
                 else:
-                    # Kill enemies -> hasReached base
-                    self.enemies[self.wave].pop(0)
-                    completed += 1
+                    print("Not true :(")
+                    # Recursion
+                    step(completed)
+
+        step(completed)
 
         # Wave Done
         self.waves_comp += 1
-        self.state = config.BA_CLEAR
-        print("State updated to: %d by %s from %s" % (config.BA_CLEAR, button, " the bottom of the begin_wave function"))
+        if self.state == config.BA_PLAYING:
+            self.state = config.BA_CLEAR
+        print("State updated to: %d by %s from %s" % (self.state, button, " the bottom of the begin_wave function"))
 
     # check whether the next wave is running
     def wave_started(self):
@@ -175,7 +191,6 @@ class BananAttack(game.Game):
                     break
 
     def game_logic(self, keys):
-
         ### Push correct buttons ###
         # State 10
         if self.state == config.BA_PAUSE:
