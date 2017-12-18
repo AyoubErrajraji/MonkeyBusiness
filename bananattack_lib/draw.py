@@ -13,6 +13,8 @@ class Draw(item.Item):
         self.width = width
         self.height = height
 
+        self.image = pygame.transform.scale(self.image,(width, height))
+
     # returns whether or not two rectangles are overlapping
     def collide(self, other):
         # calculate the points of the other rectangle

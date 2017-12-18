@@ -61,13 +61,27 @@ class Game:
                 if e.type == pygame.KEYUP:
                     keys.discard(e.key)
 
+                elif e.type == pygame.MOUSEBUTTONDOWN:
+                    if e.button == 1:
+                        for i, monkey in enumerate(self.rects):
+                            if monkey.collidepoint(e.pos):
+                                self.selected = i
+                                self.selected_offset_x = monkey.x - e.pos[0]
+                                self.selected_offset_y = monkey.y - e.pos[1]
+
                 # track which mouse buttons were pressed
                 if e.type == pygame.MOUSEBUTTONUP:
                     newclicks.add(e.button)
+                    if e.button == 1:
+                        self.selected = None
 
                 # track the mouse's position
                 if e.type == pygame.MOUSEMOTION:
                     mouse_pos = e.pos
+                    if self.selected is not None:  # selected can be `0` so `is not None` is required
+                        # move object
+                        self.rects[self.selected].x = e.pos[0] + self.selected_offset_x
+                        self.rects[self.selected].y = e.pos[1] + self.selected_offset_y
 
                 # update window size if resized
                 if e.type == pygame.VIDEORESIZE:
