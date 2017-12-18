@@ -220,15 +220,16 @@ class run():
 
             for e in pygame.event.get():
                 counter -= 1
-                text = str(counter).rjust(3) if counter > 0 else 'Go!'
+                text = str(counter).rjust(3) if counter > 0 else 'GO!'
 
                 if e.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
                    # RUNNING = False
                 if e.type == pygame.KEYDOWN:
-                    if e.key == pygame.K_p: state = PAUSE
-                    if e.key == pygame.K_s: state = RUNNING
+                    if e.key == pygame.K_p : state = PAUSE
+                    if e.key == pygame.K_s : state = RUNNING
+
             else:
                 screen.fill((0, 0, 0))
                 #screen.blit(font.render(text, True, (0, 0, 0)), (32, 48))
