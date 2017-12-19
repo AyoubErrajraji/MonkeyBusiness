@@ -17,6 +17,7 @@ class BananAttack(game.Game):
 
         ### Set state to playing ###
         self.state = config.BA_CLEAR
+        self.last_state = config.BA_CLEAR
 
         ### Enemy setup ###
         self.enemies = [
@@ -28,7 +29,7 @@ class BananAttack(game.Game):
         ### Set waves ###
         self.waves_comp = 0             # number of waves that have ended (are completed)
         self.wave = 0                   # the next wave to start or which is currently running
-        self.waves = len(self.enemies)   # number of waves that exist
+        self.waves = len(self.enemies)  # number of waves that exist
 
         ### Button setup ###
         self.buttons = []
@@ -69,14 +70,15 @@ class BananAttack(game.Game):
             return False
 
     # creates and places all of the enemies
-    def begin_wave(self):
+    def begin_wave(self, resume=False):
 
-        # Mark next wave as started
-        self.wave += 1
+        if not resume:
+            # Mark next wave as started
+            self.wave += 1
 
-        # Deploy enemies #
-        for index, object in enumerate(self.enemies[self.wave]):
-            object.deploy((config.STARTPOINT[0] - (config.DEFAULT_DELAY * index), config.STARTPOINT[1]))
+            # Deploy enemies #
+            for index, object in enumerate(self.enemies[self.wave]):
+                object.deploy((config.STARTPOINT[0] - (config.DEFAULT_DELAY * index), config.STARTPOINT[1]))
 
         completed = 0
 
@@ -105,6 +107,7 @@ class BananAttack(game.Game):
                 # did the user just press the escape key?
                 pygame.event.get()
                 if pygame.key.get_pressed()[pygame.K_ESCAPE] == 1:
+                    self.last_state = self.state
                     self.state = config.BA_PAUSE
                     self.buttons = [button.playGame(self.state, self.wave_started()), button.exitGame(self.state)]
                     self.paint(self.screen)
@@ -115,9 +118,10 @@ class BananAttack(game.Game):
 
         step(completed)
 
-        # Wave Done
-        self.waves_comp += 1
         if self.state == config.BA_PLAYING:
+            # Wave Done
+            self.waves_comp += 1
+            self.last_state = self.state
             self.state = config.BA_CLEAR
         print("State updated to: %d by %s from %s" % (self.state, button, " the bottom of the begin_wave function"))
 
@@ -167,12 +171,12 @@ class BananAttack(game.Game):
             for index, enemy in enumerate(self.enemies[self.wave]):
                 enemy.paint(surface)
 
-            ### Draw monkeys ###
-            for monkey in self.rects:
-                monkey.paint(surface)
-
             ### Show waypoints ###
             self.showWaypoints()
+
+            ### Draw monkeys ###
+            for tower in self.rects:
+                tower.paint(surface)
 
             ### Pause Overlay ###
             if self.state == config.BA_PAUSE:
@@ -182,6 +186,7 @@ class BananAttack(game.Game):
             for button in self.buttons:
                 button.paint(surface)
                 if button.get_state() != self.state and button.get_state() != 0:
+                    self.last_state = self.state
                     self.state = button.get_state()
 
                     print("State updated to: %d by %s from %s" % (
@@ -189,6 +194,11 @@ class BananAttack(game.Game):
 
                     # if button has changed state, stop performing other buttons
                     break
+                if button.pressed == 1:
+                    self.rects.append(monkey.Monkey())
+                    self.selected = len(self.rects)-1
+                    self.selected_offset_x = pygame.mouse.get_pos()[0]-(config.MONKEY_SIZE // 2)
+                    self.selected_offset_y = pygame.mouse.get_pos()[1]-(config.MONKEY_SIZE // 2)
 
     def game_logic(self, keys):
         ### Push correct buttons ###
@@ -198,17 +208,18 @@ class BananAttack(game.Game):
 
         # State 20
         if self.state == config.BA_PLAYING:
-            self.buttons = [button.pauseGame(self.state)]
+            self.buttons = []
 
             # Start wave if it isn't started yet
             if not self.wave_started():
                 # Add enemies to self.enemies
                 self.begin_wave()
-                self.setMemory("score", 894)
+            else:
+                self.begin_wave(True)
 
         # State 30
         if self.state == config.BA_CLEAR:
-            self.buttons = [button.pauseGame(self.state), button.startWave(self.state, self.can_start_wave()), button.monkeyButton(self.state)]
+            self.buttons = [button.startWave(self.state, self.can_start_wave()), button.monkeyButton(self.state)]
 
     def getMemory(self, key):
         with open("bananattack_lib/memory.json", "r+") as jsonFile:
