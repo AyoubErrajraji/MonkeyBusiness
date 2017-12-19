@@ -174,6 +174,10 @@ class BananAttack(game.Game):
             ### Show waypoints ###
             self.showWaypoints()
 
+            ### Draw monkeys ###
+            for tower in self.rects:
+                tower.paint(surface)
+
             ### Pause Overlay ###
             if self.state == config.BA_PAUSE:
                 self.pauseOverlay()
@@ -195,10 +199,6 @@ class BananAttack(game.Game):
                     self.selected = len(self.rects)-1
                     self.selected_offset_x = pygame.mouse.get_pos()[0]-(config.MONKEY_SIZE // 2)
                     self.selected_offset_y = pygame.mouse.get_pos()[1]-(config.MONKEY_SIZE // 2)
-
-            ### Draw monkeys ###
-            for tower in self.rects:
-                tower.paint(surface)
 
     def game_logic(self, keys):
         ### Push correct buttons ###
