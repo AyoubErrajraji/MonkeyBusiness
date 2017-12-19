@@ -3,7 +3,7 @@ from escapetheguards_lib import config
 
 pygame.init()
 
-pygame.display.set_caption('Escape The Guards')
+#pygame.display.set_caption('Escape The Guards')
 
 clock = pygame.time.Clock()
 pause = False
@@ -126,6 +126,8 @@ class run():
                             quit()
 
             config.screen.blit(backgroundintro, (0, 0))
+
+            pygame.display.set_caption('Escape The Guards')
 
             myfont = pygame.font.SysFont("comicsansms", 80)
             label = myfont.render("Escape Those Guards!", 1, (config.black))

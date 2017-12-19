@@ -4,6 +4,7 @@ import json
 import os
 import math
 import itertools
+
 pygame.init()
 pygame.font.init()
 
