@@ -10,6 +10,7 @@ gray = (206,206,206)
 brown = (102,51,0)
 yellow = (204,204,0)
 
+
 ### SCREEN: ###
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -17,6 +18,8 @@ display_width = 1280
 display_height = 720
 
 =======
+=======
+>>>>>>> b974ad614c5984829e61a4c5d34a4f215e175ffb
 screen_width = 1280
 screen_height = 720
 
@@ -25,6 +28,7 @@ screenDim = (screen_width, screen_height)
 
 screen = pygame.display.set_mode(screenDim)
 
+<<<<<<< HEAD
 backgroundintro = pygame.image.load('bgintro.png').convert()
 backgroundintro = pygame.transform.scale(backgroundintro, (screen_width,screen_height))
 logoImg = pygame.image.load('logo.png')
@@ -37,4 +41,9 @@ barrelsideImg = pygame.transform.scale(barrelsideImg, (200,250))
 =======
 display_width = 1280
 display_height = 720
+<<<<<<< HEAD
 >>>>>>> AyoubErrajraji
+=======
+
+>>>>>>> b974ad614c5984829e61a4c5d34a4f215e175ffb
+>>>>>>> master

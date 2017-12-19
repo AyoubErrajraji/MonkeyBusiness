@@ -8,19 +8,17 @@ import sys
 from pygame import *
 font.init()
 from math import cos, radians
+import json
 from bananattack_lib import main as bananattack
 from monkeywar_lib import monkeywar
 from crosstheroad_lib import main as crosstheroad
 from finalfight_lib import game as finalfight
-<<<<<<< HEAD
-=======
 from fightclub_lib import fightclub
 from escapetheguards_lib import etg as escapetheguards
 from menu_lib import config
 from os.path import dirname, join
->>>>>>> master
 
-def menu(menu, pos='center', font1=None, font2=None, color1=(128, 128, 128), color2=None, interline=5, justify=True, light=5, speed=300, lag=30):
+def menu(menu, clickList, pos='center', font1=None, font2=None, color1=(128, 128, 128), color2=None, interline=5, justify=True, light=5, speed=300, lag=30):
 
     class Item(Rect):
 
@@ -133,7 +131,10 @@ def menu(menu, pos='center', font1=None, font2=None, color1=(128, 128, 128), col
                 idx = idx_
                 r = show()
         elif ev.type == MOUSEBUTTONUP and r.collidepoint(ev.pos):
-            ret = menu[idx].label, idx
+            if menu[idx].label in clickList:
+                ret = menu[idx].label, idx                              #clickable menu item
+            else:
+                ret = menu[idx].label, idx                              #nonclickable menu item
             break
         elif ev.type == KEYDOWN:
             try:
@@ -159,17 +160,33 @@ def menu(menu, pos='center', font1=None, font2=None, color1=(128, 128, 128), col
 
     for ev in events:
         event.post(ev)
-    return ret
+
+    if ret != None:
+        return ret
 
 
 class run(object):
+    def getMemory(self, key):
+        with open("menu_lib/memory.json", "r+") as jsonFile:
+            data = json.load(jsonFile)
 
-    def runm(self,resolution=(1280,720)):
+            return data[key]
+
+    def setMemory(self, key, value):
+        with open("menu_lib/memory.json", "r+") as jsonFile:
+            data = json.load(jsonFile)
+
+            data[key] = value
+
+            jsonFile.seek(0)  # rewind
+            json.dump(data, jsonFile)
+            jsonFile.truncate()
+
+    def runm(self,balance=None,resolution=(1280,720)):
 
         time.Clock()
-        from os.path import dirname, join
+        from os.path import join
 
-        here = dirname(__file__)
         scr = display.set_mode(resolution)
         print(menu.__doc__)
         f = font.Font(join('data/menu/FEASFBRG.ttf'), 65)
@@ -179,6 +196,10 @@ class run(object):
         r = mainmenu.get_rect()
         r.centerx, r.top = 650, 180
 
+        # Update Balance
+        if balance != None:
+            self.setMemory("balance",self.getMemory("balance") + balance)
+
         # Achtergrond instellen
         background_main = image.load('data/menu/bg.png').convert()
         scr.blit(background_main, (0, 0))
@@ -186,92 +207,97 @@ class run(object):
         scr.blit(mainmenu, r)
         display.flip()
 
-        menu1 = {"menu": ['PLAY', 'ABOUT','SETTINGS', 'EXIT'], "font1": f1, "pos":'center', "color1": (154, 180, 61), "light": 6, "speed": 200, "lag": 20}
-        menu2 = {"menu": ['BananAttack', 'EscapeTheGuards', 'CrossTheRoad', 'FinalFight', 'BananaFightClub', 'MonkeyWar', 'BACK'], "font1": f1, "font2": f, "pos": 'center', "color1": (154, 180, 61), "light": 5, "speed": 200, "lag": 20}
-        menu3 = {"menu": ['Lex de Willigen', 'Luke Hol', 'Ayoub Errajraji', 'Richard van der Knaap', 'Wesley van Balen', 'Milo Brasser', 'BACK'], "font1": f1,"font2": f, "pos": 'center', "color1": (154, 180, 61), "light": 5, "speed": 200, "lag": 20}
-        menu4 = {"menu": ['1920 x 1080', '1280 x 720', 'BACK'], "font1": f1, "pos": 'center', "color1": (154, 180, 61), "light": 6,"speed": 200, "lag": 20}
+        menu1 = {"menu": ['PLAY', 'ABOUT','SETTINGS','STATS', 'EXIT'], "clickList": ['PLAY', 'ABOUT','SETTINGS','STATS', 'EXIT'], "font1": f1, "pos":'center', "color1": (154, 180, 61), "light": 6, "speed": 200, "lag": 20}
+        menu2 = {"menu": ['BananAttack', 'EscapeTheGuards', 'CrossTheRoad', 'FinalFight', 'BananaFightClub', 'MonkeyWar', 'BACK'], "clickList": ['BananAttack', 'EscapeTheGuards', 'CrossTheRoad', 'FinalFight', 'BananaFightClub', 'MonkeyWar', 'BACK'], "font1": f1, "font2": f, "pos": 'center', "color1": (154, 180, 61), "light": 5, "speed": 200, "lag": 20}
+        menu3 = {"menu": ['Lex de Willigen', 'Luke Hol', 'Ayoub Errajraji', 'Richard van der Knaap', 'Wesley van Balen', 'Milo Brasser', 'BACK'], "clickList": ['BACK'], "font1": f1,"font2": f, "pos": 'center', "color1": (154, 180, 61), "light": 5, "speed": 200, "lag": 20}
+        menu4 = {"menu": ['1920 x 1080', '1280 x 720', 'BACK'], "clickList": ['1920 x 1080', '1280 x 720', 'BACK'], "font1": f1, "pos": 'center', "color1": (154, 180, 61), "light": 6,"speed": 200, "lag": 20}
+        menu5 = {"menu": ["User: %s" % (self.getMemory("player")), "Balance: %d" % (self.getMemory("balance")), "Monkey: %s" % (self.getMemory("monkey")), 'BACK'], "clickList": ['BACK'], "font1": f1, "pos":'center', "color1": (154, 180, 61), "light": 6, "speed": 200, "lag": 20}
 
-        menus = (menu1, menu2, menu3, menu4)
-        playlist = [menu1, menu2, menu3, menu4]
+        def response(resp):
+            if resp == 'ABOUT':
+                display.update(scr.blit(bg, (0, 0)))
+                display.update(
+                    scr.blit(f.render('ABOUT', 1, (255, 255, 255)), (550, 120)))
+                resp = menu(**menu3)[0]
+                response(resp)
+
+            if resp == 'BACK': #menu na about sectie
+                scr.fill((0,0,0))
+                scr.blit(background_main, (0, 0))
+                scr.blit(f.render('Monkey Business', 1, (255, 255, 255)), (450, 180))
+                display.update()
+                resp = menu(**menu1)[0]
+                response(resp)
+
+            if resp == 'SETTINGS':
+                display.update(scr.blit(bg, (0, 0)))
+                display.update(
+                    scr.blit(f.render('SETTINGS', 1, (255, 255, 255)), (550, 220)))
+                resp = menu(**menu4)[0]
+                response(resp)
+
+            if resp == '1920 x 1080':
+                resolution = (1920,1080)
+                mymenu = run()
+                mymenu.runm(resolution)
+
+            if resp == '1280 x 720':
+                resolution = (1280,720)
+                mymenu = run()
+                mymenu.runm(resolution)
+
+            if resp == 'STATS':
+                display.update(scr.blit(bg, (0, 0)))
+                display.update(
+                    scr.blit(f.render('STATS', 1, (255, 255, 255)), (550, 200)))
+                resp = menu(**menu5)[0]
+                response(resp)
+
+            if resp == 'PLAY':
+                display.update(scr.blit(bg, r, r))
+                display.update(
+                    scr.blit(f.render('PLAY', 1, (255, 255, 255)), (580, 120)))
+                resp = menu(**menu2)[0]
+                response(resp)
+
+            if resp == 'BananAttack':
+                bananattack.main()
+
+            if resp == 'EscapeTheGuards':
+                mygame = escapetheguards.run()
+                mygame.runm()
+
+            if resp == 'FinalFight':
+                mygame = finalfight.run()
+                mygame.runm()
+
+            if resp == 'BananaFightClub':
+                mygame = fightclub.run()
+                mygame.runm()
+
+            if resp == 'MonkeyWar':
+                mygame = monkeywar.run()
+                mygame.runm()
+
+            if resp == 'CrossTheRoad':
+                crosstheroad.main()
+
+            if resp == 'EXIT':
+                pygame.quit()
+                sys.exit()
+
+            else:
+                scr.fill((0, 0, 0))
+                scr.blit(background_main, (0, 0))
+                scr.blit(f.render('Monkey Business', 1, (255, 255, 255)), (450, 180))
+                display.update()
+                resp = menu(**menu1)[0]
+                response(resp)
 
         resp = "re-show"
         while resp == "re-show":
             resp = menu(**menu1)[0]
-
-        if resp == 'ABOUT':
-            display.update(scr.blit(bg, r, r))
-            display.update(
-                scr.blit(f.render('ABOUT', 1, (255, 255, 255)), (550, 120)))
-            resp = menu(**menu3)[0]
-
-        if resp == 'BACK': #menu na about sectie
-            scr.fill((0,0,0))
-            scr.blit(background_main, (0, 0))
-            scr.blit(f.render('Monkey Business', 1, (255, 255, 255)), (450, 180))
-            display.update()
-            resp = menu(**menu1)[0]
-
-        if resp == 'SETTINGS':
-            display.update(scr.blit(bg, r, r))
-            display.update(
-                scr.blit(f.render('SETTINGS', 1, (255, 255, 255)), (550, 220)))
-            resp = menu(**menu4)[0]
-
-        if resp == '1920 x 1080':
-            resolution = (1920,1080)
-            mymenu = run()
-            mymenu.runm(resolution)
-
-        if resp == '1280 x 720':
-            resolution = (1280,720)
-            mymenu = run()
-            mymenu.runm(resolution)
-
-        if resp == 'BACK': #menu na settings sectie
-            scr.fill((0, 0, 0))
-            scr.blit(background_main, (0, 0))
-            scr.blit(f.render('Monkey Business', 1, (255, 255, 255)), (450, 180))
-            display.update()
-            resp = menu(**menu1)[0]
-
-        if resp == 'PLAY':
-            display.update(scr.blit(bg, r, r))
-            display.update(
-                scr.blit(f.render('PLAY', 1, (255, 255, 255)), (580, 120)))
-            resp = menu(**menu2)[0]
-
-        if resp == 'BananAttack':
-            bananattack.main()
-
-        if resp == 'EscapeTheGuards':
-            mygame = escapetheguards.run()
-            mygame.runm()
-
-        if resp == 'FinalFight':
-            mygame = finalfight.run()
-            mygame.runm()
-
-        if resp == 'BananaFightClub':
-            mygame = fightclub.run()
-            mygame.runm()
-
-        if resp == 'MonkeyWar':
-            mygame = monkeywar.run()
-            mygame.runm()
-
-        if resp == 'CrossTheRoad':
-            crosstheroad.main()
-
-        if resp == 'BACK': #menu na play sectie
-            scr.fill((0, 0, 0))
-            scr.blit(background_main, (0, 0))
-            scr.blit(f.render('Monkey Business', 1, (255, 255, 255)), (450, 180))
-            display.update()
-            resp = menu(**menu1)[0]
-
-        if resp == 'EXIT':
-            pygame.quit()
-            sys.exit()
+            response(resp)
 
 
 

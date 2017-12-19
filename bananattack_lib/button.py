@@ -4,12 +4,14 @@ Created on Nov 25, 2017
 '''
 from bananattack_lib import config
 from bananattack_lib import draw
+from menu_lib import slidemenu
 import pygame
 
 class Button(draw.Draw):
     def __init__(self, position, width, height, image, image_hover):
         # image shown when the mouse is on the button
         self.image_hover = pygame.image.load(image_hover)
+        self.image_hover = pygame.transform.scale(self.image_hover, (width, height))
 
         draw.Draw.__init__(self, config.KIND_BUTTON, position, width, height, image)
 
@@ -82,17 +84,8 @@ class startWave(Button):
         else:
             print("Trying to start Wave while MAX_WAVES is reached")
 
-class pauseGame(Button):
-    def __init__(self, state):
-        Button.__init__(self, (config.BUTTON_PAUSEGAME_X,config.BUTTON_PAUSEGAME_Y), config.BUTTON_PAUSEGAME_WIDTH, config.BUTTON_PAUSEGAME_HEIGHT, config.BUTTON_PAUSEGAME_IMG, config.BUTTON_PAUSEGAME_HOVER_IMG)
-        self.item = None
-        self.state = state
-
-    def task(self):
-        self.state = config.BA_PAUSE
-
 class playGame(Button):
-    def __init__(self, state, running = False):
+    def __init__(self, state, running):
         Button.__init__(self, (config.BUTTON_PLAYGAME_X,config.BUTTON_PLAYGAME_Y), config.BUTTON_PLAYGAME_WIDTH, config.BUTTON_PLAYGAME_HEIGHT, config.BUTTON_PLAYGAME_IMG, config.BUTTON_PLAYGAME_HOVER_IMG)
         self.item = None
         self.state = state
@@ -103,6 +96,28 @@ class playGame(Button):
             self.state = config.BA_PLAYING
         else:
             self.state = config.BA_CLEAR
+
+class exitGame(Button):
+    def __init__(self, state):
+        Button.__init__(self, (config.BUTTON_EXITGAME_X,config.BUTTON_EXITGAME_Y), config.BUTTON_EXITGAME_WIDTH, config.BUTTON_EXITGAME_HEIGHT, config.BUTTON_EXITGAME_IMG, config.BUTTON_EXITGAME_HOVER_IMG)
+        self.item = None
+        self.state = state
+
+    def task(self):
+        mymenu = slidemenu.run()
+        mymenu.runm(100) #voeg 100 balance punten toe aan het hoofdmenu
+
+class monkeyButton(Button):
+    def __init__(self, state):
+        Button.__init__(self, (config.BUTTON_MONKEYBUTTON_X,config.BUTTON_MONKEYBUTTON_Y), config.BUTTON_MONKEYBUTTON_WIDTH, config.BUTTON_MONKEYBUTTON_HEIGHT, config.BUTTON_MONKEYBUTTON_IMG, config.BUTTON_MONKEYBUTTON_HOVER_IMG)
+        self.item = None
+        self.state = state
+
+    def task(self):
+        self.rects.append(monkey.Monkey())
+
+    #operator overloading
+    #interrupt
 
 
 

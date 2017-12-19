@@ -1,133 +1,153 @@
 import pygame
 import sys
-#import math
-pygame.init()
-
-class Game:
-    def __init__(self,screen):
-        self.fps = 30
-        self.frame = pygame.time.Clock()
-        self.screen = screen
-
-    def updateFrame(self):
-        self.frame.tick(self.fps)
-        pygame.display.flip()
-
-class Background(Game):
-    def __init__(self,screen):
-        Game.__init__(self,screen)
-        self.rescale = 2
-        self.forrestImage = None
-
-    def loadForrest(self,name):
-        self.forrestImage = pygame.image.load(name).convert()
-        self.forrestImage = pygame.transform.scale(self.forrestImage, (width, height))
-
-class Player(Game):
-    def __init__(self,screen):
-        Game.__init__(self,screen)
-        self.playerX = 200
-        self.playerY = 550
-        self.player = None
-
-    def loadPlayer(self,name):
-        self.player = pygame.image.load(name).convert_alpha()
-        playerWidth = self.player.get_rect().width
-        playerHeight = self.player.get_rect().height
-        self.player = pygame.transform.scale(self.player, (playerWidth, playerHeight))
-
-    def blitPlayer(self):
-        self.screen.blit(self.player, (200, 550))
-
-    def movePlayer(self):
-        """ Handles Keys """
-        key = pygame.key.get_pressed()
-        dist = 1  # distance moved in 1 frame, try changing it to 5
-        if key[pygame.K_DOWN]:  # down key
-            self.y += dist  # move down
-        elif key[pygame.K_UP]:  # up key
-            self.y -= dist  # move up
-        if key[pygame.K_RIGHT]:  # right key
-            self.x += dist  # move right
-        elif key[pygame.K_LEFT]:  # left key
-            self.x -= dist  # move left
-
-    def draw(self, surface):
-        """ Draw on surface """
-        # blit yourself at your current position
-        surface.blit(self.image, (self.x, self.y))
-
-class Boss(Game):
-    def __init__(self,screen):
-        self.bossX = 350
-        self.bossY = 300
-        self.boss = None
-
-    def loadBoss(self,name):
-        self.boss = pygame.image.load("boss2.png").convert_alpha()
-        bossWidth = self.boss.get_rect().width
-        bossHeight = self.boss.get_rect().height
-        self.boss = pygame.transform.scale(self.boss, (bossWidth, bossHeight))
-
-    def blitBoss(self):
-        screen.blit(boss, (350, 300))
+import json
+import os
+import math
+import itertools
 
 
-class Wolk(Game):
-    def __init__(self, screen):
-        self.wolkX = 430
-        self.wolkY = 130
-        self.wolk = None
+def getMemory(key):
+    with open("memory.json", "r+") as jsonFile:
+        data = json.load(jsonFile)
 
-    def loadWolk(self, name):
-        self.wolk = pygame.image.load("boss2.png").convert_alpha()
-        wolkWidth = self.wolk.get_rect().width
-        wolkHeight = self.wolk.get_rect().height
-        self.wolk = pygame.transform.scale(self.wolk, (wolkWidth,wolkHeight))
-
-    def blitwolk(self):
-        screen.blit(self.wolk, (250, 200))
+        return data[key]
 
 
-width = 900
-height = 700
+def setMemory(key, value):
+    with open("memory.json", "r+") as jsonFile:
+        data = json.load(jsonFile)
+
+        data[key] = value
+
+        jsonFile.seek(0)  # rewind
+        json.dump(data, jsonFile)
+        jsonFile.truncate()
+
+
+#class Player(object):  # represents the bird, not the game
+ #   def __init__(self):
+  #      """ The constructor of the class """
+   #     self.player = pygame.image.load("data/finalfight/monkey.png").convert_alpha()
+    #    # playerWidth = player.get_rect().width
+     #   # playerHeight = player.get_rect().height
+      #  self.player = pygame.transform.scale(player, (150, 150))
+       # self.x = 0
+        #self.y = 0
+
+#def handle_keys(self):
+ #   """ Handles Keys """
+  #  key = pygame.key.get_pressed()
+   # dist = 1 # distance moved in 1 frame, try changing it to 5
+    #if key[pygame.K_DOWN]: # down key
+     #   self.y += dist # move down
+    #elif key[pygame.K_UP]: # up key
+     #   self.y -= dist # move up
+    #if key[pygame.K_RIGHT]: # right key
+     #   self.x += dist # move right
+    #elif key[pygame.K_LEFT]: # left key
+     #   self.x -= dist # move left
+
+def magnitude(v):
+    return math.sqrt(sum(v[i]*v[i] for i in range(len(v))))
+
+def sub(u, v):
+    return [u[i]-v[i] for i in range(len(u))]
+
+def normalize(v):
+    return [v[i]/magnitude(v)  for i in range(len(v))]
+
+width = 1280
+height = 720
 screenDim = (width, height)
 
 screen = pygame.display.set_mode(screenDim)
 
 pygame.display.set_caption("Final Fight")
 
-forrestImage = pygame.image.load("darkForrest.jpg").convert()
+forrestImage = pygame.image.load("openplek.png").convert()
 forrestImage = pygame.transform.scale(forrestImage,(width,height))
 screen.blit(forrestImage,(0,0))
 
-rescale = 2
+#rescale = 2
 boss = pygame.image.load("boss2.png").convert_alpha()
 bossWidth = boss.get_rect().width
 bossHeight = boss.get_rect().height
 boss = pygame.transform.scale(boss,(bossWidth,bossHeight))
-screen.blit(boss,(350,300))
+screen.blit(boss,(520,300))
 
 wolk = pygame.image.load("spreekwolk.png").convert_alpha()
-wolkWidth = wolk.get_rect().width
-wolkHeight = wolk.get_rect().height
-wolk = pygame.transform.scale(wolk,(250,200))
-screen.blit(wolk,(430,130))
+#wolkWidth = wolk.get_rect().width
+#wolkHeight = wolk.get_rect().height
+wolk = pygame.transform.scale(wolk,(350,200))
+screen.blit(wolk,(590,130))
 
 player = pygame.image.load("monkey.png").convert_alpha()
-playerWidth = player.get_rect().width
-playerHeight = player.get_rect().height
+#playerWidth = player.get_rect().width
+#playerHeight = player.get_rect().height
 player = pygame.transform.scale(player,(150,150))
-screen.blit(player,(200,550))
+screen.blit(player,(300,550))
 
 
-finished = False
+pygame.font.init()
+font = pygame.font.Font("FEASFBRG.ttf", 30)
+score = "score: %d" % getMemory("score")
+temp_surface = font.render(score, 1, (255,255,255))
+screen.blit(temp_surface,(1150,10))
 
-while not finished:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            finished = True
-            pygame.quit()
-            sys.exit()
+setMemory("score", 768)
+
+pygame.init()
+
+screen = pygame.display.set_mode((width, height))
+#clock = pygame.time.Clock()
+
+
+pause_text = pygame.font.Font("FEASFBRG.ttf", 60).render('Paused', True, pygame.color.Color('White'))
+s = pygame.Surface((width, height), pygame.SRCALPHA)  # per-pixel alpha
+s.fill((0, 0, 0, 150))
+
+RUNNING, PAUSE = 0, 1
+state = RUNNING
+
+
+#player = Player()  # create an instance
+clock = pygame.time.Clock()
+
+while True:
+
+    for e in pygame.event.get():
+        if e.type == pygame.QUIT: break
+        if e.type == pygame.KEYDOWN:
+            if e.key == pygame.K_p: state = PAUSE
+            if e.key == pygame.K_s: state = RUNNING
+    else:
+        screen.fill((0, 0, 0))
+
+        if state == RUNNING:
+            screen.blit(forrestImage, (0, 0))
+            screen.blit(boss, (520, 300))
+            screen.blit(wolk, (590, 130))
+            screen.blit(player, (300, 550))
+            screen.blit(temp_surface, (1150, 10))
+
+
+
+        elif state == PAUSE:
+
+            screen.blit(forrestImage, (0, 0))
+            screen.blit(boss, (520, 300))
+
+            screen.blit(player, (300, 550))
+            screen.blit(temp_surface, (1150, 10))
+            screen.blit(s, (0, 0))
+            screen.blit(pause_text, (600, 360))
+
+
+
         pygame.display.flip()
+        clock.tick(60)
+        continue
+    #player.handle_keys()  # handle the keys
+
+    break
 

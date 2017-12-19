@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 .DS_Store
 *.xml
 *.iml
@@ -10,6 +11,8 @@ monkeywar_lib/__pycache__/monkeywar.cpython-36.pyc
 .idea/workspace.xml
 .idea/Bloons Tower Defence.iml
 =======
+=======
+>>>>>>> master
 .DS_Store
 *.xml
 *.iml
@@ -23,4 +26,5 @@ monkeywar_lib/__pycache__/monkeywar.cpython-36.pyc
 menu_lib/__pycache__/slidemenu.cpython-36.pyc
 menu_lib/__pycache__/slidemenu.cpython-36.pyc
 escapetheguards_lib/__pycache__/etg.cpython-36.pyc
->>>>>>> master
+*.pyc
+data/bananattack/sprites/truck.gif
