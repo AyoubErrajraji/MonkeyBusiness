@@ -10,7 +10,7 @@ from finalfight_lib import game as finalfight
 from fightclub_lib import fightclub
 from monkeywar_lib import monkeywar
 
-debug = 3
+debug = 0
 
 if debug == 0:
     mymenu = slidemenu.run()
