@@ -14,7 +14,7 @@ from monkeywar_lib import monkeywar
 from crosstheroad_lib import main as crosstheroad
 from finalfight_lib import game as finalfight
 from fightclub_lib import fightclub
-from escapetheguards_lib import etg as escapetheguards
+from escapetheguards_lib import ETG as escapetheguards
 from menu_lib import config
 from os.path import dirname, join
 
