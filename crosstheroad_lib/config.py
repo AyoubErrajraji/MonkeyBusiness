@@ -20,3 +20,4 @@ sideMenu = (430, 720)
 FPS = 60
 grid = 50
 cars = 4
+difficulties = ['hard', 'medium', 'easy']
