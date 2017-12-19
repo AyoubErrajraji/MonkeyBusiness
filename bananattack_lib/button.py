@@ -4,6 +4,8 @@ Created on Nov 25, 2017
 '''
 from bananattack_lib import config
 from bananattack_lib import draw
+from bananattack_lib import bananattack
+from bananattack_lib import monkey
 from menu_lib import slidemenu
 import pygame
 
@@ -31,6 +33,9 @@ class Button(draw.Draw):
 
         # set default state
         self.state = 0
+
+        # pressed
+        self.pressed = 0
 
     # Overwrite the Draw.paint function because we need to implement hovering
     def paint(self, surface):
@@ -114,10 +119,9 @@ class monkeyButton(Button):
         self.state = state
 
     def task(self):
-        self.rects.append(monkey.Monkey())
+        self.pressed = 1
 
     #operator overloading
-    #interrupt
 
 
 

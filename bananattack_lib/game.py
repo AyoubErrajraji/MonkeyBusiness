@@ -82,6 +82,7 @@ class Game:
                         # move object
                         self.rects[self.selected].x = e.pos[0] + self.selected_offset_x
                         self.rects[self.selected].y = e.pos[1] + self.selected_offset_y
+                        print(self.rects[self.selected].x)
 
                 # update window size if resized
                 if e.type == pygame.VIDEORESIZE:
