@@ -1,49 +1,35 @@
-import pygame, math, itertools
+import pygame as pg
 
-def magnitude(v):
-    return math.sqrt(sum(v[i]*v[i] for i in range(len(v))))
 
-def sub(u, v):
-    return [u[i]-v[i] for i in range(len(u))]
+def main():
+    pg.init()
+    screen = pg.display.set_mode((640, 480))
+    font = pg.font.Font(None, 40)
+    gray = pg.Color('gray19')
+    blue = pg.Color('dodgerblue')
+    # The clock is used to limit the frame rate
+    # and returns the time since last tick.
+    clock = pg.time.Clock()
+    timer = 3  # Decrease this to count down.
+    dt = 0  # Delta time (time since last tick).
 
-def normalize(v):
-    return [v[i]/magnitude(v)  for i in range(len(v))]
+    done = False
+    while not done:
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                done = True
 
-pygame.init()
-screen = pygame.display.set_mode((300, 300))
-clock = pygame.time.Clock()
+        timer -= dt
+        if timer <= 0:
+            timer = 5
 
-path = itertools.cycle([(26, 43), (105, 110), (45, 225), (145, 295), (266, 211), (178, 134), (250, 56), (147, 12)])
-target = next(path)
-ball, speed = pygame.rect.Rect(target[0], target[1], 10, 10), 3.6
-pause_text = pygame.font.SysFont('Consolas', 32).render('Pause', True, pygame.color.Color('White'))
+        screen.fill(gray)
+        txt = font.render(str(round(timer, 2)), True, blue)
+        screen.blit(txt, (70, 70))
+        pg.display.flip()
+        dt = clock.tick(30) / 1000  # / 1000 to convert to seconds.
 
-RUNNING, PAUSE = 0, 1
-state = RUNNING
 
-while True:
-    for e in pygame.event.get():
-        if e.type == pygame.QUIT: break
-        if e.type == pygame.KEYDOWN:
-            if e.key == pygame.K_p: state = PAUSE
-            if e.key == pygame.K_s: state = RUNNING
-    else:
-        screen.fill((0, 0, 0))
-
-        if state == RUNNING:
-            target_vector = sub(target, ball.center)
-
-            if magnitude(target_vector) < 2:
-                target = next(path)
-            else:
-                ball.move_ip([c * speed for c in normalize(target_vector)])
-
-            pygame.draw.rect(screen, pygame.color.Color('Yellow'), ball)
-
-        elif state == PAUSE:
-            screen.blit(pause_text, (100, 100))
-
-        pygame.display.flip()
-        clock.tick(60)
-        continue
-    break
+if __name__ == '__main__':
+    main()
+    pg.quit()
