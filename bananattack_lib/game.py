@@ -80,8 +80,8 @@ class Game:
                     mouse_pos = e.pos
                     if self.selected is not None:  # selected can be `0` so `is not None` is required
                         # move object
-                        self.rects[self.selected].x = e.pos[0] + self.selected_offset_x
-                        self.rects[self.selected].y = e.pos[1] + self.selected_offset_y
+                        self.rects[self.selected].x = e.pos[0] - (config.MONKEY_SIZE//2)
+                        self.rects[self.selected].y = e.pos[1] - (config.MONKEY_SIZE//2)
 
                 # update window size if resized
                 if e.type == pygame.VIDEORESIZE:

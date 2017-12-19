@@ -4,8 +4,8 @@ from bananattack_lib import config
 
 class Monkey():
     def __init__(self):
-        self.x = 0
-        self.y = 0
+        self.x = pygame.mouse.get_pos()[0]-(config.MONKEY_SIZE // 2)
+        self.y = pygame.mouse.get_pos()[1]-(config.MONKEY_SIZE // 2)
 
     def paint(self, surface):
         image = pygame.image.load(config.MONKEY_IMAGE)
