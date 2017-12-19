@@ -158,7 +158,16 @@ class Pause(Game):
         self.exitButton = pygame.transform.scale(self.exitButton, (150, 50))
 
     def blitExitButton(self, screen):
-        screen.blit(self.exitButton, (605, 420))
+        screen.blit(self.exitButton, (602, 470))
+
+    def loadMenuButton(self, name):
+        self.menuButton = pygame.image.load(name).convert_alpha()
+
+        self.menuButton = pygame.transform.scale(self.menuButton, (150, 50))
+
+    def blitMenuButton(self, screen):
+        screen.blit(self.menuButton, (605, 420))
+
 
 
 class run():
@@ -190,6 +199,8 @@ class run():
 
         newPause.loadExitButton("data/finalfight/exitButton.png")
 
+        newPause.loadMenuButton("data/finalfight/menuButton.png")
+
         newBoss.loadBoss("data/finalfight/boss2.png")
 
         newWolk.loadWolk("data/finalfight/spreekwolk.png")
@@ -209,6 +220,8 @@ class run():
         #newPlayer.movePlayer()  # handle the keys
 
         newPause.blitExitButton(screen)
+
+        newPause.blitMenuButton(screen)
 
         newScore.blitScore(screen)
 
@@ -287,6 +300,7 @@ class run():
                     newScore.blitScore(screen)
                     screen.blit(s, (0, 0))
                     screen.blit(pause_text, (600, 360))
+                    newPause.blitMenuButton(screen)
                     newPause.blitExitButton(screen)
 
  #               if state == RUNNING:
