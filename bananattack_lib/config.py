@@ -69,6 +69,10 @@ MONEY_Y = 60
 STATE_X = 950
 STATE_Y = 100
 
+# State #
+SCORE_X = 950
+SCORE_Y = 140
+
 # StartWave Button
 BUTTON_STARTWAVE_IMG = "data/bananattack/buttons/startWave.png"
 BUTTON_STARTWAVE_HOVER_IMG = "data/bananattack/buttons/startWaveHover.png"
@@ -77,19 +81,26 @@ BUTTON_STARTWAVE_HEIGHT = 100
 BUTTON_STARTWAVE_X = 950
 BUTTON_STARTWAVE_Y = 400
 
-BUTTON_PAUSEGAME_IMG = "data/bananattack/buttons/pauseGame.png"
-BUTTON_PAUSEGAME_HOVER_IMG = "data/bananattack/buttons/pauseGameHover.png"
-BUTTON_PAUSEGAME_WIDTH = 100
-BUTTON_PAUSEGAME_HEIGHT = 100
-BUTTON_PAUSEGAME_X = 950
-BUTTON_PAUSEGAME_Y = 300
-
 BUTTON_PLAYGAME_IMG = "data/bananattack/buttons/playGame.png"
 BUTTON_PLAYGAME_HOVER_IMG = "data/bananattack/buttons/playGameHover.png"
 BUTTON_PLAYGAME_WIDTH = 100
 BUTTON_PLAYGAME_HEIGHT = 100
-BUTTON_PLAYGAME_X = 950
-BUTTON_PLAYGAME_Y = 300
+BUTTON_PLAYGAME_X = 580
+BUTTON_PLAYGAME_Y = 450
+
+BUTTON_EXITGAME_IMG = "data/bananattack/buttons/exitGame.png"
+BUTTON_EXITGAME_HOVER_IMG = "data/bananattack/buttons/exitGameHover.png"
+BUTTON_EXITGAME_WIDTH = 300
+BUTTON_EXITGAME_HEIGHT = 100
+BUTTON_EXITGAME_X = 480
+BUTTON_EXITGAME_Y = 350
+
+BUTTON_MONKEYBUTTON_IMG = "data/bananattack/buttons/monkeyButton.png"
+BUTTON_MONKEYBUTTON_HOVER_IMG = "data/bananattack/buttons/monkeyButtonHover.png"
+BUTTON_MONKEYBUTTON_WIDTH = 100
+BUTTON_MONKEYBUTTON_HEIGHT = 100
+BUTTON_MONKEYBUTTON_X = 950
+BUTTON_MONKEYBUTTON_Y = 200
 
 # Kind of draw
 KIND_BUTTON = 36
@@ -102,6 +113,10 @@ DEFAULT_WIDTH = 30
 DEFAULT_HEIGHT = 30
 DEFAULT_IMAGE = "data/bananattack/sprites/truck_right.png"
 DEFAULT_DELAY = 100
+
+# MONKEY #
+MONKEY_SIZE = 50
+MONKEY_IMAGE = "data/bananattack/sprites/monkey.png"
 
 # WAYPOINTS #
 STARTPOINT = (0, 311)
