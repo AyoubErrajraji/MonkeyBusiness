@@ -115,7 +115,6 @@ class Crosstheroad:
 
         # Set quit to False, so loop will continue
         self.quit = False
-        self.monkey = Monkey((self.config.screenDim[0] - self.config.sideMenu[0])/2 - self.config.grid/2, self.config.screenDim[1]-self.config.grid, self.config.grid, self.config.grid, self.screen, self.config, random.randrange(1, 20), 'none')
         self.cars = []
         self.monkeys = []
 
