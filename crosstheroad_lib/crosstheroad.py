@@ -232,6 +232,11 @@ class Crosstheroad:
 
     def run(self):
         while not self.quit:
+            self.collisionDet()
+            self.clock.tick(30)
+
+            self.blit()
+            self.update()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     # Set quit to True, so pygame will close
@@ -239,9 +244,4 @@ class Crosstheroad:
                     pygame.quit()
                     sys.exit()
                 self.move(event)
-            self.collisionDet()
-            self.clock.tick(30)
-
-            self.blit()
-            self.update()
             pygame.display.update()
