@@ -1,4 +1,4 @@
-import pygame, sys
+import pygame, sys, random
 
 
 class Rectangle:
@@ -42,18 +42,27 @@ class Button(Rectangle):
 
 
 class Monkey(Rectangle):
-    def __init__(self, x, y, w, h, screen, config):
+    def __init__(self, x, y, w, h, screen, config, amount, monkeyList):
         Rectangle.__init__(self, x, y, w, h)
         self.screen = screen
         self.config = config
+        self.amount = amount
+        self.monkeys = monkeyList
 
     def show(self):
         mr = pygame.Rect(self.x, self.y, self.w, self.h)
         pygame.draw.rect(self.screen, self.config.blue, mr)
+        pygame.draw.circle(self.screen, self.config.yellow, (int(self.x + self.w), int(self.y)), self.config.circle_radius)
+        font = pygame.font.Font("data/bananattack/FEASFBRG.ttf", 20)
+        amount = font.render(str(self.amount), False, self.config.black)
+        self.screen.blit(amount, (int(self.x + self.w - amount.get_rect().width/2), int(self.y - amount.get_rect().height/2)))
+
+    def place(self, x, y):
+        self.x = x
+        self.y = y
 
     def reset(self):
-        self.x = (self.config.screenDim[0] - self.config.sideMenu[0])/2 - (self.config.grid/2)
-        self.y = self.config.screenDim[1] - self.config.grid
+        self.monkeys.pop(0)
 
     def move(self, xdir, ydir):
         if xdir == -1:
@@ -97,32 +106,35 @@ class Car(Rectangle):
 
 
 class Crosstheroad:
-    def __init__(self, screen, config):
+    def __init__(self, screen, config, settings):
         self.clock = pygame.time.Clock()
         self.config = config
         self.screen = screen
         self.score = 0
+        self.settings = settings
 
         # Set quit to False, so loop will continue
         self.quit = False
-        self.monkey = Monkey((self.config.screenDim[0] - self.config.sideMenu[0])/2 - self.config.grid/2, self.config.screenDim[1]-self.config.grid, self.config.grid, self.config.grid, self.screen, self.config)
+        self.monkey = Monkey((self.config.screenDim[0] - self.config.sideMenu[0])/2 - self.config.grid/2, self.config.screenDim[1]-self.config.grid, self.config.grid, self.config.grid, self.screen, self.config, random.randrange(1, 20), 'none')
         self.cars = []
-        self.i = 0
+        self.monkeys = []
 
     def sideMenu(self):
         sm = pygame.Rect(self.config.screenDim[0] - self.config.sideMenu[0], 0, self.config.sideMenu[0], self.config.sideMenu[1])
-        pygame.draw.rect(self.screen, self.config.yellow, sm)
-        font = pygame.font.SysFont("helvetica", 15)
-        score = font.render(str(self.score), 1, self.config.black)
-        self.screen.blit(score, (self.config.screenDim[0] - self.config.sideMenu[0]/2 - score.get_rect().width, self.config.sideMenu[1] - 100))
-        fps = font.render("fps" + str(self.clock.get_fps()), 1, self.config.black)
-        self.screen.blit(fps, (self.config.screenDim[0] - self.config.sideMenu[0]/2 - score.get_rect().width, self.config.sideMenu[1] - 300))
+        pygame.draw.rect(self.screen, self.config.sevopblack, sm)
+        font1 = pygame.font.Font("data/bananattack/FEASFBRG.ttf", 60)
+        font2 = pygame.font.SysFont("Helvetica", 15)
+        score = font1.render(str(self.score), 1, self.config.white)
+        self.screen.blit(score, (self.config.screenDim[0] - self.config.sideMenu[0]/2 - score.get_rect().width/2, self.config.sideMenu[1] / 2 - score.get_rect().height/2))
+        if self.settings['FPS']:
+            fps = font2.render("fps: " + str(round(self.clock.get_fps(), 3)), 1, self.config.yellow)
+            self.screen.blit(fps, (self.config.screenDim[0] - fps.get_rect().width - 20, self.config.sideMenu[1] - fps.get_rect().height))
 
     def addCars(self):
         # Add first row of cars
         if len(self.cars) < 3:
             self.cars.append(Car(0, self.config.screenDim[1] - self.config.grid * 2, self.config.grid * 2, self.config.grid, self.screen, self.config, 6, 'crosstheroad_lib/src/car1_r.png'))
-            self.cars.append(Car(0 + (self.config.grid * 7), self.config.screenDim[1] - self.config.grid * 2, self.config.grid * 2, self.config.grid, self.screen, self.config, 6, 'crosstheroad_lib/src/car3_r.png'), )
+            self.cars.append(Car(0 + (self.config.grid * 7), self.config.screenDim[1] - self.config.grid * 2, self.config.grid * 2, self.config.grid, self.screen, self.config, 6, 'crosstheroad_lib/src/car3_r.png'))
             self.cars.append(Car(0 + (self.config.grid * 16), self.config.screenDim[1] - self.config.grid * 2, self.config.grid * 2, self.config.grid, self.screen, self.config, 6, 'crosstheroad_lib/src/car4_r.png'))
         # Add second row of cars
         if len(self.cars) < 7:
@@ -171,7 +183,6 @@ class Crosstheroad:
     def blit(self):
         background = pygame.image.load("crosstheroad_lib/src/background.jpg").convert()
         self.screen.blit(background, (0,0))
-        self.monkey.show()
         self.addCars()
         # Debugging console info
         # print(len(self.cars))
@@ -179,29 +190,46 @@ class Crosstheroad:
             self.cars[index].show()
             self.cars[index].update()
         self.sideMenu()
+        for index in range(len(self.monkeys)):
+            self.monkeys[index].show()
 
-    def update(self, e):
+    def update(self):
+        if len(self.monkeys) < 2:
+            self.monkeys.append(Monkey((self.config.screenDim[0] - self.config.sideMenu[0])/2 - self.config.grid/2,
+                                       self.config.screenDim[1]-self.config.grid,
+                                       self.config.grid,
+                                       self.config.grid,
+                                       self.screen,
+                                       self.config,
+                                       random.randrange(1, 20),
+                                       self.monkeys))
+        # self.monkeys[1].place((self.config.screenDim[0] - self.config.sideMenu[0])/2 - self.config.grid/2 + self.config.grid,self.config.screenDim[1] - self.config.grid)
+
+    def move(self, e):
         if e.type == pygame.KEYDOWN and e.key == pygame.K_LEFT:
             # print("Key Left pressed")
-            self.monkey.move(-1, 0)
+            self.monkeys[0].move(-1, 0)
         elif e.type == pygame.KEYDOWN and e.key == pygame.K_RIGHT:
             # print("Key Right pressed")
-            self.monkey.move(1, 0)
+            self.monkeys[0].move(1, 0)
         elif e.type == pygame.KEYDOWN and e.key == pygame.K_UP:
             # print("Key Up pressed")
-            self.monkey.move(0, -1)
+            self.monkeys[0].move(0, -1)
         elif e.type == pygame.KEYDOWN and e.key == pygame.K_DOWN:
             # print("Key Down pressed")
-            self.monkey.move(0, 1)
-        if self.monkey.y < 75:
-            self.score += 1
-            self.monkey.reset()
+            self.monkeys[0].move(0, 1)
+        if self.monkeys[0].y < 150:
+            self.score += self.monkeys[0].amount
+            self.monkeys[0].reset()
 
     def collisionDet(self):
         for index in range(len(self.cars)):
-            if not self.monkey.intersects(self.cars[index].x, self.cars[index].y, self.cars[index].w, self.cars[index].h):
-                self.monkey.reset()
-                self.score = 0
+            if not self.monkeys[0].intersects(self.cars[index].x, self.cars[index].y, self.cars[index].w, self.cars[index].h):
+                if self.score > self.monkeys[0].amount:
+                    self.score -= self.monkeys[0].amount
+                else:
+                    self.score = 0
+                self.monkeys[0].reset()
 
     def run(self):
         while not self.quit:
@@ -211,9 +239,10 @@ class Crosstheroad:
                     self.quit = True
                     pygame.quit()
                     sys.exit()
-                self.update(event)
+                self.move(event)
             self.collisionDet()
             self.clock.tick(30)
 
             self.blit()
+            self.update()
             pygame.display.update()
