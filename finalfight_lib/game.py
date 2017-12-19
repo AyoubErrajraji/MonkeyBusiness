@@ -4,6 +4,7 @@ import json
 import os
 import math
 import itertools
+
 pygame.init()
 pygame.font.init()
 
@@ -159,6 +160,7 @@ class Pause(Game):
 
     def blitExitButton(self, screen):
         screen.blit(self.exitButton, (605, 420))
+
 
     #def loadMenuButton(self, name):
     #   self.menuButton = pygame.image.load(name).convert_alpha()
