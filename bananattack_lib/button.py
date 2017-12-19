@@ -84,17 +84,8 @@ class startWave(Button):
         else:
             print("Trying to start Wave while MAX_WAVES is reached")
 
-class pauseGame(Button):
-    def __init__(self, state):
-        Button.__init__(self, (config.BUTTON_PAUSEGAME_X,config.BUTTON_PAUSEGAME_Y), config.BUTTON_PAUSEGAME_WIDTH, config.BUTTON_PAUSEGAME_HEIGHT, config.BUTTON_PAUSEGAME_IMG, config.BUTTON_PAUSEGAME_HOVER_IMG)
-        self.item = None
-        self.state = state
-
-    def task(self):
-        self.state = config.BA_PAUSE
-
 class playGame(Button):
-    def __init__(self, state, running = False):
+    def __init__(self, state, running):
         Button.__init__(self, (config.BUTTON_PLAYGAME_X,config.BUTTON_PLAYGAME_Y), config.BUTTON_PLAYGAME_WIDTH, config.BUTTON_PLAYGAME_HEIGHT, config.BUTTON_PLAYGAME_IMG, config.BUTTON_PLAYGAME_HOVER_IMG)
         self.item = None
         self.state = state
