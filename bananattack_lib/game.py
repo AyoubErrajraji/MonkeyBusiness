@@ -62,7 +62,7 @@ class Game:
                     keys.discard(e.key)
 
                 elif e.type == pygame.MOUSEBUTTONDOWN:
-                    if e.button == config.MOUSE_LEFT:
+                    if e.button == 1:
                         for i, monkey in enumerate(self.rects):
                             if monkey.collidepoint(e.pos):
                                 self.selected = i
@@ -72,10 +72,8 @@ class Game:
                 # track which mouse buttons were pressed
                 if e.type == pygame.MOUSEBUTTONUP:
                     newclicks.add(e.button)
-                    if e.button == config.MOUSE_LEFT:
-                        if self.selected is not None:
-                            if self.rects[self.selected].canPlace(e.pos):
-                                self.selected = None
+                    if e.button == 1:
+                        self.selected = None
 
                 # track the mouse's position
                 if e.type == pygame.MOUSEMOTION:

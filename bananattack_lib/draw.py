@@ -4,7 +4,6 @@ Created on Nov 25, 2017
 '''
 import pygame
 from bananattack_lib import item
-from bananattack_lib import config
 
 class Draw(item.Item):
     def __init__(self, kind, position, width, height, image):
@@ -68,18 +67,8 @@ class Draw(item.Item):
     def get_dims(self):
         return (self.get_width(), self.get_height())
 
-    def paint(self, surface, lives=100):
+    def paint(self, surface):
         surface.blit(self.image, self.get_center())
-        pygame.draw.line(surface, config.GREEN,
-                         (
-                            (self.position[0]-(self.width//2)),
-                            (self.position[1]-(self.height//2)-10)
-                         ),
-                         (
-                            (self.position[0]-(self.width//2)+(lives//2),
-                            (self.position[1]-(self.height//2)-10)
-                         )
-                         ), 10)
 
     def is_inside(self, position):
         if position[0] >= self.position[0] and position[0] < self.position[0] + self.width:

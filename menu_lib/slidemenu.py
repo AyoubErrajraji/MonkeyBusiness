@@ -168,13 +168,13 @@ def menu(menu, clickList, pos='center', font1=None, font2=None, color1=(128, 128
 
 class run(object):
     def getMemory(self, key):
-        with open("data/memory.json", "r+") as jsonFile:
+        with open("menu_lib/memory.json", "r+") as jsonFile:
             data = json.load(jsonFile)
 
             return data[key]
 
     def setMemory(self, key, value):
-        with open("data/memory.json", "r+") as jsonFile:
+        with open("menu_lib/memory.json", "r+") as jsonFile:
             data = json.load(jsonFile)
 
             data[key] = value
@@ -283,8 +283,12 @@ class run(object):
                 sys.exit()
 
             else:
-                pygame.quit()
-                sys.exit()
+                scr.fill((0, 0, 0))
+                scr.blit(background_main, (0, 0))
+                scr.blit(f.render('Monkey Business', 1, (255, 255, 255)), (450, 180))
+                display.update()
+                resp = menu(**menu1)[0]
+                response(resp)
 
         resp = "re-show"
         while resp == "re-show":

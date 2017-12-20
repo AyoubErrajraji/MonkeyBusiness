@@ -1,10 +1,10 @@
 import pygame
 import sys
 import json
-import os
+#import os
 import math
-import itertools
-
+#import itertools
+from menu_lib import slidemenu
 pygame.init()
 pygame.font.init()
 
@@ -124,7 +124,7 @@ class Score(Game):
             jsonFile.truncate()
 
     def loadScore(self,screen):
-        font = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 30)
+        font = pygame.font.Font("finalfight_lib/FEASFBRG.ttf", 30)
         score = "score: %d" % Score.getMemory("score")
         self.temp_surface = font.render(score, 1, (255, 255, 255))
 
@@ -160,6 +160,19 @@ class Pause(Game):
 
     def blitExitButton(self, screen):
         screen.blit(self.exitButton, (605, 420))
+
+   # def task(self):
+    #    mymenu = slidemenu.run()
+     #   mymenu.runm(100)  # voeg 100 balance punten toe aan het hoofdmenu
+
+    #def response(resp):
+     #      scr.fill((0, 0, 0))
+      #      scr.blit(background_main, (0, 0))
+       #     scr.blit(f.render('Monkey Business', 1, (255, 255, 255)), (450, 180))
+        #    display.update()
+         #   resp = menu(**menu1)[0]
+          #  response(resp)
+
 
     #def loadMenuButton(self, name):
     #   self.menuButton = pygame.image.load(name).convert_alpha()
