@@ -2,6 +2,7 @@
 Created on Nov 25, 2017
 @author: lexdewilligen
 '''
+
 from menu_lib import slidemenu
 from bananattack_lib import main as bananattack
 from escapetheguards_lib import etg as escapetheguards
@@ -34,6 +35,7 @@ elif debug == 6:
     mymenu.runm()
 elif debug == 7:
     mymenu = purchase.main()
+
 
 
 
