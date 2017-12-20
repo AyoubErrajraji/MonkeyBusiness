@@ -168,13 +168,13 @@ def menu(menu, clickList, pos='center', font1=None, font2=None, color1=(128, 128
 
 class run(object):
     def getMemory(self, key):
-        with open("menu_lib/memory.json", "r+") as jsonFile:
+        with open("data/memory.json", "r+") as jsonFile:
             data = json.load(jsonFile)
 
             return data[key]
 
     def setMemory(self, key, value):
-        with open("menu_lib/memory.json", "r+") as jsonFile:
+        with open("data/memory.json", "r+") as jsonFile:
             data = json.load(jsonFile)
 
             data[key] = value
