@@ -15,6 +15,7 @@ from crosstheroad_lib import main as crosstheroad
 from finalfight_lib import game as finalfight
 from fightclub_lib import fightclub
 from escapetheguards_lib import etg as escapetheguards
+from purchase_lib import purchase
 from menu_lib import config
 from os.path import dirname, join
 
@@ -207,11 +208,10 @@ class run(object):
         scr.blit(mainmenu, r)
         display.flip()
 
-        menu1 = {"menu": ['PLAY', 'ABOUT','SETTINGS','STATS', 'EXIT'], "clickList": ['PLAY', 'ABOUT','SETTINGS','STATS', 'EXIT'], "font1": f1, "pos":'center', "color1": (154, 180, 61), "light": 6, "speed": 200, "lag": 20}
+        menu1 = {"menu": ['PLAY', 'ABOUT','SETTINGS','STORE', 'EXIT'], "clickList": ['PLAY', 'ABOUT','SETTINGS','STORE', 'EXIT'], "font1": f1, "pos":'center', "color1": (154, 180, 61), "light": 6, "speed": 200, "lag": 20}
         menu2 = {"menu": ['BananAttack', 'EscapeTheGuards', 'CrossTheRoad', 'FinalFight', 'BananaFightClub', 'MonkeyWar', 'BACK'], "clickList": ['BananAttack', 'EscapeTheGuards', 'CrossTheRoad', 'FinalFight', 'BananaFightClub', 'MonkeyWar', 'BACK'], "font1": f1, "font2": f, "pos": 'center', "color1": (154, 180, 61), "light": 5, "speed": 200, "lag": 20}
         menu3 = {"menu": ['Lex de Willigen', 'Luke Hol', 'Ayoub Errajraji', 'Richard van der Knaap', 'Wesley van Balen', 'Milo Brasser', 'BACK'], "clickList": ['BACK'], "font1": f1,"font2": f, "pos": 'center', "color1": (154, 180, 61), "light": 5, "speed": 200, "lag": 20}
         menu4 = {"menu": ['1920 x 1080', '1280 x 720', 'BACK'], "clickList": ['1920 x 1080', '1280 x 720', 'BACK'], "font1": f1, "pos": 'center', "color1": (154, 180, 61), "light": 6,"speed": 200, "lag": 20}
-        menu5 = {"menu": ["User: %s" % (self.getMemory("player")), "Balance: %d" % (self.getMemory("balance")), "Monkey: %s" % (self.getMemory("monkey")), 'BACK'], "clickList": ['BACK'], "font1": f1, "pos":'center', "color1": (154, 180, 61), "light": 6, "speed": 200, "lag": 20}
 
         def response(resp):
             if resp == 'ABOUT':
@@ -246,12 +246,8 @@ class run(object):
                 mymenu = run()
                 mymenu.runm(resolution)
 
-            if resp == 'STATS':
-                display.update(scr.blit(bg, (0, 0)))
-                display.update(
-                    scr.blit(f.render('STATS', 1, (255, 255, 255)), (550, 200)))
-                resp = menu(**menu5)[0]
-                response(resp)
+            if resp == 'STORE':
+                purchase.main()
 
             if resp == 'PLAY':
                 display.update(scr.blit(bg, r, r))

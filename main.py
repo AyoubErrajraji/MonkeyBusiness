@@ -9,6 +9,7 @@ from crosstheroad_lib import main as crosstheroad
 from finalfight_lib import game as finalfight
 from fightclub_lib import fightclub
 from monkeywar_lib import monkeywar
+from purchase_lib import purchase
 
 debug = 0
 
@@ -31,6 +32,8 @@ elif debug == 5:
 elif debug == 6:
     mymenu = monkeywar.run()
     mymenu.runm()
+elif debug == 7:
+    mymenu = purchase.main()
 
 
 
