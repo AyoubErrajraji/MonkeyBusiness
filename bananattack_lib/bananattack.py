@@ -53,9 +53,9 @@ class BananAttack(game.Game):
         self.state_y = config.STATE_Y
 
         ### setup location for state ###
-        self.score_x = config.SCORE_X
-        self.score_y = config.SCORE_Y
-        self.score = self.getMemory("score")
+        self.lives_x = config.LIVES_X
+        self.lives_y = config.LIVES_Y
+        self.lives = config.LIVES
 
         ### setup monkeys ###
         self.rects = []
@@ -81,10 +81,10 @@ class BananAttack(game.Game):
                 object.deploy((config.STARTPOINT[0] - (config.DEFAULT_DELAY * index), config.STARTPOINT[1]))
 
         completed = 0
+        length = len(self.enemies[self.wave])
 
         # Draw Enemy #
-        def step(completed):
-            length = len(self.enemies[self.wave])
+        def step(completed, length):
 
             if completed < length:
                 for enemy in self.enemies[self.wave]:
@@ -96,12 +96,22 @@ class BananAttack(game.Game):
                         # Paint game + new enemy location
                         self.paint(self.screen)
 
+                        # Check for Monkey Shots
+                        for monkey in self.rects:
+                            if monkey.getDistance(enemy.position) <= monkey.radius:
+                                enemy.health -= config.MONKEY_DAMAGE
+                                if enemy.health <= 0:
+                                    self.enemies[self.wave].pop(0)
+                                    self.money += config.DEFAULT_KILLVALUE
+                                    completed += 1
+
                         # Update Screen
                         pygame.display.update()
 
                     else:
                         # Kill enemies -> hasReached base
                         self.enemies[self.wave].pop(0)
+                        self.lives -= enemy.health
                         completed += 1
 
                 # did the user just press the escape key?
@@ -114,9 +124,9 @@ class BananAttack(game.Game):
                     print("State updated to: %d by Escape from %s" % (self.state, " the event in step"))
                 else:
                     # Recursion
-                    step(completed)
+                    step(completed, length)
 
-        step(completed)
+        step(completed, length)
 
         if self.state == config.BA_PLAYING:
             # Wave Done
@@ -159,24 +169,30 @@ class BananAttack(game.Game):
             temp_surface = self.font.render(state, 1, self.font_color)
             surface.blit(temp_surface, (self.state_x, self.state_y))
 
-            ### show score ###
-            score = "Score: %d" % (self.score)
-            temp_surface = self.font.render(score, 1, self.font_color)
-            surface.blit(temp_surface, (self.score_x, self.score_y))
+            ### show lives ###
+            lives = "Lives: %d" % (self.lives)
+            temp_surface = self.font.render(lives, 1, self.font_color)
+            surface.blit(temp_surface, (self.lives_x, self.lives_y))
 
             ### Draw path ###
             self.drawPath()
 
             ### Draw enemies ###
             for index, enemy in enumerate(self.enemies[self.wave]):
-                enemy.paint(surface)
+                enemy.paint(surface, enemy.health)
 
             ### Show waypoints ###
             self.showWaypoints()
 
             ### Draw monkeys ###
-            for tower in self.rects:
-                tower.paint(surface)
+            for index, tower in enumerate(self.rects):
+                if index == self.selected:
+                    if self.rects[self.selected].canPlace(pygame.mouse.get_pos()):
+                        tower.paint(surface)
+                    else:
+                        tower.paint(surface, (255, 0, 0, 255))
+                else:
+                    tower.paint(surface, range=False)
 
             ### Pause Overlay ###
             if self.state == config.BA_PAUSE:
@@ -195,10 +211,12 @@ class BananAttack(game.Game):
                     # if button has changed state, stop performing other buttons
                     break
                 if button.pressed == 1:
-                    self.rects.append(monkey.Monkey())
-                    self.selected = len(self.rects)-1
-                    self.selected_offset_x = pygame.mouse.get_pos()[0]-(config.MONKEY_SIZE // 2)
-                    self.selected_offset_y = pygame.mouse.get_pos()[1]-(config.MONKEY_SIZE // 2)
+                    if self.money >= config.DEFAULT_PRICE:
+                        self.rects.append(monkey.Monkey())
+                        self.selected = len(self.rects)-1
+                        self.selected_offset_x = pygame.mouse.get_pos()[0]-(config.MONKEY_SIZE // 2)
+                        self.selected_offset_y = pygame.mouse.get_pos()[1]-(config.MONKEY_SIZE // 2)
+                        self.money -= 50
 
     def game_logic(self, keys):
         ### Push correct buttons ###

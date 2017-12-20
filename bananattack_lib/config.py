@@ -69,9 +69,10 @@ MONEY_Y = 60
 STATE_X = 950
 STATE_Y = 100
 
-# State #
-SCORE_X = 950
-SCORE_Y = 140
+# Lives #
+LIVES_X = 950
+LIVES_Y = 140
+LIVES = 100
 
 # StartWave Button
 BUTTON_STARTWAVE_IMG = "data/bananattack/buttons/startWave.png"
@@ -108,15 +109,21 @@ KIND_ENEMY = 37
 
 # ENEMY #
 DEFAULT_HEALTH = 100
-DEFAULT_SPEED = 30
+DEFAULT_SPEED = 10
 DEFAULT_WIDTH = 30
 DEFAULT_HEIGHT = 30
 DEFAULT_IMAGE = "data/bananattack/sprites/truck_right.png"
 DEFAULT_DELAY = 100
+DEFAULT_PRICE = 50
+DEFAULT_KILLVALUE = 10
+DEFAULT_HEALTH_RADIUS = 10
 
 # MONKEY #
 MONKEY_SIZE = 50
-MONKEY_IMAGE = "data/bananattack/sprites/monkey.png"
+MONKEY_IMAGE = "data/default_monkey.png"
+MONKEY_IMAGE_TOP = "data/default_monkey_top.png"
+MONKEY_RADIUS = 100
+MONKEY_DAMAGE = 2
 
 # WAYPOINTS #
 STARTPOINT = (0, 311)
