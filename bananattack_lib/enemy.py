@@ -10,6 +10,7 @@ class Enemy(draw.Draw):
     def __init__(self):
         self.image = config.DEFAULT_IMAGE
         self.waypoints_reached = 0
+        self.health = config.DEFAULT_HEALTH
 
     def deploy(self, position = None):
         if position == None:
