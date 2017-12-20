@@ -150,11 +150,13 @@ def main():
     selected_default_monkey = Button(text="Selected", pos=(840, 40))
     select_default_monkey = Button(text="Select", pos=(840, 40), command=default_select)
 
+    price_apprentice_monkey = Button(text=str(APPRENTICE_MONKEY), pos=(840, 100))
     selected_apprentice_monkey = Button(text="Selected", pos=(840, 100))
     select_apprentice_monkey = Button(text="Select", pos=(840, 100), command=apprentice_select)
     buy_apprentice_monkey = Button(text="Buy", pos=(840,100), command=apprentice_buy)
     sell_apprentice_monkey = Button(text="Sell", pos=(1110, 100), command=apprentice_sell)
 
+    price_ninja_monkey = Button(text=str(NINJA_MONKEY), pos=(840, 160))
     selected_ninja_monkey = Button(text="Selected", pos=(840, 160))
     select_ninja_monkey = Button(text="Select", pos=(840, 160), command=ninja_select)
     buy_ninja_monkey = Button(text="Buy", pos=(840, 160), command=ninja_buy)
@@ -199,6 +201,8 @@ def main():
                 select_apprentice_monkey.handle_event(event)
             elif balance > APPRENTICE_MONKEY:
                 buy_apprentice_monkey.handle_event(event)
+            else:
+                price_apprentice_monkey.handle_event(event)
             if "apprentice_monkey.png" in bought:
                 sell_apprentice_monkey.handle_event(event)
 
@@ -208,6 +212,8 @@ def main():
                 select_ninja_monkey.handle_event(event)
             elif balance > NINJA_MONKEY:
                 buy_ninja_monkey.handle_event(event)
+            else:
+                price_ninja_monkey.handle_event(event)
             if "ninja_monkey.png" in bought:
                 sell_ninja_monkey.handle_event(event)
 
@@ -238,6 +244,8 @@ def main():
             select_apprentice_monkey.draw(screen)
         elif balance > APPRENTICE_MONKEY:
             buy_apprentice_monkey.draw(screen)
+        else:
+            price_apprentice_monkey.draw(screen)
         screen.blit(pygame.transform.scale(pygame.image.load('data/apprentice_monkey_top.png').convert_alpha(), (50, 50)), (1000, 100))
         if "apprentice_monkey.png" in bought:
             sell_apprentice_monkey.draw(screen)
@@ -248,6 +256,8 @@ def main():
             select_ninja_monkey.draw(screen)
         elif balance > NINJA_MONKEY:
             buy_ninja_monkey.draw(screen)
+        else:
+            price_ninja_monkey.draw(screen)
         screen.blit(pygame.transform.scale(pygame.image.load('data/ninja_monkey_top.png').convert_alpha(), (50, 50)),(1000, 160))
         if "ninja_monkey.png" in bought:
             sell_ninja_monkey.draw(screen)
