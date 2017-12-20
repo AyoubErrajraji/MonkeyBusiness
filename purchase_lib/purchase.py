@@ -1,6 +1,7 @@
 import pygame
 import json
 from os.path import join
+from menu_lib import slidemenu
 
 def main():
 
@@ -68,8 +69,13 @@ def main():
 
     # === FUNCTIONS === (lower_case names)
 
-    def apprentice_selected():
-        print("Click SELECTED")
+    def back():
+        mymenu = slidemenu.run()
+        mymenu.runm()
+
+    def default_select():
+        setMemory("monkey", "default_monkey.png")
+
     def apprentice_select():
         setMemory("monkey", "apprentice_monkey.png")
     def apprentice_buy():
@@ -85,8 +91,6 @@ def main():
         bought.remove("apprentice_monkey.png")
         setMemory("bought", bought)
 
-    def ninja_selected():
-        print("Click SELECTED")
     def ninja_select():
         setMemory("monkey","ninja_monkey.png")
     def ninja_buy():
@@ -103,13 +107,13 @@ def main():
         setMemory("bought", bought)
 
     def getMemory(key):
-        with open("menu_lib/memory.json", "r+") as jsonFile:
+        with open("data/memory.json", "r+") as jsonFile:
             data = json.load(jsonFile)
 
             return data[key]
 
     def setMemory(key, value):
-        with open("menu_lib/memory.json", "r+") as jsonFile:
+        with open("data/memory.json", "r+") as jsonFile:
             data = json.load(jsonFile)
 
             data[key] = value
@@ -141,15 +145,22 @@ def main():
 
     # - buttons -
 
-    selected_apprentice_monkey = Button(text="Selected", pos=(840, 100), command=apprentice_selected)
+    back = Button(text="Back", pos=(50, 450), command=back)
+
+    selected_default_monkey = Button(text="Selected", pos=(840, 40))
+    select_default_monkey = Button(text="Select", pos=(840, 40), command=default_select)
+
+    price_apprentice_monkey = Button(text=str(APPRENTICE_MONKEY), pos=(840, 100))
+    selected_apprentice_monkey = Button(text="Selected", pos=(840, 100))
     select_apprentice_monkey = Button(text="Select", pos=(840, 100), command=apprentice_select)
     buy_apprentice_monkey = Button(text="Buy", pos=(840,100), command=apprentice_buy)
     sell_apprentice_monkey = Button(text="Sell", pos=(1110, 100), command=apprentice_sell)
 
-    selected_ninja_monkey = Button(text="Selected", pos=(840, 200), command=ninja_selected)
-    select_ninja_monkey = Button(text="Select", pos=(840, 200), command=ninja_select)
-    buy_ninja_monkey = Button(text="Buy", pos=(840, 200), command=ninja_buy)
-    sell_ninja_monkey = Button(text="Sell", pos=(1110, 200), command=ninja_sell)
+    price_ninja_monkey = Button(text=str(NINJA_MONKEY), pos=(840, 160))
+    selected_ninja_monkey = Button(text="Selected", pos=(840, 160))
+    select_ninja_monkey = Button(text="Select", pos=(840, 160), command=ninja_select)
+    buy_ninja_monkey = Button(text="Buy", pos=(840, 160), command=ninja_buy)
+    sell_ninja_monkey = Button(text="Sell", pos=(1110, 160), command=ninja_sell)
 
     # --- mainloop ---
 
@@ -177,12 +188,21 @@ def main():
 
             # --- objects events ---
 
+            back.handle_event(event)
+
+            if "default_monkey.png" == monkey:
+                selected_default_monkey.handle_event(event)
+            else:
+                select_default_monkey.handle_event(event)
+
             if "apprentice_monkey.png" == monkey:
                 selected_apprentice_monkey.handle_event(event)
             elif "apprentice_monkey.png" in bought:
                 select_apprentice_monkey.handle_event(event)
             elif balance > APPRENTICE_MONKEY:
                 buy_apprentice_monkey.handle_event(event)
+            else:
+                price_apprentice_monkey.handle_event(event)
             if "apprentice_monkey.png" in bought:
                 sell_apprentice_monkey.handle_event(event)
 
@@ -192,6 +212,8 @@ def main():
                 select_ninja_monkey.handle_event(event)
             elif balance > NINJA_MONKEY:
                 buy_ninja_monkey.handle_event(event)
+            else:
+                price_ninja_monkey.handle_event(event)
             if "ninja_monkey.png" in bought:
                 sell_ninja_monkey.handle_event(event)
 
@@ -208,12 +230,22 @@ def main():
         screen.blit(pygame.image.load('data/menu/bg.png').convert(), (0, 0))
         screen.blit(pygame.transform.scale(pygame.image.load('data/%s' % (monkey)).convert_alpha(), (300, 300)), (300, 360))
 
+        back.draw(screen)
+
+        if "default_monkey.png" == monkey:
+            selected_default_monkey.draw(screen)
+        else:
+            select_default_monkey.draw(screen)
+        screen.blit(pygame.transform.scale(pygame.image.load('data/default_monkey_top.png').convert_alpha(), (50, 50)),(1000, 40))
+
         if "apprentice_monkey.png" == monkey:
             selected_apprentice_monkey.draw(screen)
         elif "apprentice_monkey.png" in bought:
             select_apprentice_monkey.draw(screen)
         elif balance > APPRENTICE_MONKEY:
             buy_apprentice_monkey.draw(screen)
+        else:
+            price_apprentice_monkey.draw(screen)
         screen.blit(pygame.transform.scale(pygame.image.load('data/apprentice_monkey_top.png').convert_alpha(), (50, 50)), (1000, 100))
         if "apprentice_monkey.png" in bought:
             sell_apprentice_monkey.draw(screen)
@@ -224,7 +256,9 @@ def main():
             select_ninja_monkey.draw(screen)
         elif balance > NINJA_MONKEY:
             buy_ninja_monkey.draw(screen)
-        screen.blit(pygame.transform.scale(pygame.image.load('data/ninja_monkey_top.png').convert_alpha(), (50, 50)),(1000, 200))
+        else:
+            price_ninja_monkey.draw(screen)
+        screen.blit(pygame.transform.scale(pygame.image.load('data/ninja_monkey_top.png').convert_alpha(), (50, 50)),(1000, 160))
         if "ninja_monkey.png" in bought:
             sell_ninja_monkey.draw(screen)
 
