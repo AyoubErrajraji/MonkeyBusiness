@@ -124,7 +124,7 @@ class Score(Game):
             jsonFile.truncate()
 
     def loadScore(self,screen):
-        font = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 30)
+        font = pygame.font.Font("finalfight_lib/FEASFBRG.ttf", 30)
         score = "score: %d" % Score.getMemory("score")
         self.temp_surface = font.render(score, 1, (255, 255, 255))
 
