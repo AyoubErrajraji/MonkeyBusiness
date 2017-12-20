@@ -116,12 +116,14 @@ DEFAULT_IMAGE = "data/bananattack/sprites/truck_right.png"
 DEFAULT_DELAY = 100
 DEFAULT_PRICE = 50
 DEFAULT_KILLVALUE = 10
+DEFAULT_HEALTH_RADIUS = 10
 
 # MONKEY #
 MONKEY_SIZE = 50
 MONKEY_IMAGE = "data/default_monkey.png"
 MONKEY_IMAGE_TOP = "data/default_monkey_top.png"
 MONKEY_RADIUS = 100
+MONKEY_DAMAGE = 2
 
 # WAYPOINTS #
 STARTPOINT = (0, 311)

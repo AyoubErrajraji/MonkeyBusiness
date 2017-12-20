@@ -99,7 +99,7 @@ class BananAttack(game.Game):
                         # Check for Monkey Shots
                         for monkey in self.rects:
                             if monkey.getDistance(enemy.position) <= monkey.radius:
-                                enemy.health -= 5
+                                enemy.health -= config.MONKEY_DAMAGE
                                 if enemy.health <= 0:
                                     self.enemies[self.wave].pop(0)
                                     self.money += config.DEFAULT_KILLVALUE
@@ -179,7 +179,7 @@ class BananAttack(game.Game):
 
             ### Draw enemies ###
             for index, enemy in enumerate(self.enemies[self.wave]):
-                enemy.paint(surface)
+                enemy.paint(surface, enemy.health)
 
             ### Show waypoints ###
             self.showWaypoints()

@@ -73,8 +73,9 @@ class Game:
                 if e.type == pygame.MOUSEBUTTONUP:
                     newclicks.add(e.button)
                     if e.button == config.MOUSE_LEFT:
-                        if self.rects[self.selected].canPlace(e.pos):
-                            self.selected = None
+                        if self.selected is not None:
+                            if self.rects[self.selected].canPlace(e.pos):
+                                self.selected = None
 
                 # track the mouse's position
                 if e.type == pygame.MOUSEMOTION:
