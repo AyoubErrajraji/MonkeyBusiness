@@ -13,9 +13,13 @@ from monkeywar_lib import monkeywar
 from purchase_lib import purchase
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 debug = 0
 =======
 debug = 4
+>>>>>>> AyoubErrajraji
+=======
+debug = 0
 >>>>>>> AyoubErrajraji
 
 if debug == 0:
