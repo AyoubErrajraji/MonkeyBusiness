@@ -8,11 +8,11 @@ class Rectangle:
         self.w = w
         self.h = h
 
-    def intersects(self, x, y, w, h):
-        oleft = x
-        oright = x + w
-        otop = y
-        obottom = y + h
+    def intersects(self, other):
+        oleft = other.x
+        oright = other.x + other.w
+        otop = other.y
+        obottom = other.y + other.h
 
         left = self.x
         right = self.x + self.w
@@ -37,7 +37,10 @@ class Button(Rectangle):
         self.screen = screen
 
     def show(self):
-        img = pygame.image.load(self.img).convert_alpha()
+        if self.x > pygame.mouse.get_pos()[0] > self.x + self.w and self.y > pygame.mouse.get_pos()[1] > self.y + self.h:
+            img = pygame.image.load(self.img).convert_alpha()
+        else:
+            img = pygame.image.load(self.hvr_img).sonvert_alpha()
         self.screen.blit(img, (self.x, self.y))
 
 
@@ -119,15 +122,30 @@ class Crosstheroad:
         self.monkeys = []
 
     def sideMenu(self):
+        # Make sidemenu overlay
         sm = pygame.Rect(self.config.screenDim[0] - self.config.sideMenu[0], 0, self.config.sideMenu[0], self.config.sideMenu[1])
         pygame.draw.rect(self.screen, self.config.sevopblack, sm)
+
+        # Define font types
         font1 = pygame.font.Font("data/bananattack/FEASFBRG.ttf", 60)
         font2 = pygame.font.SysFont("Helvetica", 15)
+        font3 = pygame.font.Font("data/bananattack/FEASFBRG.ttf", 30)
+
+        # Add score to sidemenu
         score = font1.render(str(self.score), 1, self.config.white)
-        self.screen.blit(score, (self.config.screenDim[0] - self.config.sideMenu[0]/2 - score.get_rect().width/2, self.config.sideMenu[1] / 2 - score.get_rect().height/2))
+        self.screen.blit(score, (self.config.screenDim[0] - self.config.sideMenu[0]/2 - score.get_rect().width/2,
+                                 self.config.sideMenu[1] / 2 - score.get_rect().height/2))
+
+        # Add next monkey to sidemenu
+        next = font3.render("Next:", 1, self.config.white)
+        self.screen.blit(next, (self.config.screenDim[0] - self.config.sideMenu[0] + self.config.grid * 0.6,
+                                self.config.screenDim[1] - next.get_rect().height - self.config.grid/2))
+
+        # Add FPS to side menu IF FPS is true in settings
         if self.settings['FPS']:
             fps = font2.render("fps: " + str(round(self.clock.get_fps(), 3)), 1, self.config.yellow)
-            self.screen.blit(fps, (self.config.screenDim[0] - fps.get_rect().width - 20, self.config.sideMenu[1] - fps.get_rect().height))
+            self.screen.blit(fps, (self.config.screenDim[0] - fps.get_rect().width - 20,
+                                   self.config.sideMenu[1] - fps.get_rect().height))
 
     def addCars(self):
         # Add first row of cars
@@ -135,43 +153,51 @@ class Crosstheroad:
             self.cars.append(Car(0, self.config.screenDim[1] - self.config.grid * 2, self.config.grid * 2, self.config.grid, self.screen, self.config, 6, 'crosstheroad_lib/src/car1_r.png'))
             self.cars.append(Car(0 + (self.config.grid * 7), self.config.screenDim[1] - self.config.grid * 2, self.config.grid * 2, self.config.grid, self.screen, self.config, 6, 'crosstheroad_lib/src/car3_r.png'))
             self.cars.append(Car(0 + (self.config.grid * 16), self.config.screenDim[1] - self.config.grid * 2, self.config.grid * 2, self.config.grid, self.screen, self.config, 6, 'crosstheroad_lib/src/car4_r.png'))
+
         # Add second row of cars
         if len(self.cars) < 7:
             self.cars.append(Car(0, self.config.screenDim[1] - self.config.grid * 3, self.config.grid * 2, self.config.grid, self.screen, self.config, -4, 'crosstheroad_lib/src/car5.png'))
             self.cars.append(Car(0 + (self.config.grid * 3), self.config.screenDim[1] - self.config.grid * 3, self.config.grid * 2, self.config.grid, self.screen, self.config, -4, 'crosstheroad_lib/src/car4.png'))
             self.cars.append(Car(0 + (self.config.grid * 9), self.config.screenDim[1] - self.config.grid * 3, self.config.grid * 2, self.config.grid, self.screen, self.config, -4, 'crosstheroad_lib/src/car1.png'))
             self.cars.append(Car(0 + (self.config.grid * 15), self.config.screenDim[1] - self.config.grid * 3, self.config.grid * 2, self.config.grid, self.screen, self.config, -4, 'crosstheroad_lib/src/car3.png'))
+
         # Add third row of cars (busses)
         if len(self.cars) < 9:
             self.cars.append(Car(0, self.config.screenDim[1] - self.config.grid * 4, self.config.grid * 3, self.config.grid, self.screen, self.config, 3, 'crosstheroad_lib/src/bus1_r.png'))
             self.cars.append(Car(0 + (self.config.grid * 8), self.config.screenDim[1] - self.config.grid * 4, self.config.grid * 3, self.config.grid, self.screen, self.config, 3, 'crosstheroad_lib/src/bus2_r.png'))
+
         # Add forth row of cars
         if len(self.cars) < 13:
             self.cars.append(Car(0, self.config.screenDim[1] - self.config.grid * 5, self.config.grid * 2, self.config.grid, self.screen, self.config, -4.75, 'crosstheroad_lib/src/car6.png'))
             self.cars.append(Car(0 + (self.config.grid * 3), self.config.screenDim[1] - self.config.grid * 5, self.config.grid * 2, self.config.grid, self.screen, self.config, -4.75, 'crosstheroad_lib/src/car7.png'))
             self.cars.append(Car(0 + (self.config.grid * 9), self.config.screenDim[1] - self.config.grid * 5, self.config.grid * 2, self.config.grid, self.screen, self.config, -4.75, 'crosstheroad_lib/src/car3.png'))
             self.cars.append(Car(0 + (self.config.grid * 14), self.config.screenDim[1] - self.config.grid * 5, self.config.grid * 2, self.config.grid, self.screen, self.config, -4.75, 'crosstheroad_lib/src/car5.png'))
+
         # Add sixth row of cars (busses), 5th is safe
         if len(self.cars) < 17:
             self.cars.append(Car(0 + self.config.grid, self.config.screenDim[1] - self.config.grid * 7, self.config.grid * 2, self.config.grid, self.screen, self.config, 4.5, 'crosstheroad_lib/src/car4_r.png'))
             self.cars.append(Car(0 + (self.config.grid * 6), self.config.screenDim[1] - self.config.grid * 7, self.config.grid * 2, self.config.grid, self.screen, self.config, 4.5, 'crosstheroad_lib/src/car6_r.png'))
             self.cars.append(Car(0 + (self.config.grid * 10), self.config.screenDim[1] - self.config.grid * 7, self.config.grid * 2, self.config.grid, self.screen, self.config, 4.5, 'crosstheroad_lib/src/car3_r.png'))
             self.cars.append(Car(0 + (self.config.grid * 16), self.config.screenDim[1] - self.config.grid * 7, self.config.grid * 2, self.config.grid, self.screen, self.config, 4.5, 'crosstheroad_lib/src/car2_r.png'))
+
         # Add 7th row of cars (busses)
         if len(self.cars) < 19:
             self.cars.append(Car(0 + (self.config.grid * 3), self.config.screenDim[1] - self.config.grid * 8, self.config.grid * 3, self.config.grid, self.screen, self.config, -2.75, 'crosstheroad_lib/src/bus1.png'))
             self.cars.append(Car(0 + (self.config.grid * 12), self.config.screenDim[1] - self.config.grid * 8, self.config.grid * 3, self.config.grid, self.screen, self.config, -2.75, 'crosstheroad_lib/src/bus1.png'))
+
         # Add 8th row of cars
         if len(self.cars) < 22:
             self.cars.append(Car(0 + (self.config.grid * 2), self.config.screenDim[1] - self.config.grid * 9, self.config.grid * 2, self.config.grid, self.screen, self.config, 6, 'crosstheroad_lib/src/car1_r.png'))
             self.cars.append(Car(0 + (self.config.grid * 9), self.config.screenDim[1] - self.config.grid * 9, self.config.grid * 2, self.config.grid, self.screen, self.config, 6, 'crosstheroad_lib/src/car2_r.png'))
             self.cars.append(Car(0 + (self.config.grid * 16), self.config.screenDim[1] - self.config.grid * 9, self.config.grid * 2, self.config.grid, self.screen, self.config, 6, 'crosstheroad_lib/src/car3_r.png'))
+
         # Add 9th row of cars
         if len(self.cars) < 26:
             self.cars.append(Car(0 + self.config.grid, self.config.screenDim[1] - self.config.grid * 10, self.config.grid * 2, self.config.grid, self.screen, self.config, -5, 'crosstheroad_lib/src/car4.png'))
             self.cars.append(Car(0 + (self.config.grid * 6), self.config.screenDim[1] - self.config.grid * 10, self.config.grid * 2, self.config.grid, self.screen, self.config, -5, 'crosstheroad_lib/src/car5.png'))
             self.cars.append(Car(0 + (self.config.grid * 10), self.config.screenDim[1] - self.config.grid * 10, self.config.grid * 2, self.config.grid, self.screen, self.config, -5, 'crosstheroad_lib/src/car4.png'))
             self.cars.append(Car(0 + (self.config.grid * 16), self.config.screenDim[1] - self.config.grid * 10, self.config.grid * 2, self.config.grid, self.screen, self.config, -5, 'crosstheroad_lib/src/car7.png'))
+
         # Add 10th row (last) of cars
         if len(self.cars) < 27:
             self.cars.append(Car(0 + (self.config.grid * 8), self.config.screenDim[1] - self.config.grid * 11, self.config.grid * 10, self.config.grid, self.screen, self.config, 25, 'crosstheroad_lib/src/train.png'))
@@ -181,7 +207,7 @@ class Crosstheroad:
 
     def blit(self):
         background = pygame.image.load("crosstheroad_lib/src/background.jpg").convert()
-        self.screen.blit(background, (0,0))
+        self.screen.blit(background, (0, 0))
         self.addCars()
         # Debugging console info
         # print(len(self.cars))
@@ -193,6 +219,7 @@ class Crosstheroad:
             self.monkeys[index].show()
 
     def update(self):
+        # Add the second monkey if there is only one
         if len(self.monkeys) < 2:
             self.monkeys.append(Monkey((self.config.screenDim[0] - self.config.sideMenu[0])/2 - self.config.grid/2,
                                        self.config.screenDim[1]-self.config.grid,
@@ -202,7 +229,13 @@ class Crosstheroad:
                                        self.config,
                                        random.randrange(1, 20),
                                        self.monkeys))
-        # self.monkeys[1].place((self.config.screenDim[0] - self.config.sideMenu[0])/2 - self.config.grid/2 + self.config.grid,self.config.screenDim[1] - self.config.grid)
+            self.monkeys[0].place((self.config.screenDim[0] - self.config.sideMenu[0])/2 - self.config.grid/2,
+                                  self.config.screenDim[1]-self.config.grid,)
+
+        # Set the seconds monkey (next) position to the sidemenu
+        if len(self.monkeys) == 2:
+            self.monkeys[1].place(self.config.screenDim[0] - self.config.sideMenu[0] + self.config.grid * 2,
+                                  self.config.screenDim[1] - self.config.grid)
 
     def move(self, e):
         if e.type == pygame.KEYDOWN and e.key == pygame.K_LEFT:
@@ -217,17 +250,26 @@ class Crosstheroad:
         elif e.type == pygame.KEYDOWN and e.key == pygame.K_DOWN:
             # print("Key Down pressed")
             self.monkeys[0].move(0, 1)
+
+        # Reset the monkey when it reaches the finish
         if self.monkeys[0].y < 150:
             self.score += self.monkeys[0].amount
             self.monkeys[0].reset()
 
     def collisionDet(self):
+        # Go trough all cars
         for index in range(len(self.cars)):
-            if not self.monkeys[0].intersects(self.cars[index].x, self.cars[index].y, self.cars[index].w, self.cars[index].h):
+
+            # Check if the monkey is collidiong with the cars
+            if not self.monkeys[0].intersects(self.cars[index]):
+
+                # Check if score is high enough to be adjusted
                 if self.score > self.monkeys[0].amount:
                     self.score -= self.monkeys[0].amount
                 else:
                     self.score = 0
+
+                # Reset monkey that collided
                 self.monkeys[0].reset()
 
     def run(self):
