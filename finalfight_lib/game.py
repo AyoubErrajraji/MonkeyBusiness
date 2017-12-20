@@ -4,6 +4,7 @@ import json
 import os
 import math
 import itertools
+
 pygame.init()
 pygame.font.init()
 
@@ -152,6 +153,23 @@ class Pause(Game):
         s = pygame.Surface((1280, 720), pygame.SRCALPHA)  # per-pixel alpha
         s.fill((0, 0, 0, 150))
 
+    def loadExitButton(self, name):
+        self.exitButton = pygame.image.load(name).convert_alpha()
+
+        self.exitButton = pygame.transform.scale(self.exitButton, (150, 50))
+
+    def blitExitButton(self, screen):
+        screen.blit(self.exitButton, (605, 420))
+
+    #def loadMenuButton(self, name):
+    #   self.menuButton = pygame.image.load(name).convert_alpha()
+
+    #    self.menuButton = pygame.transform.scale(self.menuButton, (150, 50))
+
+    #def blitMenuButton(self, screen):
+    #    screen.blit(self.menuButton, (605, 420))
+
+
 
 class run():
     def runm(self):
@@ -180,6 +198,10 @@ class run():
 
         #newPlayer.draw(screen)
 
+        newPause.loadExitButton("data/finalfight/exitButton.png")
+
+        #newPause.loadMenuButton("data/finalfight/menuButton.png")
+
         newBoss.loadBoss("data/finalfight/boss2.png")
 
         newWolk.loadWolk("data/finalfight/spreekwolk.png")
@@ -198,54 +220,89 @@ class run():
 
         #newPlayer.movePlayer()  # handle the keys
 
+        newPause.blitExitButton(screen)
+
+        #newPause.blitMenuButton(screen)
+
         newScore.blitScore(screen)
 
         Score.setMemory("score", 876)
 
-        RUNNING, PAUSE = 0, 1
+        RUNNING, notRUNNING, PAUSE = 0, 1, 2
         state = RUNNING
 
-        pause_text = pygame.font.Font("finalfight_lib/FEASFBRG.ttf", 60).render('Paused', True,
-                                                                                         pygame.color.Color('White'))
+        pause_text = pygame.font.Font("finalfight_lib/FEASFBRG.ttf", 60).render('Paused', True, pygame.color.Color('White'))
+
         s = pygame.Surface((width, height), pygame.SRCALPHA)  # per-pixel alpha
         s.fill((0, 0, 0, 150))
 
         clock = pygame.time.Clock()
 
+        counter, text = 3, '3'.rjust(3)
+        pygame.time.set_timer(pygame.USEREVENT, 1000)
+        font = pygame.font.Font("finalfight_lib/FEASFBRG.ttf", 60)
+
         while True:
 
             for e in pygame.event.get():
+                counter -= 1
+                text = str(counter).rjust(3) if counter > 0 else 'GO!'
+
                 if e.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
                    # RUNNING = False
                 if e.type == pygame.KEYDOWN:
-                    if e.key == pygame.K_p: state = PAUSE
-                    if e.key == pygame.K_s: state = RUNNING
+                    if e.key == pygame.K_p : state = PAUSE
+                    if e.key == pygame.K_s : state = RUNNING
+
+
             else:
                 screen.fill((0, 0, 0))
+                #screen.blit(font.render(text, True, (0, 0, 0)), (32, 48))
+                #pygame.display.flip()
+                #clock.tick(60)
+                #if text == 'GO!':
+                 #   state = RUNNING
+                #elif counter > 0:
+                 #   state = notRUNNING
+
 
                 if state == RUNNING:
                     player.movePlayer()
+
                     background.blitForrest()
                     newWolk.blitwolk(screen)
                     newBoss.blitBoss(screen)
                     #newPlayer.blitPlayer()
                     player.draw(screen)
                     newScore.blitScore(screen)
+                    screen.blit(font.render(text, True, (0, 0, 0)), (620, 100))
 
+                #if state == notRUNNING:
+                    #player.movePlayer()
+
+                 #   background.blitForrest()
+                    #newWolk.blitwolk(screen)
+                  #  newBoss.blitBoss(screen)
+                    #newPlayer.blitPlayer()
+                   # player.draw(screen)
+                    #newScore.blitScore(screen)
+                    #screen.blit(font.render(text, True, (0, 0, 0)), (620, 100))
 
 
 
                 elif state == PAUSE:
                     background.blitForrest()
                     #newWolk.blitwolk()
-                    newBoss.blitBoss(screen)
+                    #newBoss.blitBoss(screen)
                     #newPlayer.blitPlayer()
-                    player.draw(screen)
+                    #player.draw(screen)
                     newScore.blitScore(screen)
                     screen.blit(s, (0, 0))
                     screen.blit(pause_text, (600, 360))
+                    #newPause.blitMenuButton(screen)
+                    newPause.blitExitButton(screen)
 
  #               if state == RUNNING:
 #                    player.movePlayer()

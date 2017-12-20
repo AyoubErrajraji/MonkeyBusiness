@@ -1,5 +1,5 @@
 from crosstheroad_lib import crosstheroad, config
-import pygame, pygame.locals
+import pygame, pygame.locals, json
 
 
 def main():
@@ -10,5 +10,8 @@ def main():
     # set the title of the window
     pygame.display.set_caption(config.name)
 
-    game = crosstheroad.Crosstheroad(screen, config)
+    with open("crosstheroad_lib/settings.json", "r+") as jsonFile:
+        settings = json.load(jsonFile)
+
+    game = crosstheroad.Crosstheroad(screen, config, settings)
     game.run()

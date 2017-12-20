@@ -4,6 +4,8 @@ Created on Nov 25, 2017
 '''
 from bananattack_lib import config
 from bananattack_lib import draw
+from bananattack_lib import bananattack
+from bananattack_lib import monkey
 from menu_lib import slidemenu
 import pygame
 
@@ -31,6 +33,9 @@ class Button(draw.Draw):
 
         # set default state
         self.state = 0
+
+        # pressed
+        self.pressed = 0
 
     # Overwrite the Draw.paint function because we need to implement hovering
     def paint(self, surface):
@@ -84,17 +89,8 @@ class startWave(Button):
         else:
             print("Trying to start Wave while MAX_WAVES is reached")
 
-class pauseGame(Button):
-    def __init__(self, state):
-        Button.__init__(self, (config.BUTTON_PAUSEGAME_X,config.BUTTON_PAUSEGAME_Y), config.BUTTON_PAUSEGAME_WIDTH, config.BUTTON_PAUSEGAME_HEIGHT, config.BUTTON_PAUSEGAME_IMG, config.BUTTON_PAUSEGAME_HOVER_IMG)
-        self.item = None
-        self.state = state
-
-    def task(self):
-        self.state = config.BA_PAUSE
-
 class playGame(Button):
-    def __init__(self, state, running = False):
+    def __init__(self, state, running):
         Button.__init__(self, (config.BUTTON_PLAYGAME_X,config.BUTTON_PLAYGAME_Y), config.BUTTON_PLAYGAME_WIDTH, config.BUTTON_PLAYGAME_HEIGHT, config.BUTTON_PLAYGAME_IMG, config.BUTTON_PLAYGAME_HOVER_IMG)
         self.item = None
         self.state = state
@@ -123,10 +119,9 @@ class monkeyButton(Button):
         self.state = state
 
     def task(self):
-        self.rects.append(monkey.Monkey())
+        self.pressed = 1
 
     #operator overloading
-    #interrupt
 
 
 
