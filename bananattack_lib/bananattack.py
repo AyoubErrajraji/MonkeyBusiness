@@ -192,6 +192,11 @@ class BananAttack(game.Game):
                     else:
                         tower.paint(surface, (255, 0, 0, 255))
                 else:
+                    for truck in self.enemies[self.wave]:
+                        if tower.getDistance(truck.position) < config.MONKEY_RADIUS:
+                            tower.closest = tower.getDistance(truck.position)
+                            tower.closest_pos = truck.position
+                            break
                     tower.paint(surface, range=False)
 
             ### Pause Overlay ###
