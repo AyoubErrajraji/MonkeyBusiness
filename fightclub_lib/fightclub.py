@@ -1,4 +1,5 @@
 import pygame
+from pygame_functions import *
 pygame.init()
 
 
@@ -43,6 +44,9 @@ class run():
         def flag(x, y):
             gameDisplay.blit(flagImg, (x, y))
 
+        x_flag = 600
+        y_flag = 300
+
         def noFlag(x, y):
             gameDisplay.blit(noFlagImg, (x, y))
 
@@ -75,16 +79,16 @@ class run():
 
             background(0,0)
             character(x, y)
-            flag(600, 300)
+            flag(x_flag, y_flag)
 
             #Flag Collision
-            if x > 580 and x < 630 and y > 280 and y < 330 :
+            if touching(character, flag):
                 character = charwithFlag
                 flag = noFlag
 
             if character == charwithFlag:
                 target(1024, 576)
-            if x > 1024 and x < 1074 and y > 576 and y < 626:
+            if touching(character, target):
                 character = character
                 flag = flag
 
