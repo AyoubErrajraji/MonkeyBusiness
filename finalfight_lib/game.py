@@ -124,7 +124,7 @@ class Score(Game):
             jsonFile.truncate()
 
     def loadScore(self,screen):
-        font = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 30)
+        font = pygame.font.Font("finalfight_lib/FEASFBRG.ttf", 30)
         score = "score: %d" % Score.getMemory("score")
         self.temp_surface = font.render(score, 1, (255, 255, 255))
 
@@ -136,6 +136,7 @@ class Pause(Game):
         Game.__init__(self, screen)
         RUNNING, PAUSE = 0, 1
         self.state = RUNNING
+
 
 
     def magnitude(v):
@@ -153,13 +154,49 @@ class Pause(Game):
         s = pygame.Surface((1280, 720), pygame.SRCALPHA)  # per-pixel alpha
         s.fill((0, 0, 0, 150))
 
+    def loadPauseButton(self,name):
+        self.pauseButton = pygame.image.load(name).convert_alpha()
+
+        self.pauseButton = pygame.transform.scale(self.pauseButton, (50, 50))
+
+    def blitPauseButton(self, screen):
+        screen.blit(self.pauseButton, (1190, 50))
+
+    def loadHoverPauseButton(self,name):
+        self.hoverPauseButton = pygame.image.load(name).convert_alpha()
+
+        self.hoverPauseButton = pygame.transform.scale(self.hoverPauseButton, (50, 50))
+
+    def blitHoverPauseButton(self, screen):
+        screen.blit(self.HoverPauseButton, (1190, 50))
+
+    def loadPlayButton(self,name):
+        self.playButton = pygame.image.load(name).convert_alpha()
+
+        self.playButton = pygame.transform.scale(self.playButton, (50, 50))
+
+    def blitPlayButton(self, screen):
+        screen.blit(self.playButton, (1190, 50))
+
+    def loadHoverPlayButton(self,name):
+        self.hoverPlayButton = pygame.image.load(name).convert_alpha()
+
+        self.hoverPlayButton = pygame.transform.scale(self.hoverPlayButton, (50, 50))
+
+    def blitHoverPlayButton(self, screen):
+        screen.blit(self.hoverPlayButton, (1190, 50))
+
     def loadExitButton(self, name):
         self.exitButton = pygame.image.load(name).convert_alpha()
 
-        self.exitButton = pygame.transform.scale(self.exitButton, (150, 50))
+        self.exitButton = pygame.transform.scale(self.exitButton, (100, 80))
 
     def blitExitButton(self, screen):
-        screen.blit(self.exitButton, (605, 420))
+        screen.blit(self.exitButton, (630, 420))
+
+    def task(self):
+        mymenu = slidemenu.run()
+        mymenu.runm(100)  # voeg 100 balance punten toe aan het hoofdmenu
 
     #def loadMenuButton(self, name):
     #   self.menuButton = pygame.image.load(name).convert_alpha()
@@ -198,8 +235,15 @@ class run():
 
         #newPlayer.draw(screen)
 
-        newPause.loadExitButton("data/finalfight/exitButton.png")
+        newPause.loadExitButton("data/finalfight/exit.png")
 
+        newPause.loadPauseButton("data/finalfight/pause_Button.png")
+
+        newPause.loadHoverPauseButton("data/finalfight/hoverPause_Button.png")
+
+        newPause.loadPlayButton("data/finalfight/play_Button.png")
+
+        newPause.loadHoverPlayButton("data/finalfight/hoverPlay_Button.png")
         #newPause.loadMenuButton("data/finalfight/menuButton.png")
 
         newBoss.loadBoss("data/finalfight/boss2.png")
@@ -267,9 +311,22 @@ class run():
                 #elif counter > 0:
                  #   state = notRUNNING
 
+            #if 550 + 100 > mouse[0] > 550 and 450 + 50 > mouse[1] > 450:
+            #    pygame.draw.rect(gameDisplay, bright_red, (550, 450, 100, 50))
+            #else:
+             #   pygame.draw.rect(gameDisplay, red, (550, 450, 100, 50))
+
 
                 if state == RUNNING:
                     player.movePlayer()
+                    #mouse = pygame.mouse.get_pos()
+
+                    # print(mouse)
+
+                   # if 150 + 100 > mouse[0] > 150 and 450 + 50 > mouse[1] > 450:
+                    #    pygame.draw.rect(gameDisplay, bright_green, (1190, 50, 50, 50))
+                    #else:
+                     #   pygame.draw.rect(gameDisplay, green, (150, 450, 100, 50))
 
                     background.blitForrest()
                     newWolk.blitwolk(screen)
@@ -277,6 +334,7 @@ class run():
                     #newPlayer.blitPlayer()
                     player.draw(screen)
                     newScore.blitScore(screen)
+                    newPause.blitPauseButton(screen)
                     screen.blit(font.render(text, True, (0, 0, 0)), (620, 100))
 
                 #if state == notRUNNING:
@@ -300,6 +358,7 @@ class run():
                     #player.draw(screen)
                     newScore.blitScore(screen)
                     screen.blit(s, (0, 0))
+                    newPause.blitPlayButton(screen)
                     screen.blit(pause_text, (600, 360))
                     #newPause.blitMenuButton(screen)
                     newPause.blitExitButton(screen)
