@@ -1,5 +1,4 @@
 import pygame
-from pygame_functions import *
 pygame.init()
 
 
@@ -23,7 +22,7 @@ class run():
         noFlagImg = pygame.image.load("data/fightclub/noflag.png").convert_alpha()
         targetImg = pygame.image.load("data/fightclub/target.png").convert_alpha()
 
-        bckImg = pygame.image.load("data/fightclub/background.png").convert()
+        bckImg = pygame.image.load("data/fightclub/background1.png").convert()
         bckImg = pygame.transform.scale(bckImg, (width, height))
 
         def background(x, y):
@@ -34,6 +33,9 @@ class run():
 
         def charwithFlag(x, y):
             gameDisplay.blit(charwFlagImg, (x, y))
+
+        def char(x, y):
+            gameDisplay.blit(mainImg, (x, y))
 
         x = (width * 0.8)
         y = (height * 0.8)
@@ -50,8 +52,14 @@ class run():
         def noFlag(x, y):
             gameDisplay.blit(noFlagImg, (x, y))
 
+        def flag2(x, y):
+            gameDisplay.blit(flagImg, (x, y))
+
         def target(x, y):
             gameDisplay.blit(targetImg, (x, y))
+
+        x_target = 1024
+        y_target = 576
 
         #Game Loop
         while done == False :
@@ -82,15 +90,15 @@ class run():
             flag(x_flag, y_flag)
 
             #Flag Collision
-            if touching(character, flag):
+            if y > 270 and y < 330 and x > 570 and x < 630:
                 character = charwithFlag
                 flag = noFlag
 
             if character == charwithFlag:
-                target(1024, 576)
-            if touching(character, target):
-                character = character
-                flag = flag
+                target(x_target, y_target)
+                if x > 994 and x < 1054 and y > 546 and y < 606:
+                    character = char
+                    flag = flag2
 
             pygame.display.update()
             clock.tick(60)
