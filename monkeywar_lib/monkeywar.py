@@ -70,9 +70,9 @@ class run(object):
                 secondMonkey.shoot()
                 firstMonkey.shoot()
 
-
-
-
+            if fase ==4:
+                firstMonkey.pause()
+                secondMonkey.pause()
 
             #Display time fase 1
             if fase <= 1:
@@ -111,6 +111,14 @@ class run(object):
                     if seconds2 <= 0:  # if less than 0 seconds run next phase
                         fase = 3
 
+                # pause
+                if pygame.key.get_pressed()[pygame.K_p]:
+                    fase = 4
+                    temp_surface = self.font.render(str(seconds), 1, BLACK)
+                    surface.blit(temp_surface, (620, 100))  # print how many seconds
+
+                if pygame.key.get_pressed()[pygame.K_SPACE] and fase == 4:
+                    fase = 1
 
             # update display
             pygame.display.update()
@@ -161,6 +169,20 @@ class Monkey(object):
     def draw(self, position):
         sprite = pygame.image.load(self.image).convert_alpha()
         surface.blit(pygame.transform.scale(sprite, (110, 80)), position)
+
+    def pause(self):
+        keyinput = pygame.key.get_pressed()
+
+        if keyinput[pygame.K_ESCAPE]:
+            raise SystemExit
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                raise SystemExit
+
+        pygame.draw.rect(surface, BLACK, (550, 478, 200, 100), 0)
+        self.draw((self.x, 478))
 
 
     def aim(self):
@@ -228,6 +250,7 @@ class Monkey(object):
                 self.x += 10
 
         self.draw((self.x,478))
+
 
 
 
