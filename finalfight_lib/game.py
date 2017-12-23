@@ -397,7 +397,7 @@ class run():
 
 
             #player.movePlayer()  # handle the keys
-            player.draw(screen)
+            #player.draw(screen)
             pygame.display.flip()
 
             clock.tick(60)
