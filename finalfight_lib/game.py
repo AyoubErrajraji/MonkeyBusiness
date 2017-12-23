@@ -204,9 +204,8 @@ class Pause(Game):
         screen.blit(self.hoverExitButton, (630, 420))
 
     def task(self):
-        mymenu = slidemenu.run()
-        mymenu.runm(100)  # voeg 100 balance punten toe aan het hoofdmenu
-
+        slidemenu.run().runm(200)
+        
     #def loadMenuButton(self, name):
     #   self.menuButton = pygame.image.load(name).convert_alpha()
 
