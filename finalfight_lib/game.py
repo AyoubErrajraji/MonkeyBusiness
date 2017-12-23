@@ -4,6 +4,7 @@ import json
 import os
 import math
 import itertools
+from menu_lib import slidemenu
 
 pygame.init()
 pygame.font.init()
@@ -176,7 +177,7 @@ class Pause(Game):
         self.playButton = pygame.transform.scale(self.playButton, (50, 50))
 
     def blitPlayButton(self, screen):
-        screen.blit(self.playButton, (1190, 50))
+        screen.blit(self.playButton, (1190, 100))
 
     def loadHoverPlayButton(self,name):
         self.hoverPlayButton = pygame.image.load(name).convert_alpha()
@@ -184,7 +185,7 @@ class Pause(Game):
         self.hoverPlayButton = pygame.transform.scale(self.hoverPlayButton, (50, 50))
 
     def blitHoverPlayButton(self, screen):
-        screen.blit(self.hoverPlayButton, (1190, 50))
+        screen.blit(self.hoverPlayButton, (1190, 100))
 
     def loadExitButton(self, name):
         self.exitButton = pygame.image.load(name).convert_alpha()
@@ -320,14 +321,22 @@ class run():
             for e in pygame.event.get():
                 counter -= 1
                 text = str(counter).rjust(3) if counter > 0 else 'GO!'
-
+                click = pygame.mouse.get_pressed()
+                mouse = pygame.mouse.get_pos()
                 if e.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
                    # RUNNING = False
-                if e.type == pygame.KEYDOWN:
-                    if e.key == pygame.K_p : state = PAUSE
-                    if e.key == pygame.K_s : state = RUNNING
+                if pygame.mouse.get_pressed()[0] and 1190 + 50 > mouse[0] > 1190 and 50 + 50 > mouse[1] > 50:
+                    state = PAUSE
+                if pygame.mouse.get_pressed()[0] and 1190 + 50 > mouse[0] > 1190 and 100 + 50 > mouse[1] > 100:
+                    state = RUNNING
+                if pygame.mouse.get_pressed()[0] and 630 + 80 > mouse[0] > 630 and 420 + 80 > mouse[1] > 420:
+                    newPause.task()
+
+                #if e.type == pygame.KEYDOWN:
+
+                    #if e.key == pygame.K_s : state = RUNNING
 
 
             else:
@@ -385,7 +394,7 @@ class run():
                     screen.blit(s, (0, 0))
                     mouse = pygame.mouse.get_pos()
 
-                    if 1190 + 50 > mouse[0] > 1190 and 50 + 50 > mouse[1] > 50:
+                    if 1190 + 50 > mouse[0] > 1190 and 100 + 50 > mouse[1] > 100:
                         newPause.blitHoverPlayButton(screen)
                     else:
                         newPause.blitPlayButton(screen)
