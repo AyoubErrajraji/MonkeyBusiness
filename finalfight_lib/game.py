@@ -108,13 +108,13 @@ class Score(Game):
 
 
     def getMemory(key):
-        with open("finalfight_lib/memory.json", "r+") as jsonFile:
+        with open("data/finalfight/memory.json", "r+") as jsonFile:
             data = json.load(jsonFile)
 
             return data[key]
 
     def setMemory(key, value):
-        with open("finalfight_lib/memory.json", "r+") as jsonFile:
+        with open("data/finalfight/memory.json", "r+") as jsonFile:
             data = json.load(jsonFile)
 
             data[key] = value
@@ -124,7 +124,7 @@ class Score(Game):
             jsonFile.truncate()
 
     def loadScore(self,screen):
-        font = pygame.font.Font("finalfight_lib/FEASFBRG.ttf", 30)
+        font = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 30)
         score = "score: %d" % Score.getMemory("score")
         self.temp_surface = font.render(score, 1, (255, 255, 255))
 
@@ -150,7 +150,7 @@ class Pause(Game):
         return [v[i] / magnitude(v) for i in range(len(v))]
 
     def loadPause(self):
-        self.pause_text = pygame.font.Font("finalfight_lib/FEASFBRG.ttf", 60).render('Paused', True,
+        self.pause_text = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 60).render('Paused', True,
                                                                                  pygame.color.Color('White'))
         s = pygame.Surface((1280, 720), pygame.SRCALPHA)  # per-pixel alpha
         s.fill((0, 0, 0, 150))
@@ -279,7 +279,7 @@ class run():
         RUNNING, notRUNNING, PAUSE = 0, 1, 2
         state = RUNNING
 
-        pause_text = pygame.font.Font("finalfight_lib/FEASFBRG.ttf", 60).render('Paused', True, pygame.color.Color('White'))
+        pause_text = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 60).render('Paused', True, pygame.color.Color('White'))
 
         s = pygame.Surface((width, height), pygame.SRCALPHA)  # per-pixel alpha
         s.fill((0, 0, 0, 150))
@@ -288,7 +288,7 @@ class run():
 
         counter, text = 3, '3'.rjust(3)
         pygame.time.set_timer(pygame.USEREVENT, 1000)
-        font = pygame.font.Font("finalfight_lib/FEASFBRG.ttf", 60)
+        font = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 60)
 
         while True:
 
