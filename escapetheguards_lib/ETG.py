@@ -1,6 +1,8 @@
-import pygame, sys, random
-from escapetheguards_lib import config
+
 from menu_lib import slidemenu
+from escapetheguards_lib import config
+import pygame, sys, random
+
 pygame.init()
 
 class run():
@@ -15,9 +17,11 @@ class run():
 
         # Main run class, everything is inside this class.
 
+
+
         def text_objects(text, font):
-            buttontext = font.render(text, False, config.white)
-            return buttontext, buttontext.get_rect()
+            config.screen = font.render(text, True, config.white)
+            return config.screen, config.screen.get_rect()
 
         def button(msg, x, y, w, h, ic, ac, action=None):
 
@@ -161,6 +165,13 @@ class run():
         def things(thingx, thingy, thingw, thingh, color):
             pygame.draw.rect(config.screen, color, [thingx, thingy, thingw, thingh])
 
+        def crash():
+            largeText = pygame.font.SysFont("comicsansms", 115)
+            TextSurf, TextRect = text_objects("You Crashed", largeText)
+            TextRect.center = ((config.screen_width / 2), (config.screen_height / 2))
+            config.screen.blit(TextSurf, TextRect)
+
+
         def level_1():
 
             global pause
@@ -255,7 +266,9 @@ class run():
                 if y < thing_starty + thing_height:
                     print('y crossover')
 
-                    if x > thing_startx and x < thing_startx + thing_width or x + config.player_width > thing_startx and x + config.player_width < thing_startx + thing_width
+                    if x > thing_startx and x < thing_startx + thing_width or x + config.player_width > thing_startx and x + config.player_width < thing_startx + thing_width:
+                        print('x crossover')
+                        crash()
 
                 player()
 

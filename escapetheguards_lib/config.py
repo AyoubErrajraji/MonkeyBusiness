@@ -33,58 +33,58 @@ clock = pygame.time.Clock()
 
     ### INTRO: ###
 
-backgroundintro = pygame.image.load('bgintro.png').convert()
+backgroundintro = pygame.image.load('/data/escapetheguards/bgintro.png').convert()
 backgroundintro = pygame.transform.scale(backgroundintro, (screen_width, screen_height))
-monkeyImg = pygame.image.load('monkey.png').convert_alpha()
+monkeyImg = pygame.image.load('/data/escapetheguards/monkey.png').convert_alpha()
 
 
     ### LEVEL 1 & 2 ###
 
 
-logoImg = pygame.image.load('logo.png')
+logoImg = pygame.image.load('/data/escapetheguards/logo.png')
 
-player_left = pygame.image.load('player_left.png')
+player_left = pygame.image.load('/data/escapetheguards/player_left.png')
 player_left = pygame.transform.scale(player_left, (70, 70))
-player_right = pygame.image.load('player_right.png')
+player_right = pygame.image.load('/data/escapetheguards/player_right.png')
 player_right = pygame.transform.scale(player_right, (70, 70))
-player_up = pygame.image.load('player_up.png')
+player_up = pygame.image.load('/data/escapetheguards/player_up.png')
 player_up = pygame.transform.scale(player_up, (70, 70))
-player_down = pygame.image.load('player_down.png')
+player_down = pygame.image.load('/data/escapetheguards/player_down.png')
 player_down = pygame.transform.scale(player_down, (70, 70))
 
-containerImg = pygame.image.load('container1.png').convert_alpha()
+containerImg = pygame.image.load('/data/escapetheguards/container1.png').convert_alpha()
 
-barrelsideImg = pygame.image.load('barrelside.png')
+barrelsideImg = pygame.image.load('/data/escapetheguards/barrelside.png')
 barrelsideImg = pygame.transform.scale(barrelsideImg, (200, 250))
 
-tableImg = pygame.image.load('picknicktable.png').convert_alpha()
+tableImg = pygame.image.load('/data/escapetheguards/picknicktable.png').convert_alpha()
 
-cageImg = pygame.image.load('cage.png').convert_alpha()
-cage2Img = pygame.image.load('cage2.png').convert_alpha()
+cageImg = pygame.image.load('/data/escapetheguards/cage.png').convert_alpha()
+cage2Img = pygame.image.load('/data/escapetheguards/cage2.png').convert_alpha()
 cage2Img = pygame.transform.scale(cage2Img, (260,250))
-cage3Img = pygame.image.load('cage3.png').convert_alpha()
+cage3Img = pygame.image.load('/data/escapetheguards/cage3.png').convert_alpha()
 cage3Img = pygame.transform.scale(cage3Img, (250,200))
-cagedoorImg = pygame.image.load('cagedoor.png').convert_alpha()
+cagedoorImg = pygame.image.load('/data/escapetheguards/cagedoor.png').convert_alpha()
 
-carImg = pygame.image.load('car.png').convert_alpha()
-car1Img = pygame.image.load('car1.png').convert_alpha()
+carImg = pygame.image.load('/data/escapetheguards/car.png').convert_alpha()
+car1Img = pygame.image.load('/data/escapetheguards/car1.png').convert_alpha()
 car1Img = pygame.transform.scale(car1Img, (300, 200))
 
-excavatorImg = pygame.image.load('excavator.png').convert_alpha()
-truckImg = pygame.image.load('truck.png').convert_alpha()
+excavatorImg = pygame.image.load('/data/escapetheguards/excavator.png').convert_alpha()
+truckImg = pygame.image.load('/data/escapetheguards/truck.png').convert_alpha()
 
-bananaImg = pygame.image.load('bananapoint.png').convert_alpha()
+bananaImg = pygame.image.load('/data/escapetheguards/bananapoint.png').convert_alpha()
 bananaImg = pygame.transform.scale(bananaImg, (30,30))
 
-pickupImg = pygame.image.load('pickup.png').convert_alpha()
+pickupImg = pygame.image.load('/data/escapetheguards/pickup.png').convert_alpha()
 
-guard_rightImg = pygame.image.load('guards_right.png').convert_alpha()
+guard_rightImg = pygame.image.load('/data/escapetheguards/guards_right.png').convert_alpha()
 guard_rightImg = pygame.transform.scale(guard_rightImg, (100,100))
-guard_leftImg = pygame.image.load('guards_left.png').convert_alpha()
+guard_leftImg = pygame.image.load('/data/escapetheguards/guards_left.png').convert_alpha()
 guard_leftImg = pygame.transform.scale(guard_leftImg, (400,250))
-guard_topImg = pygame.image.load('guards_top.png').convert_alpha()
+guard_topImg = pygame.image.load('/data/escapetheguards/guards_top.png').convert_alpha()
 guard_topImg = pygame.transform.scale(guard_topImg, (280, 350))
-guard_bottomImg = pygame.image.load('guards_bottom.png').convert_alpha()
+guard_bottomImg = pygame.image.load('/data/escapetheguards/guards_bottom.png').convert_alpha()
 guard_bottomImg = pygame.transform.scale(guard_bottomImg, (100,100))
 
 
