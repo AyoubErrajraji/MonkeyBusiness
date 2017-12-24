@@ -1,4 +1,6 @@
 import pygame
+from menu_lib import slidemenu
+import json
 
 pygame.init()
 
@@ -9,8 +11,7 @@ class run():
 
         black = (0, 0, 0)
         white = (255, 255, 255)
-        green = (0, 255, 0)
-        bright_green = (0, 200, 0)
+        grey = (50, 50, 50)
         red = (255, 0, 0)
         bright_red = (200, 0, 0)
 
@@ -36,6 +37,10 @@ class run():
         def quitgame():
             pygame.quit()
             quit()
+
+        def back():
+            mymenu = slidemenu.run()
+            mymenu.runm()
 
         def background(x, y):
             gameDisplay.blit(bckImg, (x, y))
@@ -80,7 +85,7 @@ class run():
             gameDisplay.blit(textsurface, (x, y))
 
         def text_objects(text, font):
-            textSurface = font.render(text, True, black)
+            textSurface = font.render(text, True, white)
             return textSurface, textSurface.get_rect()
 
         def button(msg, x, y, w, h, ic, ac, action=None):
@@ -104,6 +109,24 @@ class run():
             global pause
             pause = False
 
+        def getMemory(key):
+            with open("data/memory.json", "r+") as jsonFile:
+                data = json.load(jsonFile)
+
+                return data[key]
+
+        def setMemory(key, value):
+            with open("data/memory.json", "r+") as jsonFile:
+                data = json.load(jsonFile)
+
+                data[key] = value
+
+                jsonFile.seek(0)  # rewind
+                json.dump(data, jsonFile)
+                jsonFile.truncate()
+
+        balance = getMemory("balance")
+
         def paused():
             largeText = pygame.font.SysFont("comicsansms", 115)
             TextSurf, TextRect = text_objects("Paused", largeText)
@@ -116,8 +139,11 @@ class run():
                         pygame.quit()
                         quit()
 
-                button("Continue", 150, 450, 100, 50, green,bright_green, unpause)
-                button("Quit", 550, 450, 100, 50, red, bright_red, quitgame)
+                button("Continue", 500, 450, 100, 50, black, grey, unpause)
+                button("Quit", 700, 450, 100, 50, black, grey, back)
+
+                #balance = setMemory("balance", score)
+
 
                 pygame.display.update()
                 clock.tick(30)
