@@ -4,7 +4,6 @@ import json
 import os
 import math
 import itertools
-from menu_lib import slidemenu
 
 pygame.init()
 pygame.font.init()
@@ -96,7 +95,8 @@ class Wolk(Game):
 
     def loadWolk(self, name):
         self.wolk = pygame.image.load(name).convert_alpha()
-
+        wolkWidth = self.wolk.get_rect().width
+        wolkHeight = self.wolk.get_rect().height
         self.wolk = pygame.transform.scale(self.wolk, (350,200))
 
     def blitwolk(self,screen):
@@ -108,13 +108,13 @@ class Score(Game):
 
 
     def getMemory(key):
-        with open("data/finalfight/memory.json", "r+") as jsonFile:
+        with open("finalfight_lib/memory.json", "r+") as jsonFile:
             data = json.load(jsonFile)
 
             return data[key]
 
     def setMemory(key, value):
-        with open("data/finalfight/memory.json", "r+") as jsonFile:
+        with open("finalfight_lib/memory.json", "r+") as jsonFile:
             data = json.load(jsonFile)
 
             data[key] = value
@@ -138,8 +138,6 @@ class Pause(Game):
         self.state = RUNNING
 
 
-
-
     def magnitude(v):
         return math.sqrt(sum(v[i] * v[i] for i in range(len(v))))
 
@@ -150,61 +148,28 @@ class Pause(Game):
         return [v[i] / magnitude(v) for i in range(len(v))]
 
     def loadPause(self):
-        self.pause_text = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 60).render('Paused', True,
+        self.pause_text = pygame.font.Font("finalfight_lib/FEASFBRG.ttf", 60).render('Paused', True,
                                                                                  pygame.color.Color('White'))
         s = pygame.Surface((1280, 720), pygame.SRCALPHA)  # per-pixel alpha
         s.fill((0, 0, 0, 150))
 
-    def loadPauseButton(self,name):
-        self.pauseButton = pygame.image.load(name).convert_alpha()
-
-        self.pauseButton = pygame.transform.scale(self.pauseButton, (50, 50))
-
-    def blitPauseButton(self, screen):
-        screen.blit(self.pauseButton, (1190, 50))
-
-    def loadHoverPauseButton(self,name):
-        self.hoverPauseButton = pygame.image.load(name).convert_alpha()
-
-        self.hoverPauseButton = pygame.transform.scale(self.hoverPauseButton, (50, 50))
-
-    def blitHoverPauseButton(self, screen):
-        screen.blit(self.hoverPauseButton, (1190, 50))
-
-    def loadPlayButton(self,name):
-        self.playButton = pygame.image.load(name).convert_alpha()
-
-        self.playButton = pygame.transform.scale(self.playButton, (50, 50))
-
-    def blitPlayButton(self, screen):
-        screen.blit(self.playButton, (630, 320))
-
-    def loadHoverPlayButton(self,name):
-        self.hoverPlayButton = pygame.image.load(name).convert_alpha()
-
-        self.hoverPlayButton = pygame.transform.scale(self.hoverPlayButton, (50, 50))
-
-    def blitHoverPlayButton(self, screen):
-        screen.blit(self.hoverPlayButton, (630, 320))
-
     def loadExitButton(self, name):
         self.exitButton = pygame.image.load(name).convert_alpha()
 
-        self.exitButton = pygame.transform.scale(self.exitButton, (50, 50))
+        self.exitButton = pygame.transform.scale(self.exitButton, (150, 50))
 
     def blitExitButton(self, screen):
-        screen.blit(self.exitButton, (690, 320))
+        screen.blit(self.exitButton, (605, 420))
 
-    def loadHoverExitButton(self, name):
-        self.hoverExitButton = pygame.image.load(name).convert_alpha()
+    #def loadMenuButton(self, name):
+    #   self.menuButton = pygame.image.load(name).convert_alpha()
 
-        self.hoverExitButton = pygame.transform.scale(self.hoverExitButton, (50, 50))
+    #    self.menuButton = pygame.transform.scale(self.menuButton, (150, 50))
 
-    def blitHoverExitButton(self, screen):
-        screen.blit(self.hoverExitButton, (690, 320))
+    #def blitMenuButton(self, screen):
+    #    screen.blit(self.menuButton, (605, 420))
 
-    def task(self):
-        slidemenu.run().runm(200)
+
 
 class run():
     def runm(self):
@@ -214,17 +179,10 @@ class run():
 
         screen = pygame.display.set_mode(screenDim)
 
-        pauseButton = pygame.image.load("data/finalfight/pause_button.png")
-        hoverPauseButton = pygame.image.load("data/finalfight/hoverPause_button.png")
-
-        playButton = pygame.image.load("data/finalfight/play.png")
-        hoverPlayButton = pygame.image.load("data/finalfight/knop.png")
-
-        gameDisplay = pygame.display.set_mode((width, height))
-
         pygame.display.set_caption("Final Fight")
 
         pygame.init()
+        #newPlayer = Player(screen)
         player = Player(screen)
         newBoss = Boss(screen)
         newWolk = Wolk(screen)
@@ -234,17 +192,15 @@ class run():
 
         background.loadForrest("data/finalfight/openplek.png")
 
-        newPause.loadExitButton("data/finalfight/exitknop.png")
+        #newPlayer.loadPlayer("data/finalfight/monkey.png")
 
-        newPause.loadHoverExitButton("data/finalfight/hoverexitknop.png")
+        #newPlayer.movePlayer()
 
-        newPause.loadPauseButton("data/finalfight/pause_button.png")
+        #newPlayer.draw(screen)
 
-        newPause.loadHoverPauseButton("data/finalfight/hoverpause_button.png")
+        newPause.loadExitButton("data/finalfight/exitButton.png")
 
-        newPause.loadPlayButton("data/finalfight/play.png")
-
-        newPause.loadHoverPlayButton("data/finalfight/knop.png")
+        #newPause.loadMenuButton("data/finalfight/menuButton.png")
 
         newBoss.loadBoss("data/finalfight/boss2.png")
 
@@ -260,17 +216,13 @@ class run():
 
         newBoss.blitBoss(screen)
 
-        newPause.blitHoverPauseButton(screen)
+        #newPlayer.blitPlayer()
 
-        newPause.blitPauseButton(screen)
-
-        newPause.blitPlayButton(screen)
-
-        newPause.blitHoverPlayButton(screen)
+        #newPlayer.movePlayer()  # handle the keys
 
         newPause.blitExitButton(screen)
 
-        newPause.blitHoverExitButton(screen)
+        #newPause.blitMenuButton(screen)
 
         newScore.blitScore(screen)
 
@@ -279,7 +231,7 @@ class run():
         RUNNING, notRUNNING, PAUSE = 0, 1, 2
         state = RUNNING
 
-        pause_text = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 60).render('Paused', True, pygame.color.Color('White'))
+        pause_text = pygame.font.Font("finalfight_lib/FEASFBRG.ttf", 60).render('Paused', True, pygame.color.Color('White'))
 
         s = pygame.Surface((width, height), pygame.SRCALPHA)  # per-pixel alpha
         s.fill((0, 0, 0, 150))
@@ -288,29 +240,21 @@ class run():
 
         counter, text = 3, '3'.rjust(3)
         pygame.time.set_timer(pygame.USEREVENT, 1000)
-        font = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 60)
+        font = pygame.font.Font("finalfight_lib/FEASFBRG.ttf", 60)
 
         while True:
 
             for e in pygame.event.get():
                 counter -= 1
                 text = str(counter).rjust(3) if counter > 0 else 'GO!'
-                click = pygame.mouse.get_pressed()
-                mouse = pygame.mouse.get_pos()
+
                 if e.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
                    # RUNNING = False
-                if pygame.mouse.get_pressed()[0] and 1190 + 50 > mouse[0] > 1190 and 50 + 50 > mouse[1] > 50:
-                    state = PAUSE
-                if pygame.mouse.get_pressed()[0] and 630 + 50 > mouse[0] > 630 and 320 + 50 > mouse[1] > 320:
-                    state = RUNNING
-                if pygame.mouse.get_pressed()[0] and 690 + 50 > mouse[0] > 690 and 320 + 50 > mouse[1] > 320:
-                    newPause.task()
-
-                #if e.type == pygame.KEYDOWN:
-
-                    #if e.key == pygame.K_s : state = RUNNING
+                if e.type == pygame.KEYDOWN:
+                    if e.key == pygame.K_p : state = PAUSE
+                    if e.key == pygame.K_s : state = RUNNING
 
 
             else:
@@ -323,31 +267,16 @@ class run():
                 #elif counter > 0:
                  #   state = notRUNNING
 
-            #if 550 + 100 > mouse[0] > 550 and 450 + 50 > mouse[1] > 450:
-            #    pygame.draw.rect(gameDisplay, bright_red, (550, 450, 100, 50))
-            #else:
-             #   pygame.draw.rect(gameDisplay, red, (550, 450, 100, 50))
-
 
                 if state == RUNNING:
                     player.movePlayer()
-                    mouse = pygame.mouse.get_pos()
+
                     background.blitForrest()
-                    # print(mouse)
-
-                    if 1190 + 50 > mouse[0] > 1190 and 50 + 50 > mouse[1] > 50:
-                        newPause.blitHoverPauseButton(screen)
-                    else:
-                        newPause.blitPauseButton(screen)
-
-
-
                     newWolk.blitwolk(screen)
                     newBoss.blitBoss(screen)
                     #newPlayer.blitPlayer()
                     player.draw(screen)
                     newScore.blitScore(screen)
-
                     screen.blit(font.render(text, True, (0, 0, 0)), (620, 100))
 
                 #if state == notRUNNING:
@@ -365,28 +294,15 @@ class run():
 
                 elif state == PAUSE:
                     background.blitForrest()
-                    screen.blit(s, (0, 0))
-                    mouse = pygame.mouse.get_pos()
-
-                    if 630 + 50 > mouse[0] > 630 and 320 + 50 > mouse[1] > 320:
-                        newPause.blitHoverPlayButton(screen)
-                    else:
-                        newPause.blitPlayButton(screen)
-
-                    if 690 + 50 > mouse[0] > 690 and 320 + 50 > mouse[1] > 320:
-                        newPause.blitHoverExitButton(screen)
-                    else:
-                        newPause.blitExitButton(screen)
                     #newWolk.blitwolk()
                     #newBoss.blitBoss(screen)
                     #newPlayer.blitPlayer()
                     #player.draw(screen)
                     newScore.blitScore(screen)
-
-                    #newPause.blitPlayButton(screen)
-                    screen.blit(pause_text, (600, 260))
+                    screen.blit(s, (0, 0))
+                    screen.blit(pause_text, (600, 360))
                     #newPause.blitMenuButton(screen)
-                    #qnewPause.blitExitButton(screen)
+                    newPause.blitExitButton(screen)
 
  #               if state == RUNNING:
 #                    player.movePlayer()
@@ -415,3 +331,4 @@ class run():
              #   newPlayer.movePlayer()  # move right
             #elif key[pygame.K_LEFT]:  # left key
              #   newPlayer.movePlayer()  # move left
+

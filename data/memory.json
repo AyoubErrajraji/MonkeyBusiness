@@ -1,6 +1,1 @@
-<<<<<<< HEAD
 {"player": "AragueraFTW", "balance": "<function run.runm.<locals>.score at 0x00000166AF56A510>", "unlocked": [0, 1, 2], "monkey": "apprentice_monkey.png", "bought": ["apprentice_monkey.png"]}
-=======
-{"player": "AragueraFTW", "balance": 1300, "unlocked": [0, 1, 2], "monkey": "default_monkey.png", "bought": []}
-
->>>>>>> master
