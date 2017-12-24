@@ -109,7 +109,7 @@ KIND_ENEMY = 37
 
 # ENEMY #
 DEFAULT_HEALTH = 100
-DEFAULT_SPEED = 2
+DEFAULT_SPEED = 10
 DEFAULT_WIDTH = 30
 DEFAULT_HEIGHT = 30
 DEFAULT_IMAGE = "data/bananattack/sprites/truck_right.png"
@@ -123,7 +123,7 @@ MONKEY_SIZE = 50
 MONKEY_IMAGE = "data/default_monkey.png"
 MONKEY_IMAGE_TOP = "data/default_monkey_top.png"
 MONKEY_RADIUS = 100
-MONKEY_DAMAGE = .5
+MONKEY_DAMAGE = 5
 
 # WAYPOINTS #
 STARTPOINT = (0, 311)
