@@ -123,7 +123,7 @@ MONKEY_SIZE = 50
 MONKEY_IMAGE = "data/default_monkey.png"
 MONKEY_IMAGE_TOP = "data/default_monkey_top.png"
 MONKEY_RADIUS = 100
-MONKEY_DAMAGE = 2
+MONKEY_DAMAGE = 5
 
 # WAYPOINTS #
 STARTPOINT = (0, 311)

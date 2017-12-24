@@ -103,14 +103,15 @@ class playGame(Button):
             self.state = config.BA_CLEAR
 
 class exitGame(Button):
-    def __init__(self, state):
+    def __init__(self, state, lives):
         Button.__init__(self, (config.BUTTON_EXITGAME_X,config.BUTTON_EXITGAME_Y), config.BUTTON_EXITGAME_WIDTH, config.BUTTON_EXITGAME_HEIGHT, config.BUTTON_EXITGAME_IMG, config.BUTTON_EXITGAME_HOVER_IMG)
         self.item = None
         self.state = state
+        self.lives = lives
 
     def task(self):
         mymenu = slidemenu.run()
-        mymenu.runm(100) #voeg 100 balance punten toe aan het hoofdmenu
+        mymenu.runm(self.lives)
 
 class monkeyButton(Button):
     def __init__(self, state):

@@ -1,4 +1,5 @@
 import pygame
+import math
 from bananattack_lib import config
 
 class Monkey():
@@ -7,6 +8,8 @@ class Monkey():
         self.y = pygame.mouse.get_pos()[1]-(config.MONKEY_SIZE // 2)
 
         self.radius = config.MONKEY_RADIUS
+        self.closest = 1000
+        self.closest_pos = (self.x, self.y - 100)
 
     def paint(self, surface, color=(255, 255, 255, 255), range=True):
         if range:
@@ -14,6 +17,7 @@ class Monkey():
 
         image = pygame.image.load(config.MONKEY_IMAGE_TOP)
         image = pygame.transform.scale(image, (config.MONKEY_SIZE, config.MONKEY_SIZE))
+        image = pygame.transform.rotate(image, self.getAngle(self.closest_pos))
         surface.blit(image, (self.x, self.y))
 
     def collidepoint(self, mouse_pos):
@@ -29,6 +33,35 @@ class Monkey():
         cx, cy = (self.x + (config.MONKEY_SIZE//2), self.y + (config.MONKEY_SIZE//2))
         distance = ((px - cx) ** 2 + (py - cy) ** 2) ** .5
         return distance
+
+    def getAngle(self, position):
+        px, py = position
+        cx, cy = (self.x + (config.MONKEY_SIZE // 2), self.y + (config.MONKEY_SIZE // 2))
+
+        if px < cx:
+            overstaand = cx - px
+        else:
+            overstaand = px - cx
+
+        if py < cy:
+            aanliggend = cy - py
+        else:
+            aanliggend = py - cy
+
+        angle = math.degrees(math.atan(overstaand/aanliggend)) if aanliggend != 0 else 0
+
+        if px < cx and py > cy:
+            # 1
+            return -angle - 180
+        elif px < cx and py < cx:
+            # 2
+            return angle
+        elif px > cx and py < cx:
+            # 3
+            return -angle
+        else:
+            # 4
+            return angle - 180
 
     def canPlace(self, mouse_pos):
         x = mouse_pos[0]
