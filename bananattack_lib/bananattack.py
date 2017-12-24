@@ -122,7 +122,7 @@ class BananAttack(game.Game):
                 if pygame.key.get_pressed()[pygame.K_ESCAPE] == 1:
                     self.last_state = self.state
                     self.state = config.BA_PAUSE
-                    self.buttons = [button.playGame(self.state, self.wave_started()), button.exitGame(self.state)]
+                    self.buttons = [button.playGame(self.state, self.wave_started()), button.exitGame(self.state, self.lives)]
                     self.paint(self.screen)
                     print("State updated to: %d by Escape from %s" % (self.state, " the event in step"))
                 else:
