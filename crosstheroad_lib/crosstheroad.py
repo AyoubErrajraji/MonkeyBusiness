@@ -320,7 +320,7 @@ class Crosstheroad:
         pass
 
     def exitGame(self):
-        slidemenu.run().runm()
+        slidemenu.run().runm(10)
         self.quit = True
 
     def pauseOverlay(self):
