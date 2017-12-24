@@ -1,555 +1,367 @@
-<<<<<<< HEAD
-=======
-import pygame, sys
->>>>>>> master
+import pygame, sys, random
 from escapetheguards_lib import config
+from menu_lib import slidemenu
+pygame.init()
 
 class run():
     def runm(self):
-        code = "ToBeWritten"
-        iets = config.black
+        # Set top left text in screen
+        pygame.display.set_caption('Escape The Guards')
 
-<<<<<<< HEAD
-        # Hier moet je de main loop van je spel aanroepen
-
-<<<<<<< HEAD
-=======
-pygame.display.set_caption('Escape The Guards')
-
->>>>>>> master
-clock = pygame.time.Clock()
-pause = False
-
-backgroundintro = pygame.image.load('data/escapetheguards/bgintro.png').convert()
-backgroundintro = pygame.transform.scale(backgroundintro, (config.screen_width, config.screen_height))
-logoImg = pygame.image.load('data/escapetheguards/logo.png')
-playerImg = pygame.image.load('data/escapetheguards/player.png')
-playerImg = pygame.transform.scale(playerImg, (70, 70))
-containerImg = pygame.image.load('data/escapetheguards/container1.png').convert_alpha()
-
-barrelsideImg = pygame.image.load('data/escapetheguards/barrelside.png')
-barrelsideImg = pygame.transform.scale(barrelsideImg, (200, 250))
-<<<<<<< HEAD
-pausebutton = pygame.image.load('data/escapetheguards/pausebutton.png').convert_alpha()
-pausebutton = pygame.transform.scale(pausebutton, (100, 100))
-playbutton = pygame.image.load('data/escapetheguards/playbutton.png').convert_alpha()
-=======
->>>>>>> master
-carImg = pygame.image.load('data/escapetheguards/car.png').convert_alpha()
-car1Img = pygame.image.load('data/escapetheguards/car1.png').convert_alpha()
-car1Img = pygame.transform.scale(car1Img, (300, 200))
-excavatorImg = pygame.image.load('data/escapetheguards/excavator.png').convert_alpha()
-truckImg = pygame.image.load('data/escapetheguards/truck.png').convert_alpha()
-<<<<<<< HEAD
-cageImg = pygame.image.load('data/escapetheguards/cage.png').convert_alpha()
-=======
->>>>>>> master
-monkeyImg = pygame.image.load('data/escapetheguards/monkey.png').convert_alpha()
-config.screen.blit(backgroundintro, (0, 0))
-config.screen.blit(logoImg, (300, 300))
-config.screen.blit(logoImg, (730, 300))
-
-<<<<<<< HEAD
-def text_objects(text, font):
-    textSurface = font.render(text, True, config.white)
-    return textSurface, textSurface.get_rect()
-
-def button(msg, x, y, w, h, ic, ac, action=None):
-
-    mouse = pygame.mouse.get_pos()
-    click = pygame.mouse.get_pressed()
-
-    if x + w > mouse[0] > x and y + h > mouse[1] > y:
-        pygame.draw.rect(config.screen, ac, (x, y, w, h))
-
-        if click[0] == 1 and action != None:
-            if action == "start":
-                game_loop()
-            elif action == "quit":
-                pygame.quit()
-                quit()
-            elif action == "leave":
-                game_intro()
-            elif action == "settings":
-                settings_game()
-            elif action == "unpaused":
-                unpause()
-
-
-
-            else:
-                pygame.draw.rect(config.screen, ic, (x, y, w, h))
-
-                smallText = pygame.font.SysFont("comicsansms", 20)
-                textSurf, textRect = text_objects(msg, smallText)
-                textRect.center = ((x + (w / 2)), (y + (h / 2)))
-                config.screen.blit(textSurf, textRect)
-
-def unpause():
-    global pause
-    pause = False
-
-def paused():
-
-    pause = True
-    while pause:
-        for event in pygame.event.get():
-
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-
-            config.screen.fill(config.light_black)
-            pygame.draw.rect(config.screen, config.dark_green, [980, 0, 300, 720])
-
-            myfont = pygame.font.SysFont("comicsansms", 20)
-            label = myfont.render("Levels completed: 2", 1, (config.black))
-            config.screen.blit(label, (982, 10))
-            label = myfont.render("Banana Points Earned: 10", 1, (config.black))
-            config.screen.blit(label, (982, 110))
-            label = myfont.render("Current Level: 3", 1, (config.black))
-            config.screen.blit(label, (982, 210))
-            pygame.draw.rect(config.screen, config.brown, [650, 370, 300, 30])
-            pygame.draw.rect(config.screen, config.brown, [950, 0, 30, 720])
-            pygame.draw.rect(config.screen, config.brown, [0, 0, 780, 30])
-            pygame.draw.rect(config.screen, config.brown, [0, 0, 30, 520])
-            pygame.draw.rect(config.screen, config.brown, [0, 690, 980, 30])
-            config.screen.blit(playerImg, (0, 600))
-            config.screen.blit(containerImg, (30, 30))
-            config.screen.blit(logoImg, (1010, 350))
-
-            config.screen.blit(carImg, (200, 400))
-            config.screen.blit(excavatorImg, (500, 100))
-            config.screen.blit(truckImg, (650, 500))
-
-            myfont = pygame.font.SysFont("comicsansms", 115)
-            label = myfont.render(" GAME PAUSED!!", 1, (config.black))
-            config.screen.blit(label, (300, 340))
-
-            button("Continue!", 980, 670, 100, 50, config.black, config.light_black, "unpaused")
-            button("Settings!", 1080, 670, 100, 50, config.black, config.light_black, "settings")
-            button("Quit!", 1180, 670, 100, 50, config.black, config.light_black, "quit")
-
-            pygame.display.update()
-            clock.tick(15)
-=======
-class run():
-    def text_objects(text, font):
-        textSurface = font.render(text, True, config.white)
-        return textSurface, textSurface.get_rect()
-
-    def button(self, msg, x, y, w, h, ic, ac, action=None):
-
-        mouse = pygame.mouse.get_pos()
-        click = pygame.mouse.get_pressed()
-
-        if x + w > mouse[0] > x and y + h > mouse[1] > y:
-            pygame.draw.rect(config.screen, ac, (x, y, w, h))
-
-            if click[0] == 1 and action != None:
-                if action == "start":
-                    self.game_loop()
-                elif action == "quit":
-                    pygame.quit()
-                    quit()
-                elif action == "leave":
-                    self.game_intro()
-                elif action == "settings":
-                    self.settings_game()
-                elif action == "unpaused":
-                    self.unpause()
-
-
-
-                else:
-                    pygame.draw.rect(config.screen, ic, (x, y, w, h))
-
-                    smallText = pygame.font.SysFont("comicsansms", 20)
-                    textSurf, textRect = self.text_objects(msg, smallText)
-                    textRect.center = ((x + (w / 2)), (y + (h / 2)))
-                    config.screen.blit(textSurf, textRect)
-
-    def unpause(self):
-        global pause
+        # Set up clock for fps count.
+        clock = pygame.time.Clock()
+        # Different global values defined.
         pause = False
 
-    def paused(self):
+        # Main run class, everything is inside this class.
 
-        pause = True
-        while pause:
-            for event in pygame.event.get():
+        def text_objects(text, font):
+            buttontext = font.render(text, False, config.white)
+            return buttontext, buttontext.get_rect()
 
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
+        def button(msg, x, y, w, h, ic, ac, action=None):
+
+            click = pygame.mouse.get_pressed()
+
+            mouse = pygame.mouse.get_pos()
+            # print(click)
+
+            if x + w > mouse[0] > x and y + h > mouse[1] > y:
+                pygame.draw.rect(config.screen, ac, (x, y, w, h))
+
+                if click[0] == 1 and action != None:
+                    if action == "level1":
+                        level_1()
+                    # elif action == "level2":
+                    # level_2()
+
+                    elif action == "unpaused":
+                        unpause()
+
+                    elif action == "leave":
+                        game_intro()
+
+
+                    elif action == "quit":
+                        pygame.quit()
+                        sys.exit()
+
+                    else:
+                        pygame.draw.rect(config.screen, ic, (x, y, w, h))
+
+                        myfont = pygame.font.SysFont("comicsansms", 20)
+                        textdisplay, textRect = text_objects(msg, myfont)
+                        textRect.center = ((x + (w / 2)), (y + (h / 2)))
+                        config.screen.blit(textdisplay, textRect)
+
+        def unpause():
+            global pause
+            pause = False
+
+        def back():
+            mymenu = slidemenu.run()
+            mymenu.runm()
+
+        def paused():
+
+            pause = True
+
+            while pause:
+                for event in pygame.event.get():
+
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
 
                 config.screen.fill(config.light_black)
                 pygame.draw.rect(config.screen, config.dark_green, [980, 0, 300, 720])
 
                 myfont = pygame.font.SysFont("comicsansms", 20)
-                label = myfont.render("Levels completed: 2", 1, (config.black))
+                label = myfont.render("Levels completed: 0", 2, (config.black))
                 config.screen.blit(label, (982, 10))
                 label = myfont.render("Banana Points Earned: 10", 1, (config.black))
                 config.screen.blit(label, (982, 110))
-                label = myfont.render("Current Level: 3", 1, (config.black))
+                label = myfont.render("Current Level: 1", 1, (config.black))
                 config.screen.blit(label, (982, 210))
-                pygame.draw.rect(config.screen, config.brown, [650, 370, 300, 30])
-                pygame.draw.rect(config.screen, config.brown, [950, 0, 30, 720])
-                pygame.draw.rect(config.screen, config.brown, [0, 0, 780, 30])
-                pygame.draw.rect(config.screen, config.brown, [0, 0, 30, 520])
-                pygame.draw.rect(config.screen, config.brown, [0, 690, 980, 30])
-                config.screen.blit(playerImg, (0, 600))
-                config.screen.blit(containerImg, (30, 30))
-                config.screen.blit(logoImg, (1010, 350))
+                pygame.draw.rect(config.screen, config.brown, [650, 370, 300, 30])  # Middle row!!
+                pygame.draw.rect(config.screen, config.brown, [950, 0, 30, 720])  # Right row!!
+                pygame.draw.rect(config.screen, config.brown, [290, 0, 660, 30])  # Top row!!
+                pygame.draw.rect(config.screen, config.brown, [0, 0, 30, 720])  # Left row!!
+                pygame.draw.rect(config.screen, config.brown, [0, 690, 750, 30])  # Bottom row!!
 
-                config.screen.blit(carImg, (200, 400))
-                config.screen.blit(excavatorImg, (500, 100))
-                config.screen.blit(truckImg, (650, 500))
+                pygame.draw.rect(config.screen, config.brown, [0, 250, 500, 30])  # Left middle row!!
+
+                pygame.draw.rect(config.screen, config.brown, [0, 690, 750, 30])  # Bottom row!!
+
+                config.screen.blit(config.cage2Img, (30, 0))
+                config.screen.blit(config.cage3Img, (30, 490))
+                config.screen.blit(config.cage3Img, (400, 490))
+                config.screen.blit(config.cagedoorImg, (290, 70))
+                config.screen.blit(config.tableImg, (600, 200))
+
+                config.screen.blit(config.guard_leftImg, (550, 30))
+                config.screen.blit(config.guard_topImg, (230, 320))
+
+                config.screen.blit(config.logoImg, (1010, 350))
+                config.screen.blit(config.bananaImg, (300, 350))
+                config.screen.blit(config.bananaImg, (600, 620))
+                config.screen.blit(config.bananaImg, (900, 300))
 
                 myfont = pygame.font.SysFont("comicsansms", 115)
-                label = myfont.render(" GAME PAUSED!!", 1, (config.black))
-                config.screen.blit(label, (300, 340))
+                label = myfont.render(" GAME PAUSED!", 1, (config.white))
+                config.screen.blit(label, (250, 340))
 
-                self.button("Continue!", 980, 670, 100, 50, config.black, config.light_black, "unpaused")
-                self.button("Settings!", 1080, 670, 100, 50, config.black, config.light_black, "settings")
-                self.button("Quit!", 1180, 670, 100, 50, config.black, config.light_black, "quit")
+                button("Continue", 980, 670, 100, 50, config.black, config.light_black, "unpaused")
+                button("Quit", 1180, 670, 100, 50, config.black, config.light_black, "leave")
 
                 pygame.display.update()
                 clock.tick(15)
 
-    def game_intro(self):
-        global pause
-        intro = True
->>>>>>> master
+        def game_intro():
+            global pause
+            intro = True
 
-        x = (config.screen_width * 0.785)
-        y = (config.screen_height * 0.58)
+            x = (config.screen_width * 0.785)
+            y = (config.screen_height * 0.58)
 
-<<<<<<< HEAD
-    x = (config.screen_width * 0.785)
-    y = (config.screen_height * 0.58)
-=======
-        while intro:
-            for event in pygame.event.get():
->>>>>>> master
+            while intro:
+                for event in pygame.event.get():
 
-                if event.type == pygame.QUIT:
-                            pygame.quit()
-                            quit()
-
-<<<<<<< HEAD
-            if event.type == pygame.QUIT:
+                    if event.type == pygame.QUIT:
                         pygame.quit()
-                        quit()
+                        sys.exit()
 
-        config.screen.blit(backgroundintro, (0, 0))
+                config.screen.blit(config.backgroundintro, (0, 0))
 
-        myfont = pygame.font.SysFont("comicsansms", 80)
-        label = myfont.render("Escape Those Guards!", 1, (config.black))
-        config.screen.blit(label, (230, 120))
+                myfont = pygame.font.SysFont("comicsansms", 80)
+                label = myfont.render("Escape Those Guards!", 1, (config.black))
+                config.screen.blit(label, (230, 120))
 
-        button("Let's Play!", 590, 350, 100, 50, config.black, config.light_black, "start")
-        button("Settings!", 590, 450, 100, 50, config.black, config.light_black, "settings")
-        button("Quit!", 590, 550, 100, 50, config.black, config.light_black, "quit")
+                config.screen.blit(config.monkeyImg, (-50, 300))
+                config.screen.blit(config.monkeyImg, (730, 300))
 
-        config.screen.blit(monkeyImg, (-50, 300))
-        config.screen.blit(monkeyImg, (730, 300))
+                button("Let's Play!", 590, 350, 100, 50, config.light_black, config.yellow, "level1")
+                button("Quit!", 590, 550, 100, 50, config.yellow, config.light_black, "quit")
 
-        pygame.display.update()
-        clock.tick(15)
+                pygame.display.update()
+                clock.tick(15)
 
-def settings_game():
-    global pause
+        def player():
+            config.screen.blit(config.player_right, (300, 100))
 
-    x = (config.screen_width * 0.785)
-    y = (config.screen_height * 0.58)
+            x = 300
+            y = 100
 
-    while settings_game:
-        for event in pygame.event.get():
+            x_change = 0
+            y_change = 0
 
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-        config.screen.blit(backgroundintro, (0, 0))
+            x += x_change
+            y += y_change
 
-        myfont = pygame.font.SysFont("comicsansms", 80)
-        label = myfont.render("Settings:", 1, (config.black))
-        config.screen.blit(label, (470, 80))
+        def things(thingx, thingy, thingw, thingh, color):
+            pygame.draw.rect(config.screen, color, [thingx, thingy, thingw, thingh])
 
-        myfont = pygame.font.SysFont("comicsansms", 20)
-        label = myfont.render("Resolution:", 1, (config.black))
-        config.screen.blit(label, (470, 220))
+        def level_1():
 
-        label = myfont.render("1280 x  720", 1, (config.black))
-        config.screen.blit(label, (600, 220))
+            global pause
 
-        label = myfont.render("1920 x 1080", 1, (config.black))
-        config.screen.blit(label, (600, 250))
+            x = (config.screen_width * 0.45)
+            y = (config.screen_height * 0.8)
 
-        label = myfont.render("Fullscreen", 1, (config.black))
-        config.screen.blit(label, (600, 280))
+            x_change = 0
+            y_change = 0
 
-        label = myfont.render("Controls:", 1, (config.black))
-        config.screen.blit(label, (470, 310))
+            thing_startx = random.randrange(0, config.gs_width)
+            thing_starty = -600
+            thing_speed = 7
 
-        label = myfont.render("Move forwards:", 1, (config.black))
-        config.screen.blit(label, (600, 340))
+            thing_width = 100
+            thing_height = 100
 
-        label = myfont.render("Move backwards:", 1, (config.black))
-        config.screen.blit(label, (600, 370))
+            gameExit = False
 
-        label = myfont.render("Move Sideways:", 1, (config.black))
-        config.screen.blit(label, (600, 400))
+            while not gameExit:
 
-        label = myfont.render("Pause the game:", 1, (config.black))
-        config.screen.blit(label, (600, 430))
-
-        label = myfont.render("Key W", 1, (config.black))
-        config.screen.blit(label, (780, 340))
-
-        label = myfont.render("Key S", 1, (config.black))
-        config.screen.blit(label, (780, 370))
-
-        label = myfont.render("Key A (Left) and Key D (Right)", 1, (config.black))
-        config.screen.blit(label, (780, 400))
-
-        label = myfont.render("Key P", 1, (config.black))
-        config.screen.blit(label, (780, 430))
-
-        label = myfont.render("Quit The Game:", 1, (config.black))
-        config.screen.blit(label, (600, 460))
-
-        label = myfont.render("Key Escape or top left X", 1, (config.black))
-        config.screen.blit(label, (780, 460))
-
-        button("Back to Intro", 450, 670, 140, 50, config.black, config.light_black, "leave")
-        button("Back to Game", 740, 670, 140, 50, config.black, config.light_black, "start")
-=======
-            config.screen.blit(backgroundintro, (0, 0))
-
-            myfont = pygame.font.SysFont("comicsansms", 80)
-            label = myfont.render("Escape Those Guards!", 1, (config.black))
-            config.screen.blit(label, (230, 120))
-
-            self.button("Let's Play!", 590, 350, 100, 50, config.black, config.light_black, "start")
-            self.button("Settings!", 590, 450, 100, 50, config.black, config.light_black, "settings")
-            self.button("Quit!", 590, 550, 100, 50, config.black, config.light_black, "quit")
-
-            config.screen.blit(monkeyImg, (-50, 300))
-            config.screen.blit(monkeyImg, (730, 300))
-
-            pygame.display.update()
-            clock.tick(15)
-
-    def settings_game(self):
-        global pause
-
-        x = (config.screen_width * 0.785)
-        y = (config.screen_height * 0.58)
-
-        while settings_game:
-            for event in pygame.event.get():
-
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    quit()
-            config.screen.blit(backgroundintro, (0, 0))
-
-            myfont = pygame.font.SysFont("comicsansms", 80)
-            label = myfont.render("Settings:", 1, (config.black))
-            config.screen.blit(label, (470, 80))
-
-            myfont = pygame.font.SysFont("comicsansms", 20)
-            label = myfont.render("Resolution:", 1, (config.black))
-            config.screen.blit(label, (470, 220))
-
-            label = myfont.render("1280 x  720", 1, (config.black))
-            config.screen.blit(label, (600, 220))
-
-            label = myfont.render("1920 x 1080", 1, (config.black))
-            config.screen.blit(label, (600, 250))
-
-            label = myfont.render("Fullscreen", 1, (config.black))
-            config.screen.blit(label, (600, 280))
-
-            label = myfont.render("Controls:", 1, (config.black))
-            config.screen.blit(label, (470, 310))
-
-            label = myfont.render("Move forwards:", 1, (config.black))
-            config.screen.blit(label, (600, 340))
-
-            label = myfont.render("Move backwards:", 1, (config.black))
-            config.screen.blit(label, (600, 370))
-
-            label = myfont.render("Move Sideways:", 1, (config.black))
-            config.screen.blit(label, (600, 400))
-
-            label = myfont.render("Pause the game:", 1, (config.black))
-            config.screen.blit(label, (600, 430))
-
-            label = myfont.render("Key W", 1, (config.black))
-            config.screen.blit(label, (780, 340))
-
-            label = myfont.render("Key S", 1, (config.black))
-            config.screen.blit(label, (780, 370))
-
-            label = myfont.render("Key A (Left) and Key D (Right)", 1, (config.black))
-            config.screen.blit(label, (780, 400))
-
-            label = myfont.render("Key P", 1, (config.black))
-            config.screen.blit(label, (780, 430))
-
-            label = myfont.render("Quit The Game:", 1, (config.black))
-            config.screen.blit(label, (600, 460))
-
-            label = myfont.render("Key Escape or top left X", 1, (config.black))
-            config.screen.blit(label, (780, 460))
-
-            button("Back to Intro", 450, 670, 140, 50, config.black, config.light_black, "leave")
-            button("Back to Game", 740, 670, 140, 50, config.black, config.light_black, "start")
-
-            pygame.display.update()
-            clock.tick(15)
-
-    def game_loop(self):
-
-        global pause
-
-        x = (config.screen_width * 0.45)
-        y = (config.screen_height * 0.8)
-
-        x_change = 0
-
-        gameExit = False
-
-        while not gameExit:
-
-            for event in pygame.event.get():
-                        if event.type == pygame.QUIT:
-                            pygame.quit()
-                            quit()
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        gameExit = True
 
                         if event.type == pygame.KEYDOWN:
                             if event.key == pygame.K_LEFT:
                                 x_change = -5
-                            if event.key == pygame.K_RIGHT:
+                            elif event.key == pygame.K_RIGHT:
                                 x_change = 5
-                            if event.key == pygame.K_p:
+                            elif event.key == pygame.K_UP:
+                                y_change = 5
+                            elif event.key == pygame.K_DOWN:
+                                y_change = -5
+                            elif event.key == pygame.K_ESCAPE:
                                 pause = True
                                 paused()
->>>>>>> master
 
-                        if event.type == pygame.KEYUP:
-                            if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-                                x_change = 0
+                            if event.type == pygame.KEYUP:
+                                if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                                    x_change = 0
+                                elif event.key == pygame.K_UP or event.key == pygame.K_DOWN:
+                                    y_change = 0
 
-<<<<<<< HEAD
-def game_loop():
+                            if event.type == pygame.QUIT:
+                                pygame.quit()
+                                sys.exit()
 
-    global pause
+                x += x_change
+                y += y_change
+                config.screen.fill(config.light_black)
+                pygame.draw.rect(config.screen, config.dark_green, [980, 0, 300, 720])
 
-    x = (config.screen_width * 0.45)
-    y = (config.screen_height * 0.8)
+                myfont = pygame.font.SysFont("comicsansms", 20)
+                label = myfont.render("Levels completed: 0", 2, (config.black))
+                config.screen.blit(label, (982, 10))
+                label = myfont.render("Banana Points Earned: 10", 1, (config.black))
+                config.screen.blit(label, (982, 110))
+                label = myfont.render("Current Level: 1", 1, (config.black))
+                config.screen.blit(label, (982, 210))
+                pygame.draw.rect(config.screen, config.brown, [650, 370, 300, 30])  # Middle row!!
+                pygame.draw.rect(config.screen, config.brown, [950, 0, 30, 720])  # Right row!!
+                pygame.draw.rect(config.screen, config.brown, [290, 0, 660, 30])  # Top row!!
+                pygame.draw.rect(config.screen, config.brown, [0, 0, 30, 720])  # Left row!!
+                pygame.draw.rect(config.screen, config.brown, [0, 690, 750, 30])  # Bottom row!!
 
-    x_change = 0
+                pygame.draw.rect(config.screen, config.brown, [0, 250, 500, 30])  # Left middle row!!
 
-    gameExit = False
+                pygame.draw.rect(config.screen, config.brown, [0, 690, 750, 30])  # Bottom row!!
 
-    while not gameExit:
+                config.screen.blit(config.cage2Img, (30, 0))
+                config.screen.blit(config.cage3Img, (30, 490))
+                config.screen.blit(config.cage3Img, (400, 490))
+                config.screen.blit(config.cagedoorImg, (290, 70))
+                config.screen.blit(config.tableImg, (600, 200))
 
-        for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        pygame.quit()
-                        quit()
+                config.screen.blit(config.guard_leftImg, (550, 30))
+                config.screen.blit(config.guard_topImg, (230, 320))
+
+                config.screen.blit(config.logoImg, (1010, 350))
+                config.screen.blit(config.bananaImg, (300, 350))
+                config.screen.blit(config.bananaImg, (600, 620))
+                config.screen.blit(config.bananaImg, (900, 300))
+
+                things(thing_startx, thing_starty, thing_width, thing_height, config.black)
+                thing_starty += thing_speed
+
+                if thing_starty > config.gs_height:
+                    thing_starty = 0 - thing_height
+                    thing_startx = random.randrange(0, config.gs_width)
+
+                if y < thing_starty + thing_height:
+                    print('y crossover')
+
+                    if x > thing_startx and x < thing_startx + thing_width or x + config.player_width > thing_startx and x + config.player_width < thing_startx + thing_width
+
+                player()
+
+                button("Back to Intro", 1140, 670, 140, 50, config.black, config.light_black, "leave")
+                button("Start Game", 1050, 670, 140, 50, config.black, config.light_black, "level1")
+
+                pygame.display.update()
+                config.clock.tick(60)
+
+        # LEVEL 2 NOT WORKING YET!! #
+
+        def level_2():
+
+            global pause
+
+            x = (config.screen_width * 0.45)
+            y = (config.screen_height * 0.8)
+
+            x_change = 0
+            y_change = 0
+
+            gameExit = False
+
+            while not gameExit:
+
+                for event in pygame.event.get():
 
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_LEFT:
                             x_change = -5
-                        if event.key == pygame.K_RIGHT:
+                        elif event.key == pygame.K_RIGHT:
                             x_change = 5
-                        if event.key == pygame.K_p:
+                        elif event.key == pygame.K_UP:
+                            y_change = 5
+                        elif event.key == pygame.K_DOWN:
+                            y_change = -5
+                        elif event.key == pygame.K_ESCAPE:
                             pause = True
                             paused()
 
-                    if event.type == pygame.KEYUP:
-                        if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-                            x_change = 0
+                if event.type == pygame.KEYUP:
+                    if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                        x_change = 0
+                    elif event.key == pygame.K_UP or event.key == pygame.K_DOWN:
+                        y_change = 0
 
-        x += x_change
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
 
-        config.screen.fill(config.light_black)
-        pygame.draw.rect(config.screen, config.dark_green, [980, 0, 300, 720])
+                sprite = pygame.image.load('player_right.png')
+                spritex = 0
+                spritey = 600
 
-        myfont = pygame.font.SysFont("comicsansms", 20)
-        label = myfont.render("Levels completed: 2", 1, (config.black))
-        config.screen.blit(label, (982, 10))
-        label = myfont.render("Banana Points Earned: 10", 1, (config.black))
-        config.screen.blit(label, (982, 110))
-        label = myfont.render("Current Level: 3", 1, (config.black))
-        config.screen.blit(label, (982, 210))
-        pygame.draw.rect(config.screen, config.brown, [650, 370, 300, 30])
-        pygame.draw.rect(config.screen, config.brown, [950, 0, 30, 720])
-        pygame.draw.rect(config.screen, config.brown, [0, 0, 780, 30])
-        pygame.draw.rect(config.screen, config.brown, [0, 0, 30, 520])
-        pygame.draw.rect(config.screen, config.brown, [0, 690, 980, 30])
-        config.screen.blit(playerImg, (0, 600))
-        config.screen.blit(containerImg, (30, 30))
-        config.screen.blit(logoImg, (1010, 350))
+                config.screen.blit(sprite, (spritex, spritey))
 
-        config.screen.blit(carImg, (200, 400))
-        config.screen.blit(excavatorImg, (500, 100))
-        config.screen.blit(truckImg, (650, 500))
+                for event in pygame.event.get():
 
-        button("Settings!", 980, 670, 100, 50, config.black, config.light_black, "settings")
-        button("Back to Intro", 1140, 670, 140, 50, config.black, config.light_black, "leave")
+                    if event.type == quit:
+                        pygame.quit()
+                        sys.exit()
 
-        pygame.display.update()
-        clock.tick(60)
+                x += x_change
+                y += y_change
 
-game_intro()
-settings_game()
-game_loop()
-pygame.quit()
-sys.exit()
-=======
-    # Hier staan je andere functies van je spel, let goed op dat ze in class run staan
->>>>>>> AyoubErrajraji
-=======
-            x += x_change
+                config.screen.fill(config.light_black)
+                pygame.draw.rect(config.screen, config.dark_green, [980, 0, 300, 720])
 
-            config.screen.fill(config.light_black)
-            pygame.draw.rect(config.screen, config.dark_green, [980, 0, 300, 720])
+                myfont = pygame.font.SysFont("comicsansms", 20)
+                label = myfont.render("Levels completed: 1", 2, (config.black))
+                config.screen.blit(label, (982, 10))
+                label = myfont.render("Banana Points Earned: 10", 1, (config.black))
+                config.screen.blit(label, (982, 110))
+                label = myfont.render("Current Level: 2", 1, (config.black))
+                config.screen.blit(label, (982, 210))
+                pygame.draw.rect(config.screen, config.brown, [650, 370, 300, 30])
+                pygame.draw.rect(config.screen, config.brown, [950, 0, 30, 720])
+                pygame.draw.rect(config.screen, config.brown, [950, 0, 30, 720])
+                pygame.draw.rect(config.screen, config.brown, [0, 0, 780, 30])
+                pygame.draw.rect(config.screen, config.brown, [0, 0, 30, 520])
+                pygame.draw.rect(config.screen, config.brown, [0, 690, 980, 30])
 
-            myfont = pygame.font.SysFont("comicsansms", 20)
-            label = myfont.render("Levels completed: 2", 1, (config.black))
-            config.screen.blit(label, (982, 10))
-            label = myfont.render("Banana Points Earned: 10", 1, (config.black))
-            config.screen.blit(label, (982, 110))
-            label = myfont.render("Current Level: 3", 1, (config.black))
-            config.screen.blit(label, (982, 210))
-            pygame.draw.rect(config.screen, config.brown, [650, 370, 300, 30])
-            pygame.draw.rect(config.screen, config.brown, [950, 0, 30, 720])
-            pygame.draw.rect(config.screen, config.brown, [0, 0, 780, 30])
-            pygame.draw.rect(config.screen, config.brown, [0, 0, 30, 520])
-            pygame.draw.rect(config.screen, config.brown, [0, 690, 980, 30])
-            config.screen.blit(playerImg, (0, 600))
-            config.screen.blit(containerImg, (30, 30))
-            config.screen.blit(logoImg, (1010, 350))
+                config.screen.blit(config.containerImg, (30, 30))
+                config.screen.blit(config.logoImg, (1010, 350))
 
-            config.screen.blit(carImg, (200, 400))
-            config.screen.blit(excavatorImg, (500, 100))
-            config.screen.blit(truckImg, (650, 500))
+                config.screen.blit(config.carImg, (200, 400))
+                config.screen.blit(config.excavatorImg, (400, 40))
+                config.screen.blit(config.truckImg, (600, 470))
+                config.screen.blit(config.carImg, (700, 340))
+                config.screen.blit(config.bananaImg, (300, 350))
+                config.screen.blit(config.bananaImg, (650, 450))
+                config.screen.blit(config.bananaImg, (900, 0))
+                config.screen.blit(config.pickupImg, (840, 160))
+                config.screen.blit(config.pickupImg, (40, 330))
 
-            self.button("Settings!", 980, 670, 100, 50, config.black, config.light_black, "settings")
-            self.button("Back to Intro", 1140, 670, 140, 50, config.black, config.light_black, "leave")
+                config.screen.blit(config.guard_leftImg, (300, 495))
+                config.screen.blit(config.guard_topImg, (650, 20))
+                button("Pause!", 980, 670, 100, 50, config.black, config.light_black, "unpaused")
+                button("Back to Intro", 1140, 670, 140, 50, config.black, config.light_black, "leave")
 
-            pygame.display.update()
-            clock.tick(60)
+                pygame.display.update()
+                config.clock.tick(60)
 
-    def runm(self):
-        self.game_intro()
-        self.settings_game()
-        self.game_loop()
+        game_intro()
+        level_1()
+        level_2()
+
         pygame.quit()
         sys.exit()
->>>>>>> master
