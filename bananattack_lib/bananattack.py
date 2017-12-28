@@ -22,7 +22,10 @@ class BananAttack(game.Game):
         ### Enemy setup ###
         self.enemies = [
             [],
-            [enemy.Enemy()],
+            #[enemy.Enemy()],
+            #[enemy.Enemy()],
+            #[enemy.Enemy()],
+            #[enemy.Enemy(),enemy.Enemy()],
             [enemy.Enemy(), enemy.Enemy(), enemy.Enemy()]
         ]
 
@@ -64,7 +67,7 @@ class BananAttack(game.Game):
 
     # waves can be started while breaktime (TD_CLEAR) and there is a next wave available
     def can_start_wave(self):
-        if self.waves_comp < self.waves-1 and self.state ==  config.BA_CLEAR:
+        if self.waves_comp < self.waves-1 and self.state == config.BA_CLEAR:
             return True
         else:
             return False
@@ -119,7 +122,7 @@ class BananAttack(game.Game):
                 if pygame.key.get_pressed()[pygame.K_ESCAPE] == 1:
                     self.last_state = self.state
                     self.state = config.BA_PAUSE
-                    self.buttons = [button.playGame(self.state, self.wave_started()), button.exitGame(self.state)]
+                    self.buttons = [button.playGame(self.state, self.wave_started()), button.exitGame(self.state, self.lives)]
                     self.paint(self.screen)
                     print("State updated to: %d by Escape from %s" % (self.state, " the event in step"))
                 else:
@@ -133,6 +136,9 @@ class BananAttack(game.Game):
             self.waves_comp += 1
             self.last_state = self.state
             self.state = config.BA_CLEAR
+            if self.waves_comp == self.waves - 1:
+                self.last_state = self.state
+                self.state = config.BA_SUCCESS
         print("State updated to: %d by %s from %s" % (self.state, button, " the bottom of the begin_wave function"))
 
     # check whether the next wave is running
@@ -150,7 +156,7 @@ class BananAttack(game.Game):
         # if the game is being played
         # draw the world, enemys, towers,
         # and menus
-        if self.state == config.BA_PLAYING or self.state == config.BA_PAUSE or self.state == config.BA_CLEAR:
+        if self.state == config.BA_PLAYING or self.state == config.BA_PAUSE or self.state == config.BA_CLEAR or self.state == config.BA_SUCCESS:
             ### Draw Right Info Box ###
             self.rightInfoBox()
 
@@ -192,11 +198,20 @@ class BananAttack(game.Game):
                     else:
                         tower.paint(surface, (255, 0, 0, 255))
                 else:
+                    for truck in self.enemies[self.wave]:
+                        if tower.getDistance(truck.position) < config.MONKEY_RADIUS:
+                            tower.closest = tower.getDistance(truck.position)
+                            tower.closest_pos = truck.position
+                            break
                     tower.paint(surface, range=False)
 
             ### Pause Overlay ###
             if self.state == config.BA_PAUSE:
                 self.pauseOverlay()
+
+            ### End Game ###
+            if self.state == config.BA_SUCCESS:
+                self.endGame()
 
             ### Draw buttons ###
             for button in self.buttons:
@@ -222,7 +237,7 @@ class BananAttack(game.Game):
         ### Push correct buttons ###
         # State 10
         if self.state == config.BA_PAUSE:
-            self.buttons = [button.playGame(self.state, self.wave_started()),button.exitGame(self.state)]
+            self.buttons = [button.playGame(self.state, self.wave_started()),button.exitGame(self.state, self.lives)]
 
         # State 20
         if self.state == config.BA_PLAYING:
@@ -238,6 +253,10 @@ class BananAttack(game.Game):
         # State 30
         if self.state == config.BA_CLEAR:
             self.buttons = [button.startWave(self.state, self.can_start_wave()), button.monkeyButton(self.state)]
+
+        # State 50
+        if self.state == config.BA_SUCCESS:
+            self.buttons = [button.exitGame(self.state, self.lives)]
 
     def getMemory(self, key):
         with open("bananattack_lib/memory.json", "r+") as jsonFile:
@@ -295,6 +314,17 @@ class BananAttack(game.Game):
 
         # pause text #
         text = "Game Paused!"
+        temp_surface = self.big_font.render(text, 1, self.font_color)
+        self.screen.blit(temp_surface, (450, 280))
+
+    def endGame(self):
+        # overlay
+        s = pygame.Surface((config.SCREEN_WIDTH, config.SCREEN_HEIGHT), pygame.SRCALPHA)  # per-pixel alpha
+        s.fill((0, 0, 0, 150))  # notice the alpha value in the color
+        self.screen.blit(s, (0, 0))
+
+        # pause text #
+        text = "Game Completed!"
         temp_surface = self.big_font.render(text, 1, self.font_color)
         self.screen.blit(temp_surface, (450, 280))
 
