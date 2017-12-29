@@ -317,7 +317,10 @@ class Crosstheroad:
         print("loading game")
 
     def restartGame(self):
-        pass
+        self.score = 0
+        self.monkeys.pop(0)
+        self.monkeys.pop(0)
+        self.loadGame()
 
     def exitGame(self):
         slidemenu.run().runm(10)
@@ -382,11 +385,12 @@ class Crosstheroad:
 
         skipButton = Button(self.config.screenDim[0] - self.config.grid * 3,
                             self.config.screenDim[1] - self.config.grid * 2,
-                            100,
+                            50,
                             50,
                             'crosstheroad_lib/src/skipButton.png',
-                            'crosstheroad_lib/src/skipButton_hvr.png',
-                            Iscreen)
+                            'none',
+                            Iscreen,
+                            'Skip tutorial')
         skipButton.show()
 
         # Skip tutorial button functionality
