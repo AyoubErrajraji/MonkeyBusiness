@@ -177,7 +177,7 @@ class Pause(Game):
         self.playButton = pygame.transform.scale(self.playButton, (50, 50))
 
     def blitPlayButton(self, screen):
-        screen.blit(self.playButton, (630, 320))
+        screen.blit(self.playButton, (600, 320))
 
     def loadHoverPlayButton(self,name):
         self.hoverPlayButton = pygame.image.load(name).convert_alpha()
@@ -185,7 +185,7 @@ class Pause(Game):
         self.hoverPlayButton = pygame.transform.scale(self.hoverPlayButton, (50, 50))
 
     def blitHoverPlayButton(self, screen):
-        screen.blit(self.hoverPlayButton, (630, 320))
+        screen.blit(self.hoverPlayButton, (600, 320))
 
     def loadExitButton(self, name):
         self.exitButton = pygame.image.load(name).convert_alpha()
@@ -193,7 +193,7 @@ class Pause(Game):
         self.exitButton = pygame.transform.scale(self.exitButton, (50, 50))
 
     def blitExitButton(self, screen):
-        screen.blit(self.exitButton, (690, 320))
+        screen.blit(self.exitButton, (700, 320))
 
     def loadHoverExitButton(self, name):
         self.hoverExitButton = pygame.image.load(name).convert_alpha()
@@ -201,7 +201,23 @@ class Pause(Game):
         self.hoverExitButton = pygame.transform.scale(self.hoverExitButton, (50, 50))
 
     def blitHoverExitButton(self, screen):
-        screen.blit(self.hoverExitButton, (690, 320))
+        screen.blit(self.hoverExitButton, (700, 320))
+
+    def loadReplayButton(self, name):
+        self.replayButton = pygame.image.load(name).convert_alpha()
+
+        self.replayButton = pygame.transform.scale(self.replayButton, (50, 50))
+
+    def blitReplayButton(self, screen):
+        screen.blit(self.replayButton, (650, 320))
+
+    def loadHoverReplayButton(self, name):
+        self.hoverReplayButton = pygame.image.load(name).convert_alpha()
+
+        self.hoverReplayButton = pygame.transform.scale(self.hoverReplayButton, (50, 50))
+
+    def blitHoverReplayButton(self, screen):
+        screen.blit(self.hoverReplayButton, (650, 320))
 
     def task(self):
         slidemenu.run().runm(200)
@@ -246,6 +262,10 @@ class run():
 
         newPause.loadHoverPlayButton("data/finalfight/knop.png")
 
+        newPause.loadReplayButton("data/finalfight/replay_button.png")
+
+        newPause.loadHoverReplayButton("data/finalfight/hoverreplay_button.png")
+
         newBoss.loadBoss("data/finalfight/boss2.png")
 
         newWolk.loadWolk("data/finalfight/spreekwolk.png")
@@ -271,6 +291,10 @@ class run():
         newPause.blitExitButton(screen)
 
         newPause.blitHoverExitButton(screen)
+
+        newPause.blitReplayButton(screen)
+
+        newPause.blitHoverReplayButton(screen)
 
         newScore.blitScore(screen)
 
@@ -303,9 +327,9 @@ class run():
                    # RUNNING = False
                 if pygame.mouse.get_pressed()[0] and 1190 + 50 > mouse[0] > 1190 and 50 + 50 > mouse[1] > 50:
                     state = PAUSE
-                if pygame.mouse.get_pressed()[0] and 630 + 50 > mouse[0] > 630 and 320 + 50 > mouse[1] > 320:
+                if pygame.mouse.get_pressed()[0] and 600 + 50 > mouse[0] > 600 and 320 + 50 > mouse[1] > 320:
                     state = RUNNING
-                if pygame.mouse.get_pressed()[0] and 690 + 50 > mouse[0] > 690 and 320 + 50 > mouse[1] > 320:
+                if pygame.mouse.get_pressed()[0] and 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
                     newPause.task()
 
                 #if e.type == pygame.KEYDOWN:
@@ -368,15 +392,20 @@ class run():
                     screen.blit(s, (0, 0))
                     mouse = pygame.mouse.get_pos()
 
-                    if 630 + 50 > mouse[0] > 630 and 320 + 50 > mouse[1] > 320:
+                    if 600 + 50 > mouse[0] > 600 and 320 + 50 > mouse[1] > 320:
                         newPause.blitHoverPlayButton(screen)
                     else:
                         newPause.blitPlayButton(screen)
 
-                    if 690 + 50 > mouse[0] > 690 and 320 + 50 > mouse[1] > 320:
+                    if 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
                         newPause.blitHoverExitButton(screen)
                     else:
                         newPause.blitExitButton(screen)
+
+                    if 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[1] > 320:
+                        newPause.blitHoverReplayButton(screen)
+                    else:
+                        newPause.blitReplayButton(screen)
                     #newWolk.blitwolk()
                     #newBoss.blitBoss(screen)
                     #newPlayer.blitPlayer()
