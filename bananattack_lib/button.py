@@ -4,8 +4,7 @@ Created on Nov 25, 2017
 '''
 from bananattack_lib import config
 from bananattack_lib import draw
-from bananattack_lib import bananattack
-from bananattack_lib import monkey
+from bananattack_lib import main
 from menu_lib import slidemenu
 import pygame
 
@@ -112,6 +111,14 @@ class exitGame(Button):
     def task(self):
         mymenu = slidemenu.run()
         mymenu.runm(self.lives)
+
+class restartGame(Button):
+    def __init__(self):
+        Button.__init__(self, (config.BUTTON_RESTARTGAME_X,config.BUTTON_RESTARTGAME_Y), config.BUTTON_RESTARTGAME_WIDTH, config.BUTTON_RESTARTGAME_HEIGHT, config.BUTTON_RESTARTGAME_IMG, config.BUTTON_RESTARTGAME_HOVER_IMG)
+        self.item = None
+
+    def task(self):
+        main.main()
 
 class monkeyButton(Button):
     def __init__(self, state):
