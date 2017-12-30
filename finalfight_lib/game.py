@@ -222,6 +222,9 @@ class Pause(Game):
     def task(self):
         slidemenu.run().runm(200)
 
+    #def restartGame(self):
+
+
 class run():
     def runm(self):
         width = 1280
@@ -328,6 +331,8 @@ class run():
                 if pygame.mouse.get_pressed()[0] and 1190 + 50 > mouse[0] > 1190 and 50 + 50 > mouse[1] > 50:
                     state = PAUSE
                 if pygame.mouse.get_pressed()[0] and 600 + 50 > mouse[0] > 600 and 320 + 50 > mouse[1] > 320:
+                    state = RUNNING
+                if pygame.mouse.get_pressed()[0] and 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[1] > 320:
                     state = RUNNING
                 if pygame.mouse.get_pressed()[0] and 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
                     newPause.task()
