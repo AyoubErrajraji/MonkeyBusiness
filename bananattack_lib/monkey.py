@@ -1,5 +1,6 @@
 import pygame
 import math
+import json
 from bananattack_lib import config
 
 class Monkey():
@@ -15,10 +16,16 @@ class Monkey():
         if range:
             pygame.draw.circle(surface, color, (self.x + (config.MONKEY_SIZE//2), self.y + (config.MONKEY_SIZE//2)), config.MONKEY_RADIUS, 3)
 
-        image = pygame.image.load(config.MONKEY_IMAGE_TOP)
+        image = pygame.image.load("data/" + self.getMemory("monkey").replace(".png","_top.png"))
         image = pygame.transform.scale(image, (config.MONKEY_SIZE, config.MONKEY_SIZE))
         image = pygame.transform.rotate(image, self.getAngle(self.closest_pos))
         surface.blit(image, (self.x, self.y))
+
+    def getMemory(self, key):
+        with open("data/memory.json", "r+") as jsonFile:
+            data = json.load(jsonFile)
+
+            return data[key]
 
     def collidepoint(self, mouse_pos):
         if mouse_pos[0] > self.x and mouse_pos[0] < self.x + (config.MONKEY_SIZE):

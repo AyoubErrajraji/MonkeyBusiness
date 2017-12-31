@@ -22,10 +22,10 @@ class BananAttack(game.Game):
         ### Enemy setup ###
         self.enemies = [
             [],
-            #[enemy.Enemy()],
-            #[enemy.Enemy()],
-            #[enemy.Enemy()],
-            #[enemy.Enemy(),enemy.Enemy()],
+            [enemy.Enemy()],
+            [enemy.Enemy()],
+            [enemy.Enemy()],
+            [enemy.Enemy(),enemy.Enemy()],
             [enemy.Enemy(), enemy.Enemy(), enemy.Enemy()]
         ]
 
@@ -237,7 +237,7 @@ class BananAttack(game.Game):
         ### Push correct buttons ###
         # State 10
         if self.state == config.BA_PAUSE:
-            self.buttons = [button.playGame(self.state, self.wave_started()),button.exitGame(self.state, self.lives)]
+            self.buttons = [button.playGame(self.state, self.wave_started()),button.restartGame(),button.exitGame(self.state, self.lives)]
 
         # State 20
         if self.state == config.BA_PLAYING:
