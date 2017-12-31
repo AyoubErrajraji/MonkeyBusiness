@@ -6,6 +6,7 @@ from bananattack_lib import config
 from bananattack_lib import draw
 from bananattack_lib import main
 from menu_lib import slidemenu
+import json
 import pygame
 
 class Button(draw.Draw):
@@ -74,6 +75,12 @@ class Button(draw.Draw):
     def get_state(self):
         return self.state
 
+    def getMemory(self, key):
+        with open("data/memory.json", "r+") as jsonFile:
+            data = json.load(jsonFile)
+
+            return data[key]
+
 # Available Buttons
 class startWave(Button):
     def __init__(self, state, canStartWave):
@@ -122,7 +129,7 @@ class restartGame(Button):
 
 class monkeyButton(Button):
     def __init__(self, state):
-        Button.__init__(self, (config.BUTTON_MONKEYBUTTON_X,config.BUTTON_MONKEYBUTTON_Y), config.BUTTON_MONKEYBUTTON_WIDTH, config.BUTTON_MONKEYBUTTON_HEIGHT, config.BUTTON_MONKEYBUTTON_IMG, config.BUTTON_MONKEYBUTTON_HOVER_IMG)
+        Button.__init__(self, (config.BUTTON_MONKEYBUTTON_X,config.BUTTON_MONKEYBUTTON_Y), config.BUTTON_MONKEYBUTTON_WIDTH, config.BUTTON_MONKEYBUTTON_HEIGHT, "data/" + self.getMemory("monkey"), "data/" + self.getMemory("monkey"))
         self.item = None
         self.state = state
 
