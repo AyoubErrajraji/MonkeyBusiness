@@ -5,6 +5,9 @@ import os
 import math
 import itertools
 from menu_lib import slidemenu
+from finalfight_lib import game as finalfight
+
+
 
 pygame.init()
 pygame.font.init()
@@ -222,7 +225,9 @@ class Pause(Game):
     def task(self):
         slidemenu.run().runm(200)
 
-    #def restartGame(self):
+    def restartGame(self):
+        mymenu = finalfight.run()
+        mymenu.runm()
 
 
 class run():
@@ -333,7 +338,7 @@ class run():
                 if pygame.mouse.get_pressed()[0] and 600 + 50 > mouse[0] > 600 and 320 + 50 > mouse[1] > 320:
                     state = RUNNING
                 if pygame.mouse.get_pressed()[0] and 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[1] > 320:
-                    state = RUNNING
+                    newPause.restartGame()
                 if pygame.mouse.get_pressed()[0] and 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
                     newPause.task()
 
