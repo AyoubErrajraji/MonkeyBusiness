@@ -82,19 +82,26 @@ BUTTON_STARTWAVE_HEIGHT = 100
 BUTTON_STARTWAVE_X = 950
 BUTTON_STARTWAVE_Y = 400
 
-BUTTON_PLAYGAME_IMG = "data/bananattack/buttons/playGame.png"
-BUTTON_PLAYGAME_HOVER_IMG = "data/bananattack/buttons/playGameHover.png"
+BUTTON_PLAYGAME_IMG = "data/bananattack/buttons/continueButton.png"
+BUTTON_PLAYGAME_HOVER_IMG = "data/bananattack/buttons/continueButtonHover.png"
 BUTTON_PLAYGAME_WIDTH = 100
 BUTTON_PLAYGAME_HEIGHT = 100
-BUTTON_PLAYGAME_X = 580
-BUTTON_PLAYGAME_Y = 450
+BUTTON_PLAYGAME_X = 480
+BUTTON_PLAYGAME_Y = 350
 
-BUTTON_EXITGAME_IMG = "data/bananattack/buttons/exitGame.png"
-BUTTON_EXITGAME_HOVER_IMG = "data/bananattack/buttons/exitGameHover.png"
-BUTTON_EXITGAME_WIDTH = 300
+BUTTON_EXITGAME_IMG = "data/bananattack/buttons/exitToMenuButton.png"
+BUTTON_EXITGAME_HOVER_IMG = "data/bananattack/buttons/exitToMenuButtonHover.png"
+BUTTON_EXITGAME_WIDTH = 100
 BUTTON_EXITGAME_HEIGHT = 100
-BUTTON_EXITGAME_X = 480
+BUTTON_EXITGAME_X = 680
 BUTTON_EXITGAME_Y = 350
+
+BUTTON_RESTARTGAME_IMG = "data/bananattack/buttons/replayButton.png"
+BUTTON_RESTARTGAME_HOVER_IMG = "data/bananattack/buttons/replayButtonHover.png"
+BUTTON_RESTARTGAME_WIDTH = 100
+BUTTON_RESTARTGAME_HEIGHT = 100
+BUTTON_RESTARTGAME_X = 580
+BUTTON_RESTARTGAME_Y = 350
 
 BUTTON_MONKEYBUTTON_IMG = "data/bananattack/buttons/monkeyButton.png"
 BUTTON_MONKEYBUTTON_HOVER_IMG = "data/bananattack/buttons/monkeyButtonHover.png"
