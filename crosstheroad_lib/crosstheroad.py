@@ -1,6 +1,12 @@
-import pygame, sys, random
+import pygame, sys, random, json
 from menu_lib import slidemenu
 
+
+def getMemory(key):
+    with open("data/memory.json", "r+") as jsonFile:
+        data = json.load(jsonFile)
+
+        return data[key]
 
 class Rectangle:
     def __init__(self, x, y, w, h):
@@ -69,8 +75,9 @@ class Monkey(Rectangle):
         self.monkeys = monkeyList
 
     def show(self):
-        mr = pygame.Rect(self.x, self.y, self.w, self.h)
-        pygame.draw.rect(self.screen, self.config.blue, mr)
+        image = pygame.image.load("data/" + getMemory("monkey").replace(".png", "_top.png"))
+        image = pygame.transform.scale(image, (self.config.grid, self.config.grid))
+        self.screen.blit(image, (self.x, self.y))
 
         pygame.draw.circle(self.screen, self.config.yellow, (int(self.x + self.w), int(self.y)), self.config.circle_radius)
         font = pygame.font.Font("data/bananattack/FEASFBRG.ttf", 20)
