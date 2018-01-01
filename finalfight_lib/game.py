@@ -46,15 +46,6 @@ class Player(Game):  # represents the bird, not the game
         self.x = 300
         self.y = 550
 
-    #def loadPlayer(self,name):
-        #self.player = pygame.image.load(name).convert_alpha()
-       # playerWidth = self.player.get_rect().width
-      #  playerHeight = self.player.get_rect().height
-     #   self.player = pygame.transform.scale(self.player, (150, 150))
-
-    #def blitPlayer(self):
-    #    self.screen.blit(self.player, (300, 550))
-
     def movePlayer(self):
         """ Handles Keys """
         key = pygame.key.get_pressed()
@@ -139,9 +130,6 @@ class Pause(Game):
         Game.__init__(self, screen)
         RUNNING, PAUSE = 0, 1
         self.state = RUNNING
-
-
-
 
     def magnitude(v):
         return math.sqrt(sum(v[i] * v[i] for i in range(len(v))))
@@ -228,7 +216,6 @@ class Pause(Game):
     def restartGame(self):
         mymenu = finalfight.run()
         mymenu.runm()
-
 
 class run():
     def runm(self):
@@ -332,7 +319,6 @@ class run():
                 if e.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-                   # RUNNING = False
                 if pygame.mouse.get_pressed()[0] and 1190 + 50 > mouse[0] > 1190 and 50 + 50 > mouse[1] > 50:
                     state = PAUSE
                 if pygame.mouse.get_pressed()[0] and 600 + 50 > mouse[0] > 600 and 320 + 50 > mouse[1] > 320:
@@ -342,60 +328,24 @@ class run():
                 if pygame.mouse.get_pressed()[0] and 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
                     newPause.task()
 
-                #if e.type == pygame.KEYDOWN:
-
-                    #if e.key == pygame.K_s : state = RUNNING
-
-
             else:
                 screen.fill((0, 0, 0))
-                #screen.blit(font.render(text, True, (0, 0, 0)), (32, 48))
-                #pygame.display.flip()
-                #clock.tick(60)
-                #if text == 'GO!':
-                 #   state = RUNNING
-                #elif counter > 0:
-                 #   state = notRUNNING
-
-            #if 550 + 100 > mouse[0] > 550 and 450 + 50 > mouse[1] > 450:
-            #    pygame.draw.rect(gameDisplay, bright_red, (550, 450, 100, 50))
-            #else:
-             #   pygame.draw.rect(gameDisplay, red, (550, 450, 100, 50))
-
 
                 if state == RUNNING:
                     player.movePlayer()
                     mouse = pygame.mouse.get_pos()
                     background.blitForrest()
-                    # print(mouse)
 
                     if 1190 + 50 > mouse[0] > 1190 and 50 + 50 > mouse[1] > 50:
                         newPause.blitHoverPauseButton(screen)
                     else:
                         newPause.blitPauseButton(screen)
 
-
-
                     newWolk.blitwolk(screen)
                     newBoss.blitBoss(screen)
-                    #newPlayer.blitPlayer()
                     player.draw(screen)
                     newScore.blitScore(screen)
-
                     screen.blit(font.render(text, True, (0, 0, 0)), (620, 100))
-
-                #if state == notRUNNING:
-                    #player.movePlayer()
-
-                 #   background.blitForrest()
-                    #newWolk.blitwolk(screen)
-                  #  newBoss.blitBoss(screen)
-                    #newPlayer.blitPlayer()
-                   # player.draw(screen)
-                    #newScore.blitScore(screen)
-                    #screen.blit(font.render(text, True, (0, 0, 0)), (620, 100))
-
-
 
                 elif state == PAUSE:
                     background.blitForrest()
@@ -416,41 +366,9 @@ class run():
                         newPause.blitHoverReplayButton(screen)
                     else:
                         newPause.blitReplayButton(screen)
-                    #newWolk.blitwolk()
-                    #newBoss.blitBoss(screen)
-                    #newPlayer.blitPlayer()
-                    #player.draw(screen)
                     newScore.blitScore(screen)
-
-                    #newPause.blitPlayButton(screen)
                     screen.blit(pause_text, (600, 260))
-                    #newPause.blitMenuButton(screen)
-                    #qnewPause.blitExitButton(screen)
 
- #               if state == RUNNING:
-#                    player.movePlayer()
-
-                #elif state == PAUSE:
-                    #player.draw(screen)
-
-
-
-            #player.movePlayer()  # handle the keys
-            #player.draw(screen)
             pygame.display.flip()
 
             clock.tick(60)
-
-
-
-
-        #key = pygame.key.get_pressed()
-         #   dist = 1  # distance moved in 1 frame, try changing it to 5
-          #  if key[pygame.K_DOWN]:  # down key
-           #     newPlayer.movePlayer() # move down
-            #elif key[pygame.K_UP]:  # up key
-             #   newPlayer.movePlayer()  # move up
-            #if key[pygame.K_RIGHT]:  # right key
-             #   newPlayer.movePlayer()  # move right
-            #elif key[pygame.K_LEFT]:  # left key
-             #   newPlayer.movePlayer()  # move left
