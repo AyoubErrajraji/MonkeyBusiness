@@ -1,7 +1,9 @@
 import pygame
 import math
 import json
+import time
 from bananattack_lib import config
+from bananattack_lib import bullet
 
 class Monkey():
     def __init__(self):
@@ -11,6 +13,16 @@ class Monkey():
         self.radius = config.MONKEY_RADIUS
         self.closest = 1000
         self.closest_pos = (self.x, self.y - 100)
+
+        self.bullets = []
+
+        self.last_attack = 0
+
+    def calc_center(self):
+        px = self.x
+        py = self.y
+        cx, cy = px + .5 * config.DEFAULT_WIDTH, py + .5 * config.DEFAULT_HEIGHT
+        return (int(cx), int(cy))
 
     def paint(self, surface, color=(255, 255, 255, 255), range=True):
         if range:
@@ -40,6 +52,24 @@ class Monkey():
         cx, cy = (self.x + (config.MONKEY_SIZE//2), self.y + (config.MONKEY_SIZE//2))
         distance = ((px - cx) ** 2 + (py - cy) ** 2) ** .5
         return distance
+
+    def attack(self, target):
+        b = bullet.Bullet(self.calc_center(), config.BULLET_WIDTH, config.BULLET_HEIGHT, config.BULLET_IMAGE, config.BULLET_DAMAGE, config.BULLET_SPEED)
+        b.set_target(target)
+        self.bullets.append(b)
+        self.last_attack = time.time()
+
+    def paint_bullets(self, surface):
+        for bullet in self.bullets:
+            if bullet.alive == 1:
+                bullet.paint(surface)
+
+    def can_attack(self):
+        return time.time() - self.last_attack >= 1.0 / config.MONKEY_ATTACK_SPEED
+
+    def game_logic(self):
+        for bullet in self.bullets:
+            bullet.game_logic()
 
     def getAngle(self, position):
         px, py = position
