@@ -1,186 +1,180 @@
+"""
+ Show how to fire bullets.
+
+ Sample Python/Pygame Programs
+ Simpson College Computer Science
+ http://programarcadegames.com/
+ http://simpson.edu/computer-science/
+
+ Explanation video: http://youtu.be/PpdJjaiLX6A
+"""
 import pygame
-import time
 import random
 
+# Define some colors
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+RED = (255, 0, 0)
+BLUE = (0, 0, 255)
+
+
+# --- Classes
+
+
+class Block(pygame.sprite.Sprite):
+    """ This class represents the block. """
+
+    def __init__(self, color):
+        # Call the parent class (Sprite) constructor
+        super().__init__()
+
+        self.image = pygame.Surface([20, 15])
+        self.image.fill(color)
+
+        self.rect = self.image.get_rect()
+
+
+class Player(pygame.sprite.Sprite):
+    """ This class represents the Player. """
+
+    def __init__(self):
+        """ Set up the player on creation. """
+        # Call the parent class (Sprite) constructor
+        super().__init__()
+
+        self.image = pygame.Surface([20, 20])
+        self.image.fill(RED)
+
+        self.rect = self.image.get_rect()
+
+    def update(self):
+        """ Update the player's position. """
+        # Get the current mouse position. This returns the position
+        # as a list of two numbers.
+        pos = pygame.mouse.get_pos()
+
+        # Set the player x position to the mouse x position
+        self.rect.x = pos[0]
+
+
+class Bullet(pygame.sprite.Sprite):
+    """ This class represents the bullet . """
+
+    def __init__(self):
+        # Call the parent class (Sprite) constructor
+        super().__init__()
+
+        self.image = pygame.Surface([4, 10])
+        self.image.fill(BLACK)
+
+        self.rect = self.image.get_rect()
+
+    def update(self):
+        """ Move the bullet. """
+        self.rect.y -= 3
+
+
+# --- Create the window
+
+# Initialize Pygame
 pygame.init()
 
-display_width = 800
-display_height = 600
+# Set the height and width of the screen
+screen_width = 700
+screen_height = 400
+screen = pygame.display.set_mode([screen_width, screen_height])
 
-black = (0, 0, 0)
-white = (255, 255, 255)
-red = (255, 0, 0)
+# --- Sprite lists
 
-block_color = (53, 115, 255)
+# This is a list of every sprite. All blocks and the player block as well.
+all_sprites_list = pygame.sprite.Group()
 
-car_width = 73
+# List of each block in the game
+block_list = pygame.sprite.Group()
 
-gameDisplay = pygame.display.set_mode((display_width, display_height))
-pygame.display.set_caption('A bit Racey')
+# List of each bullet
+bullet_list = pygame.sprite.Group()
+
+# --- Create the sprites
+
+for i in range(50):
+    # This represents a block
+    block = Block(BLUE)
+
+    # Set a random location for the block
+    block.rect.x = random.randrange(screen_width)
+    block.rect.y = random.randrange(screen_height - 50)
+
+    # Add the block to the list of objects
+    block_list.add(block)
+    all_sprites_list.add(block)
+
+# Create a red player block
+player = Player()
+all_sprites_list.add(player)
+
+# Loop until the user clicks the close button.
+done = False
+
+# Used to manage how fast the screen updates
 clock = pygame.time.Clock()
 
-carImg = pygame.image.load('monkey.png')
+score = 0
+player.rect.y = 370
 
+# -------- Main Program Loop -----------
+while not done:
+    # --- Event Processing
+    key = pygame.key.get_pressed()
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            done = True
 
-def things_dodged(count):
-    font = pygame.font.SysFont(None, 25)
-    text = font.render("Dodged: " + str(count), True, black)
-    gameDisplay.blit(text, (0, 0))
+        elif key[pygame.K_SPACE]:
+            # Fire a bullet if the user clicks the mouse button
+            bullet = Bullet()
+            # Set the bullet so it is where the player is
+            bullet.rect.x = player.rect.x
+            bullet.rect.y = player.rect.y
+            # Add the bullet to the lists
+            all_sprites_list.add(bullet)
+            bullet_list.add(bullet)
 
+    # --- Game logic
 
-def things(thingx, thingy, thingw, thingh, color):
-    pygame.draw.rect(gameDisplay, color, [thingx, thingy, thingw, thingh])
+    # Call the update() method on all the sprites
+    all_sprites_list.update()
 
+    # Calculate mechanics for each bullet
+    for bullet in bullet_list:
 
-def car(x, y):
-    gameDisplay.blit(carImg, (x, y))
+        # See if it hit a block
+        block_hit_list = pygame.sprite.spritecollide(bullet, block_list, True)
 
+        # For each block hit, remove the bullet and add to the score
+        for block in block_hit_list:
+            bullet_list.remove(bullet)
+            all_sprites_list.remove(bullet)
+            score += 1
+            print(score)
 
-def text_objects(text, font):
-    textSurface = font.render(text, True, black)
-    return textSurface, textSurface.get_rect()
+        # Remove the bullet if it flies up off the screen
+        if bullet.rect.y < -10:
+            bullet_list.remove(bullet)
+            all_sprites_list.remove(bullet)
 
+    # --- Draw a frame
 
-def message_display(text):
-    largeText = pygame.font.Font('freesansbold.ttf', 115)
-    TextSurf, TextRect = text_objects(text, largeText)
-    TextRect.center = ((display_width / 2), (display_height / 2))
-    gameDisplay.blit(TextSurf, TextRect)
+    # Clear the screen
+    screen.fill(WHITE)
 
-    pygame.display.update()
+    # Draw all the spites
+    all_sprites_list.draw(screen)
 
-    time.sleep(2)
+    # Go ahead and update the screen with what we've drawn.
+    pygame.display.flip()
 
-    game_loop()
+    # --- Limit to 20 frames per second
+    clock.tick(60)
 
-
-def crash():
-    message_display('You Crashed')
-
-def button(msg,x,y,w,h,ic,ac,action=None):
-    mouse = pygame.mouse.get_pos()
-    click = pygame.mouse.get_pressed()
-    print(click)
-    if x+w > mouse[0] > x and y+h > mouse[1] > y:
-        pygame.draw.rect(gameDisplay, ac,(x,y,w,h))
-
-        if click[0] == 1 and action != None:
-            action()
-    else:
-        pygame.draw.rect(gameDisplay, ic,(x,y,w,h))
-
-    smallText = pygame.font.SysFont("comicsansms",20)
-    textSurf, textRect = text_objects(msg, smallText)
-    textRect.center = ( (x+(w/2)), (y+(h/2)) )
-    gameDisplay.blit(textSurf, textRect)
-def game_intro():
-    red = (200, 0, 0)
-    green = (0, 200, 0)
-
-    bright_red = (255, 0, 0)
-    bright_green = (0, 255, 0)
-
-    intro = True
-
-    while intro:
-        for event in pygame.event.get():
-            # print(event)
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-
-        gameDisplay.fill(white)
-        largeText = pygame.font.SysFont("comicsansms", 115)
-        TextSurf, TextRect = text_objects("A bit Racey", largeText)
-        TextRect.center = ((display_width / 2), (display_height / 2))
-        gameDisplay.blit(TextSurf, TextRect)
-
-        button("GO!", 150, 450, 100, 50, green, bright_green, game_loop)
-        button("Quit", 550, 450, 100, 50, red, bright_red, "quit")
-        mouse = pygame.mouse.get_pos()
-
-        # print(mouse)
-
-        if 150 + 100 > mouse[0] > 150 and 450 + 50 > mouse[1] > 450:
-            pygame.draw.rect(gameDisplay, bright_green, (150, 450, 100, 50))
-        else:
-            pygame.draw.rect(gameDisplay, green, (150, 450, 100, 50))
-        if 550 + 100 > mouse[0] > 550 and 450 + 50 > mouse[1] > 450:
-            pygame.draw.rect(gameDisplay, bright_red, (550, 450, 100, 50))
-        else:
-            pygame.draw.rect(gameDisplay, red, (550, 450, 100, 50))
-        pygame.display.update()
-        clock.tick(15)
-
-def game_loop():
-    x = (display_width * 0.45)
-    y = (display_height * 0.8)
-
-    x_change = 0
-
-
-    thing_startx = random.randrange(0, display_width)
-    thing_starty = -600
-    thing_speed = 4
-    thing_width = 100
-    thing_height = 100
-
-    thingCount = 1
-
-    dodged = 0
-
-    gameExit = False
-
-    while not gameExit:
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
-                    x_change = -5
-                if event.key == pygame.K_RIGHT:
-                    x_change = 5
-
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-                    x_change = 0
-
-        x += x_change
-        gameDisplay.fill(white)
-
-        things(thing_startx, thing_starty, thing_width, thing_height, block_color)
-
-        thing_starty += thing_speed
-        car(x, y)
-        things_dodged(dodged)
-
-        if x > display_width - car_width or x < 0:
-            crash()
-
-        if thing_starty > display_height:
-            thing_starty = 0 - thing_height
-            thing_startx = random.randrange(0, display_width)
-            dodged += 1
-            thing_speed += 1
-            thing_width += (dodged * 1.2)
-
-        if y < thing_starty + thing_height:
-            print('y crossover')
-
-            if x > thing_startx and x < thing_startx + thing_width or x + car_width > thing_startx and x + car_width < thing_startx + thing_width:
-                print('x crossover')
-                crash()
-
-
-
-        pygame.display.update()
-        clock.tick(60)
-
-
-game_intro()
-game_loop()
 pygame.quit()
-quit()

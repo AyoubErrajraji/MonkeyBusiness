@@ -6,6 +6,9 @@ import math
 import itertools
 from menu_lib import slidemenu
 from finalfight_lib import game as finalfight
+from finalfight_lib import sprite
+
+
 
 
 
@@ -80,6 +83,25 @@ class Boss(Game):
     def blitBoss(self,screen):
         screen.blit(self.boss, (520, 300))
 
+class Bullet(Game):
+    """ This class represents the bullet . """
+
+    def __init__(self,screen):
+        BLACK = (0, 0, 0)
+        WHITE = (255, 255, 255)
+        RED = (255, 0, 0)
+        BLUE = (0, 0, 255)
+        # Call the parent class (Sprite) constructor
+        Game.__init__(self,screen)
+
+        self.image = pygame.Surface([4, 10])
+        self.image.fill(BLACK)
+
+        self.rect = self.image.get_rect()
+
+    def update(self):
+        """ Move the bullet. """
+        self.rect.y -= 3
 
 class Wolk(Game):
     def __init__(self, screen):
@@ -221,6 +243,7 @@ class run():
     def runm(self):
         width = 1280
         height = 720
+
         screenDim = (width, height)
 
         screen = pygame.display.set_mode(screenDim)
@@ -335,11 +358,21 @@ class run():
                     player.movePlayer()
                     mouse = pygame.mouse.get_pos()
                     background.blitForrest()
-
+                    key = pygame.key.get_pressed()
+                    bullet_list = pygame.sprite.Group()
                     if 1190 + 50 > mouse[0] > 1190 and 50 + 50 > mouse[1] > 50:
                         newPause.blitHoverPauseButton(screen)
                     else:
                         newPause.blitPauseButton(screen)
+                    if key[pygame.K_SPACE]:
+                        # Fire a bullet if the user clicks the mouse button
+                        bullet = Bullet(screen)
+                        # Set the bullet so it is where the player is
+    #                    bullet.rect.x = player.draw
+     #                   bullet.rect.y = player.draw
+                        # Add the bullet to the lists
+#                        all_sprites_list.add(bullet)
+                        bullet_list.add(bullet)
 
                     newWolk.blitwolk(screen)
                     newBoss.blitBoss(screen)
