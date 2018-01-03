@@ -153,6 +153,8 @@ class Crosstheroad:
         self.font1 = pygame.font.Font("data/bananattack/FEASFBRG.ttf", 60)
         self.font2 = pygame.font.SysFont("Helvetica", 15)
         self.font3 = pygame.font.Font("data/bananattack/FEASFBRG.ttf", 30)
+        self.font4 = pygame.font.Font("data/bananattack/FEASFBRG.ttf", 80)
+        self.font5 = pygame.font.Font("data/bananattack/FEASFBRG.ttf", 100)
 
     def sideMenu(self):
         # Make sidemenu overlay
@@ -162,7 +164,18 @@ class Crosstheroad:
         # Add score to sidemenu
         text = self.font1.render("Score:", 1, self.config.white)
         score = self.font1.render(str(self.score), 1, self.config.white)
-        time = self.font1.render(str(self.timer), 1, self.config.white)
+
+        if self.timer < 15:
+            if self.timer == 0.0:
+                color = self.config.white
+            elif self.timer < 7.5:
+                color = self.config.red
+            else:
+                color = self.config.orange
+        else:
+            color = self.config.white
+
+        time = self.font1.render(str(self.timer), 1, color)
 
         self.screen.blit(score, (self.config.screenDim[0] - self.config.sideMenu[0]/2 - score.get_rect().width/2,
                                  self.config.sideMenu[1] / 2 - score.get_rect().height/2))
@@ -427,7 +440,13 @@ class Crosstheroad:
         Pscreen.blit(text1, ((self.config.screenDim[0] / 2) - (text1.get_rect().width / 2), 200))
 
         text2 = self.font3.render("You scored:", 1, self.config.black)
-        text3 = self.font1.render(str(self.score), 1, self.config.black)
+
+        if self.score > 85:
+            font = self.font5
+        else:
+            font = self.font4
+
+        text3 = font.render(str(self.score), 2, self.config.black)
 
         pygame.draw.circle(Pscreen,
                            self.config.yellow,
