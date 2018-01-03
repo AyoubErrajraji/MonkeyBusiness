@@ -86,30 +86,44 @@ class BananAttack(game.Game):
         completed = 0
         length = len(self.enemies[self.wave])
 
+        time = pygame.time.Clock()
+        ticks = 0
+
         # Draw Enemy #
-        def step(completed, length):
+        def step(completed, length, ticks):
 
             if completed < length:
                 for enemy in self.enemies[self.wave]:
                     if enemy.waypoints_reached < len(config.WAYPOINTS):
 
                         # Move enemy
-                        enemy.move()
+                        enemy.move(ticks, len(self.enemies[self.wave]))
 
                         # Paint game + new enemy location
                         self.paint(self.screen)
 
                         # Check for Monkey Shots
                         for monkey in self.rects:
+
+                            # Run monkey logic
+                            monkey.game_logic()
+
                             if monkey.getDistance(enemy.position) <= monkey.radius:
-                                enemy.health -= config.MONKEY_DAMAGE
-                                if enemy.health <= 0:
+
+                                # Create Bullet
+                                if monkey.can_attack():
+                                    monkey.attack(enemy)
+
+                                # Check if enemy is dead
+                                if enemy.is_dead():
                                     self.enemies[self.wave].pop(0)
                                     self.money += config.DEFAULT_KILLVALUE
                                     completed += 1
 
                         # Update Screen
                         pygame.display.update()
+
+                        ticks = time.tick(60)
 
                     else:
                         # Kill enemies -> hasReached base
@@ -127,9 +141,9 @@ class BananAttack(game.Game):
                     print("State updated to: %d by Escape from %s" % (self.state, " the event in step"))
                 else:
                     # Recursion
-                    step(completed, length)
+                    step(completed, length, ticks)
 
-        step(completed, length)
+        step(completed, length, ticks)
 
         if self.state == config.BA_PLAYING:
             # Wave Done
@@ -204,6 +218,8 @@ class BananAttack(game.Game):
                             tower.closest_pos = truck.position
                             break
                     tower.paint(surface, range=False)
+                    tower.paint_bullets(surface)
+
 
             ### Pause Overlay ###
             if self.state == config.BA_PAUSE:
@@ -237,7 +253,7 @@ class BananAttack(game.Game):
         ### Push correct buttons ###
         # State 10
         if self.state == config.BA_PAUSE:
-            self.buttons = [button.playGame(self.state, self.wave_started()),button.restartGame(),button.exitGame(self.state, self.lives)]
+            self.buttons = [button.playGame(self.state, self.wave_started()),button.restartGame(),button.exitGame(self.state, self.money)]
 
         # State 20
         if self.state == config.BA_PLAYING:
@@ -256,7 +272,7 @@ class BananAttack(game.Game):
 
         # State 50
         if self.state == config.BA_SUCCESS:
-            self.buttons = [button.exitGame(self.state, self.lives)]
+            self.buttons = [button.exitGame(self.state, self.money)]
 
     def getMemory(self, key):
         with open("bananattack_lib/memory.json", "r+") as jsonFile:
