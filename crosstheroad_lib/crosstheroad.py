@@ -142,7 +142,7 @@ class Crosstheroad:
         self.settings = settings
         self.state = 'Intro'
         self.dt = 0
-        self.timer = 5
+        self.timer = 90
 
         # Set quit to False, so loop will continue
         self.quit = False
