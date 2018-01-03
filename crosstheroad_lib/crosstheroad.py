@@ -285,13 +285,31 @@ class Crosstheroad:
             self.cars[index].update()
         # Add the second monkey if there is only one
         if len(self.monkeys) < 2:
+            monkey = getMemory("monkey")
+            if monkey == "default_monkey.png":
+                randomPoints = random.randrange(1, 10)
+            elif monkey == "ninja_monkey.png":
+                randomPoints = random.randrange(3, 12)
+            elif monkey == "engineer_monkey.png":
+                randomPoints = random.randrange(5, 16)
+            elif monkey == "apprentice_monkey.png":
+                randomPoints = random.randrange(7, 20)
+            elif monkey == "dragon_monkey.png":
+                randomPoints = random.randrange(10, 25)
+            elif monkey == "super_monkey.png":
+                randomPoints = random.randrange(15, 35)
+            elif monkey == "robo_monkey.png":
+                randomPoints = random.randrange(20, 50)
+            else:
+                randomPoints = random.randrange(1, 25)
+
             self.monkeys.append(Monkey((self.config.screenDim[0] - self.config.sideMenu[0])/2 - self.config.grid/2,
                                        self.config.screenDim[1]-self.config.grid,
                                        self.config.grid,
                                        self.config.grid,
                                        self.screen,
                                        self.config,
-                                       random.randrange(1, 20),
+                                       randomPoints,
                                        self.monkeys))
             self.monkeys[0].place((self.config.screenDim[0] - self.config.sideMenu[0])/2 - self.config.grid/2,
                                   self.config.screenDim[1]-self.config.grid,)
@@ -452,7 +470,7 @@ class Crosstheroad:
                            self.config.yellow,
                            (self.config.screenDim[0] - 200, 300),
                            120)
-        Pscreen.blit(text2, (self.config.screenDim[0] - 200 - text2.get_rect().width/2, 200))
+        Pscreen.blit(text2, (self.config.screenDim[0] - 200 - text2.get_rect().width/2, 210))
         Pscreen.blit(text3, (self.config.screenDim[0] - 200 - text3.get_rect().width/2, 300 - text3.get_rect().height/2))
 
         replayButton = Button(self.config.screenDim[0]/2 - 75,
