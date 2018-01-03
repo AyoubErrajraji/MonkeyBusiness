@@ -113,9 +113,9 @@ class BananAttack(game.Game):
                                 # Create Bullet
                                 if monkey.can_attack():
                                     monkey.attack(enemy)
-                                    print("bullet created")
 
-                                if enemy.health <= 0:
+                                # Check if enemy is dead
+                                if enemy.is_dead():
                                     self.enemies[self.wave].pop(0)
                                     self.money += config.DEFAULT_KILLVALUE
                                     completed += 1
@@ -253,7 +253,7 @@ class BananAttack(game.Game):
         ### Push correct buttons ###
         # State 10
         if self.state == config.BA_PAUSE:
-            self.buttons = [button.playGame(self.state, self.wave_started()),button.restartGame(),button.exitGame(self.state, self.lives)]
+            self.buttons = [button.playGame(self.state, self.wave_started()),button.restartGame(),button.exitGame(self.state, self.money)]
 
         # State 20
         if self.state == config.BA_PLAYING:
@@ -272,7 +272,7 @@ class BananAttack(game.Game):
 
         # State 50
         if self.state == config.BA_SUCCESS:
-            self.buttons = [button.exitGame(self.state, self.lives)]
+            self.buttons = [button.exitGame(self.state, self.money)]
 
     def getMemory(self, key):
         with open("bananattack_lib/memory.json", "r+") as jsonFile:

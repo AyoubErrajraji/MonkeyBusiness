@@ -24,13 +24,22 @@ class Monkey():
         cx, cy = px + .5 * config.DEFAULT_WIDTH, py + .5 * config.DEFAULT_HEIGHT
         return (int(cx), int(cy))
 
+    def rot_center(self, image, angle):
+        """rotate an image while keeping its center and size"""
+        orig_rect = image.get_rect()
+        rot_image = pygame.transform.rotate(image, angle)
+        rot_rect = orig_rect.copy()
+        rot_rect.center = rot_image.get_rect().center
+        rot_image = rot_image.subsurface(rot_rect).copy()
+        return rot_image
+
     def paint(self, surface, color=(255, 255, 255, 255), range=True):
         if range:
             pygame.draw.circle(surface, color, (self.x + (config.MONKEY_SIZE//2), self.y + (config.MONKEY_SIZE//2)), config.MONKEY_RADIUS, 3)
 
         image = pygame.image.load("data/" + self.getMemory("monkey").replace(".png","_top.png"))
         image = pygame.transform.scale(image, (config.MONKEY_SIZE, config.MONKEY_SIZE))
-        image = pygame.transform.rotate(image, self.getAngle(self.closest_pos))
+        image = self.rot_center(image, self.getAngle(self.closest_pos))
         surface.blit(image, (self.x, self.y))
 
     def getMemory(self, key):

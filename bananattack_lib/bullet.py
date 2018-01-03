@@ -60,6 +60,7 @@ class Bullet(draw.Draw):
             # if target no longer exists, send a message to the game
             if self.target is None or self.target.is_dead():
                 self.target.kill()
+                self.alive = 0
 
             # if target exists and we collided with it
             # call the .hit() method of the target passing
