@@ -135,7 +135,7 @@ def menu(menu, clickList, pos='center', font1=None, font2=None, color1=(128, 128
             if menu[idx].label in clickList:
                 ret = menu[idx].label, idx                              #clickable menu item
             else:
-                ret = menu[idx].label, idx                              #nonclickable menu item
+                ret = menu                                              #nonclickable menu item
             break
         elif ev.type == KEYDOWN:
             try:
