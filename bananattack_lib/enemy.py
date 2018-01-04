@@ -12,11 +12,14 @@ class Enemy(draw.Draw):
         self.waypoints_reached = 0
         self.health = config.DEFAULT_HEALTH
 
+        self.alive = 1
+
     def deploy(self, position = None):
         if position == None:
             draw.Draw.__init__(self, config.KIND_ENEMY, config.STARTPOINT, 48, 48, self.image)
         else:
-            draw.Draw.__init__(self, config.KIND_ENEMY, position, 48, 48, self.image)
+            if self.alive == 1:
+                draw.Draw.__init__(self, config.KIND_ENEMY, position, 48, 48, self.image)
 
     def trackNextWaypoint(self):
         for waypoint in config.WAYPOINTS:
@@ -26,35 +29,47 @@ class Enemy(draw.Draw):
     def setWaypointsReached(self, number):
         self.waypoints_reached += number
 
-    def move(self):
+    def hit(self, damage):
+        self.health -= damage
+
+    def kill(self):
+        self.alive = 0
+
+    def is_dead(self):
+        if self.health <= 0:
+            return True
+        else:
+            return False
+
+    def move(self, ticks, length):
 
         speed = config.DEFAULT_SPEED
 
         # Update enemy's location
         if self.get_position()[0] < self.trackNextWaypoint()[1]:
-            if self.trackNextWaypoint()[1] - self.get_position()[0] >= speed:
-                self.set_position((self.get_position()[0] + speed, self.get_position()[1]))
+            if self.trackNextWaypoint()[1] - self.get_position()[0] >= speed * ticks / 1000 * length:
+                self.set_position((self.get_position()[0] + speed * ticks / 1000 * length, self.get_position()[1]))
             else:
                 self.set_position((self.get_position()[0] + (self.trackNextWaypoint()[1] - self.get_position()[0]),
                            self.get_position()[1]))
 
         if self.get_position()[0] > self.trackNextWaypoint()[1]:
-            if self.get_position()[0] - self.trackNextWaypoint()[1] >= speed:
-                self.set_position((self.get_position()[0] - speed, self.get_position()[1]))
+            if self.get_position()[0] - self.trackNextWaypoint()[1] >= speed * ticks / 1000 * length:
+                self.set_position((self.get_position()[0] - speed * ticks / 1000 * length, self.get_position()[1]))
             else:
                 self.set_position((self.get_position()[0] - (self.get_position()[0] - self.trackNextWaypoint()[1]),
                            self.get_position()[1]))
 
         if self.get_position()[1] < self.trackNextWaypoint()[2]:
-            if self.trackNextWaypoint()[2] - self.get_position()[1] >= speed:
-                self.set_position((self.get_position()[0], self.get_position()[1] + speed))
+            if self.trackNextWaypoint()[2] - self.get_position()[1] >= speed * ticks / 1000 * length:
+                self.set_position((self.get_position()[0], self.get_position()[1] + speed * ticks / 1000 * length))
             else:
                 self.set_position((self.get_position()[0],
                            self.get_position()[1] + (self.trackNextWaypoint()[2] - self.get_position()[1])))
 
         if self.get_position()[1] > self.trackNextWaypoint()[2]:
-            if self.get_position()[1] - self.trackNextWaypoint()[2] >= speed:
-                self.set_position((self.get_position()[0], self.get_position()[1] - speed))
+            if self.get_position()[1] - self.trackNextWaypoint()[2] >= speed * ticks / 1000 * length:
+                self.set_position((self.get_position()[0], self.get_position()[1] - speed * ticks / 1000 * length))
             else:
                 self.set_position((self.get_position()[0], self.get_position()[1] - (self.get_position()[1] - self.trackNextWaypoint()[2])))
 
