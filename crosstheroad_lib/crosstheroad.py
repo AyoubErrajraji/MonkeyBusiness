@@ -314,7 +314,7 @@ class Crosstheroad:
             self.monkeys[0].place((self.config.screenDim[0] - self.config.sideMenu[0])/2 - self.config.grid/2,
                                   self.config.screenDim[1]-self.config.grid,)
 
-        # Set the seconds monkey (next) position to the sidemenu
+        # Set the second's monkey (next) position to the sidemenu
         if len(self.monkeys) == 2:
             self.monkeys[1].place(self.config.screenDim[0] - self.config.sideMenu[0] + self.config.grid * 2,
                                   self.config.screenDim[1] - self.config.grid)
@@ -354,7 +354,7 @@ class Crosstheroad:
                 if self.score > self.monkeys[0].amount:
                     self.score -= self.monkeys[0].amount
                 else:
-                    self.score = 0
+                    self.state = 'GameOver'
 
                 # Reset monkey that collided
                 self.monkeys[0].reset()
@@ -369,8 +369,10 @@ class Crosstheroad:
         self.score = 0
         self.timer = 90
         self.dt = 0
-        self.monkeys.pop(0)
-        self.monkeys.pop(0)
+        if len(self.monkeys) > 0:
+            self.monkeys.pop(0)
+        if len(self.monkeys) > 0:
+            self.monkeys.pop(0)
         self.loadGame()
 
     def exitGame(self):
@@ -441,7 +443,7 @@ class Crosstheroad:
                             'crosstheroad_lib/src/skipButton.png',
                             'none',
                             Iscreen,
-                            'Skip tutorial')
+                            'Start game')
         skipButton.show()
 
         # Skip tutorial button functionality
@@ -503,6 +505,47 @@ class Crosstheroad:
 
         self.screen.blit(Pscreen, (0, 0))
 
+    def gameOverlay(self):
+        Pscreen = pygame.Surface((self.config.screenDim[0], self.config.screenDim[1]), pygame.SRCALPHA)
+        Pscreen.fill((0, 0, 0, 150))
+
+        text1 = self.font1.render("Game over", 1, self.config.white)
+        Pscreen.blit(text1, ((self.config.screenDim[0] / 2) - (text1.get_rect().width / 2), 200))
+
+        replayButton = Button(self.config.screenDim[0] / 2 - 75,
+                              self.config.screenDim[1] / 2 + 50,
+                              50,
+                              50,
+                              'crosstheroad_lib/src/replayButton.png',
+                              'none',
+                              Pscreen,
+                              'Restart game')
+        replayButton.show()
+
+        exitToMenuButton = Button(self.config.screenDim[0] / 2 + 25,
+                                  self.config.screenDim[1] / 2 + 50,
+                                  50,
+                                  50,
+                                  'crosstheroad_lib/src/exitToMenuButton.png',
+                                  'none',
+                                  Pscreen,
+                                  'Exit to menu')
+        exitToMenuButton.show()
+
+        # Button functionallities
+        # Replay
+        if pygame.mouse.get_pressed()[0] and replayButton.x <= pygame.mouse.get_pos()[
+            0] <= replayButton.x + replayButton.w and replayButton.y <= pygame.mouse.get_pos()[
+            1] <= replayButton.y + replayButton.h:
+            self.restartGame()
+        # Exit to menu
+        if pygame.mouse.get_pressed()[0] and exitToMenuButton.x <= pygame.mouse.get_pos()[
+            0] <= exitToMenuButton.x + exitToMenuButton.w and exitToMenuButton.y <= pygame.mouse.get_pos()[
+            1] <= exitToMenuButton.y + exitToMenuButton.h:
+            self.exitGame()
+
+        self.screen.blit(Pscreen, (0, 0))
+
     def run(self):
         while not self.quit:
             if self.state == 'Game':
@@ -546,6 +589,16 @@ class Crosstheroad:
                         sys.exit()
                 self.blit()
                 self.timeOverlay()
+
+            elif self.state == 'GameOver':
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        # Set quit to True, so pygame will close
+                        self.quit = True
+                        pygame.quit()
+                        sys.exit()
+                    self.blit()
+                    self.gameOverlay()
 
             self.clock.tick(30)
             pygame.display.update()
