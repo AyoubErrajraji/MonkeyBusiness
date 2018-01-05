@@ -6,6 +6,7 @@ import math
 import itertools
 from menu_lib import slidemenu
 from finalfight_lib import game as finalfight
+from pygame.locals import *
 
 
 
@@ -46,6 +47,8 @@ class Player(Game):  # represents the bird, not the game
         self.x = 300
         self.y = 550
 
+        self.bullets = []
+
     def movePlayer(self):
         """ Handles Keys """
         key = pygame.key.get_pressed()
@@ -59,10 +62,30 @@ class Player(Game):  # represents the bird, not the game
         elif key[pygame.K_LEFT] and self.x > -43:  # left key
             self.x -= dist  # move left
 
+    def shoot(self):
+        """ Handles Space """
+        key = pygame.key.get_pressed()
+        if key[pygame.K_SPACE]:
+            self.bullets.append(Bullet(self.x + 64, self.y))
+
     def draw(self, screen):
         """ Draw on surface """
          #blit yourself at your current position
         screen.blit(self.image, (self.x, self.y))
+
+class Bullet():
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+        self.loadBullet("data/finalfight/bullet.png")
+
+    def loadBullet(self,name):
+        self.bulletpicture = pygame.image.load(name)
+        self.bulletpicture = pygame.transform.scale(self.bulletpicture, (10, 20))
+
+    def blitBullet(self,screen):
+        screen.blit(self.bulletpicture, (self.x, self.y))
 
 class Boss(Game):
     def __init__(self,screen):
@@ -331,10 +354,24 @@ class run():
             else:
                 screen.fill((0, 0, 0))
 
+
                 if state == RUNNING:
                     player.movePlayer()
+                    player.shoot()
+
                     mouse = pygame.mouse.get_pos()
                     background.blitForrest()
+
+                    for bullet in player.bullets:
+                        # Move bullet
+                        bullet.y -= 5
+
+                        # Check if bullet is inside screen, else kill
+                        if bullet.y < 0:
+                            player.bullets.remove(bullet)
+
+                        # Draw Bullet
+                        bullet.blitBullet(screen)
 
                     if 1190 + 50 > mouse[0] > 1190 and 50 + 50 > mouse[1] > 50:
                         newPause.blitHoverPauseButton(screen)
@@ -368,6 +405,7 @@ class run():
                         newPause.blitReplayButton(screen)
                     newScore.blitScore(screen)
                     screen.blit(pause_text, (600, 260))
+
 
             pygame.display.flip()
 
