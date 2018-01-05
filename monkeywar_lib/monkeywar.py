@@ -19,6 +19,7 @@ count = 5
 count2 = 15
 
 
+
 def text_objects(text, font):
     textSurface = font.render(text, True, BLACK)
     return textSurface, textSurface.get_rect()
@@ -41,6 +42,8 @@ class run(object):
         space = pygame.key.get_pressed()[pygame.K_SPACE]
         self.running = 0
 
+
+
         while not Quit:
             # get Mouse
             mouse = pygame.mouse.get_pos()
@@ -52,7 +55,7 @@ class run(object):
             surface.blit(pygame.transform.scale(pygame.image.load('data/monkeywar/bg.png').convert(), (1280, 720)),
                          (0, 0))
 
-            #print(fase)
+
 
             #call classes
             win.ground()
@@ -65,6 +68,8 @@ class run(object):
                 if fase == 2:
                     secondMonkey.aim()
                     firstMonkey.aim()
+                    secondMonkey.crosshair()
+                    firstMonkey.crosshair()
 
             if fase ==3:
                 secondMonkey.shoot()
@@ -92,6 +97,9 @@ class run(object):
                     pygame.display.update()
                     if seconds <= 0:  # if less than 0 seconds run next phase
                         fase = 2
+
+
+
 
 
                 # Display time fase 2
@@ -130,7 +138,7 @@ class run(object):
             for event in pygame.event.get():
                 if event.type == QUIT:
                     Quit = True
-            print(fase)
+
 
         pygame.quit()  # always exit cleanly
         sys.exit()
@@ -160,11 +168,70 @@ class projectWin:
 class Monkey(object):
     def __init__(self, x, image, movement):
         self.x = x
+        self.y = 478
         self.image = image
         self.movement = movement
 
+        self.crossx = self.x + 55
+        self.crossy = 528
+
+        self.range = 150
+
+
     def halfcircle(self, position):
-        pygame.draw.circle(surface, BLACK, (position), 150, 3)
+        pygame.draw.circle(surface, BLACK, (position), self.range, 3)
+
+
+    def schuin(self, x, y):
+        return round((x**2 + y**2)**(1/2))
+
+    def correctX(self, x, crossx):
+        if x >= crossx:
+            return (x + 55) - crossx
+        else:
+            return crossx - (x + 55)
+
+    def correctY(self, y, crossy):
+        if y < crossy:
+            return crossy - y + 40
+        else:
+            return y - crossy + 40
+
+    def crosshair(self):
+        keyinput = pygame.key.get_pressed()
+
+        if self.movement == "ARROWS":
+            if keyinput[pygame.K_LEFT]:
+                print(self.schuin(self.correctX(self.x, self.crossx) - 10, self.correctY(self.y, self.crossy)))
+                if self.schuin(self.correctX(self.x, self.crossx) - 10, self.correctY(self.y, self.crossy)) < self.range:
+                    self.crossx -= 10
+            if keyinput[pygame.K_RIGHT]:
+                if self.schuin(self.correctX(self.x, self.crossx) + 10, self.correctY(self.y, self.crossy)) < self.range:
+                    self.crossx += 10
+            if keyinput[pygame.K_UP]:
+                if self.schuin(self.correctX(self.x, self.crossx), self.correctY(self.y, self.crossy) - 10) < self.range:
+                    self.crossy -= 10
+            if keyinput[pygame.K_DOWN]:
+                if self.schuin(self.correctX(self.x, self.crossx), self.correctY(self.y, self.crossy) + 10) < self.range:
+                    self.crossy += 10
+
+
+        if self.movement == "WASD":
+            if keyinput[pygame.K_a]:
+                if self.schuin(self.crossx - 10, self.crossy) < self.range:
+                    self.crossx -= 10
+            if keyinput[pygame.K_d]:
+                if self.schuin(self.crossx + 10, self.crossy) < self.range:
+                    self.crossx += 10
+            if keyinput[pygame.K_w]:
+                if self.schuin(self.crossx, self.crossy - 10) < self.range:
+                    self.crossy -= 10
+            if keyinput[pygame.K_s]:
+                if self.schuin(self.crossx, self.crossy + 10) < self.range:
+                    self.crossy += 10
+
+        pygame.draw.circle(surface, BLACK, (self.crossx, self.crossy), 5, 0)
+
 
     def draw(self, position):
         sprite = pygame.image.load(self.image).convert_alpha()
@@ -186,23 +253,21 @@ class Monkey(object):
 
 
     def aim(self):
+
+
         keyinput = pygame.key.get_pressed()
 
         if keyinput[pygame.K_ESCAPE]:
             raise SystemExit
-
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 raise SystemExit
 
-        
-
-
 
         self.draw((self.x, 478))
-        self.halfcircle((self.x+55, 478))
+        self.halfcircle((self.x+55, 558))
 
     def shoot(self):
         keyinput = pygame.key.get_pressed()
@@ -249,7 +314,10 @@ class Monkey(object):
             elif keyinput[pygame.K_d]:
                 self.x += 10
 
+        self.crossx = self.x + 55
+
         self.draw((self.x,478))
+
 
 
 
