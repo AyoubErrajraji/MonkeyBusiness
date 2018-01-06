@@ -23,6 +23,9 @@ class BananAttack(game.Game):
         self.enemies = [
             [],
             [enemy.Enemy()],
+            [enemy.Enemy()],
+            [enemy.Enemy()],
+            [enemy.Enemy(),enemy.Enemy()],
             [enemy.Enemy(), enemy.Enemy(), enemy.Enemy()]
         ]
 
@@ -53,9 +56,9 @@ class BananAttack(game.Game):
         self.state_y = config.STATE_Y
 
         ### setup location for state ###
-        self.score_x = config.SCORE_X
-        self.score_y = config.SCORE_Y
-        self.score = self.getMemory("score")
+        self.lives_x = config.LIVES_X
+        self.lives_y = config.LIVES_Y
+        self.lives = config.LIVES
 
         ### setup monkeys ###
         self.rects = []
@@ -64,7 +67,7 @@ class BananAttack(game.Game):
 
     # waves can be started while breaktime (TD_CLEAR) and there is a next wave available
     def can_start_wave(self):
-        if self.waves_comp < self.waves-1 and self.state ==  config.BA_CLEAR:
+        if self.waves_comp < self.waves-1 and self.state == config.BA_CLEAR:
             return True
         else:
             return False
@@ -81,27 +84,51 @@ class BananAttack(game.Game):
                 object.deploy((config.STARTPOINT[0] - (config.DEFAULT_DELAY * index), config.STARTPOINT[1]))
 
         completed = 0
+        length = len(self.enemies[self.wave])
+
+        time = pygame.time.Clock()
+        ticks = 0
 
         # Draw Enemy #
-        def step(completed):
-            length = len(self.enemies[self.wave])
+        def step(completed, length, ticks):
 
             if completed < length:
                 for enemy in self.enemies[self.wave]:
                     if enemy.waypoints_reached < len(config.WAYPOINTS):
 
                         # Move enemy
-                        enemy.move()
+                        enemy.move(ticks, len(self.enemies[self.wave]))
 
                         # Paint game + new enemy location
                         self.paint(self.screen)
 
+                        # Check for Monkey Shots
+                        for monkey in self.rects:
+
+                            # Run monkey logic
+                            monkey.game_logic()
+
+                            if monkey.getDistance(enemy.position) <= monkey.radius:
+
+                                # Create Bullet
+                                if monkey.can_attack():
+                                    monkey.attack(enemy)
+
+                                # Check if enemy is dead
+                                if enemy.is_dead():
+                                    self.enemies[self.wave].pop(0)
+                                    self.money += config.DEFAULT_KILLVALUE
+                                    completed += 1
+
                         # Update Screen
                         pygame.display.update()
+
+                        ticks = time.tick(60)
 
                     else:
                         # Kill enemies -> hasReached base
                         self.enemies[self.wave].pop(0)
+                        self.lives -= enemy.health
                         completed += 1
 
                 # did the user just press the escape key?
@@ -109,20 +136,23 @@ class BananAttack(game.Game):
                 if pygame.key.get_pressed()[pygame.K_ESCAPE] == 1:
                     self.last_state = self.state
                     self.state = config.BA_PAUSE
-                    self.buttons = [button.playGame(self.state, self.wave_started()), button.exitGame(self.state)]
+                    self.buttons = [button.playGame(self.state, self.wave_started()), button.exitGame(self.state, self.lives)]
                     self.paint(self.screen)
                     print("State updated to: %d by Escape from %s" % (self.state, " the event in step"))
                 else:
                     # Recursion
-                    step(completed)
+                    step(completed, length, ticks)
 
-        step(completed)
+        step(completed, length, ticks)
 
         if self.state == config.BA_PLAYING:
             # Wave Done
             self.waves_comp += 1
             self.last_state = self.state
             self.state = config.BA_CLEAR
+            if self.waves_comp == self.waves - 1:
+                self.last_state = self.state
+                self.state = config.BA_SUCCESS
         print("State updated to: %d by %s from %s" % (self.state, button, " the bottom of the begin_wave function"))
 
     # check whether the next wave is running
@@ -140,7 +170,7 @@ class BananAttack(game.Game):
         # if the game is being played
         # draw the world, enemys, towers,
         # and menus
-        if self.state == config.BA_PLAYING or self.state == config.BA_PAUSE or self.state == config.BA_CLEAR:
+        if self.state == config.BA_PLAYING or self.state == config.BA_PAUSE or self.state == config.BA_CLEAR or self.state == config.BA_SUCCESS:
             ### Draw Right Info Box ###
             self.rightInfoBox()
 
@@ -159,28 +189,45 @@ class BananAttack(game.Game):
             temp_surface = self.font.render(state, 1, self.font_color)
             surface.blit(temp_surface, (self.state_x, self.state_y))
 
-            ### show score ###
-            score = "Score: %d" % (self.score)
-            temp_surface = self.font.render(score, 1, self.font_color)
-            surface.blit(temp_surface, (self.score_x, self.score_y))
+            ### show lives ###
+            lives = "Lives: %d" % (self.lives)
+            temp_surface = self.font.render(lives, 1, self.font_color)
+            surface.blit(temp_surface, (self.lives_x, self.lives_y))
 
             ### Draw path ###
             self.drawPath()
 
             ### Draw enemies ###
             for index, enemy in enumerate(self.enemies[self.wave]):
-                enemy.paint(surface)
-
-            ### Draw monkeys ###
-            for monkey in self.rects:
-                monkey.paint(surface)
+                enemy.paint(surface, enemy.health)
 
             ### Show waypoints ###
             self.showWaypoints()
 
+            ### Draw monkeys ###
+            for index, tower in enumerate(self.rects):
+                if index == self.selected:
+                    if self.rects[self.selected].canPlace(pygame.mouse.get_pos()):
+                        tower.paint(surface)
+                    else:
+                        tower.paint(surface, (255, 0, 0, 255))
+                else:
+                    for truck in self.enemies[self.wave]:
+                        if tower.getDistance(truck.position) < config.MONKEY_RADIUS:
+                            tower.closest = tower.getDistance(truck.position)
+                            tower.closest_pos = truck.position
+                            break
+                    tower.paint(surface, range=False)
+                    tower.paint_bullets(surface)
+
+
             ### Pause Overlay ###
             if self.state == config.BA_PAUSE:
                 self.pauseOverlay()
+
+            ### End Game ###
+            if self.state == config.BA_SUCCESS:
+                self.endGame()
 
             ### Draw buttons ###
             for button in self.buttons:
@@ -194,12 +241,19 @@ class BananAttack(game.Game):
 
                     # if button has changed state, stop performing other buttons
                     break
+                if button.pressed == 1:
+                    if self.money >= config.DEFAULT_PRICE:
+                        self.rects.append(monkey.Monkey())
+                        self.selected = len(self.rects)-1
+                        self.selected_offset_x = pygame.mouse.get_pos()[0]-(config.MONKEY_SIZE // 2)
+                        self.selected_offset_y = pygame.mouse.get_pos()[1]-(config.MONKEY_SIZE // 2)
+                        self.money -= 50
 
     def game_logic(self, keys):
         ### Push correct buttons ###
         # State 10
         if self.state == config.BA_PAUSE:
-            self.buttons = [button.playGame(self.state, self.wave_started()),button.exitGame(self.state)]
+            self.buttons = [button.playGame(self.state, self.wave_started()),button.restartGame(),button.exitGame(self.state, self.money)]
 
         # State 20
         if self.state == config.BA_PLAYING:
@@ -215,6 +269,10 @@ class BananAttack(game.Game):
         # State 30
         if self.state == config.BA_CLEAR:
             self.buttons = [button.startWave(self.state, self.can_start_wave()), button.monkeyButton(self.state)]
+
+        # State 50
+        if self.state == config.BA_SUCCESS:
+            self.buttons = [button.exitGame(self.state, self.money)]
 
     def getMemory(self, key):
         with open("bananattack_lib/memory.json", "r+") as jsonFile:
@@ -272,6 +330,17 @@ class BananAttack(game.Game):
 
         # pause text #
         text = "Game Paused!"
+        temp_surface = self.big_font.render(text, 1, self.font_color)
+        self.screen.blit(temp_surface, (450, 280))
+
+    def endGame(self):
+        # overlay
+        s = pygame.Surface((config.SCREEN_WIDTH, config.SCREEN_HEIGHT), pygame.SRCALPHA)  # per-pixel alpha
+        s.fill((0, 0, 0, 150))  # notice the alpha value in the color
+        self.screen.blit(s, (0, 0))
+
+        # pause text #
+        text = "Game Completed!"
         temp_surface = self.big_font.render(text, 1, self.font_color)
         self.screen.blit(temp_surface, (450, 280))
 

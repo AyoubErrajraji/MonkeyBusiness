@@ -5,7 +5,33 @@ import json
 from escapetheguards_lib import config
 
 
+<<<<<<< HEAD
 pygame.init()
+=======
+#pygame.display.set_caption('Escape The Guards')
+
+clock = pygame.time.Clock()
+pause = False
+
+backgroundintro = pygame.image.load('data/escapetheguards/bgintro.png').convert()
+backgroundintro = pygame.transform.scale(backgroundintro, (config.screen_width, config.screen_height))
+logoImg = pygame.image.load('data/escapetheguards/logo.png')
+playerImg = pygame.image.load('data/escapetheguards/player.png')
+playerImg = pygame.transform.scale(playerImg, (70, 70))
+containerImg = pygame.image.load('data/escapetheguards/container1.png').convert_alpha()
+
+barrelsideImg = pygame.image.load('data/escapetheguards/barrelside.png')
+barrelsideImg = pygame.transform.scale(barrelsideImg, (200, 250))
+carImg = pygame.image.load('data/escapetheguards/car.png').convert_alpha()
+car1Img = pygame.image.load('data/escapetheguards/car1.png').convert_alpha()
+car1Img = pygame.transform.scale(car1Img, (300, 200))
+excavatorImg = pygame.image.load('data/escapetheguards/excavator.png').convert_alpha()
+truckImg = pygame.image.load('data/escapetheguards/truck.png').convert_alpha()
+monkeyImg = pygame.image.load('data/escapetheguards/monkey.png').convert_alpha()
+config.screen.blit(backgroundintro, (0, 0))
+config.screen.blit(logoImg, (300, 300))
+config.screen.blit(logoImg, (730, 300))
+>>>>>>> master
 
 class run():
     def runm(self):
@@ -216,9 +242,17 @@ class run():
 
                 config.screen.blit(config.backgroundintro, (0, 0))
 
+<<<<<<< HEAD
                 myfont = pygame.font.SysFont("comicsansms", 80)
                 label = myfont.render("Escape Those Guards!", 1, (config.black))
                 config.screen.blit(label, (230, 120))
+=======
+            pygame.display.set_caption('Escape The Guards')
+
+            myfont = pygame.font.SysFont("comicsansms", 80)
+            label = myfont.render("Escape Those Guards!", 1, (config.black))
+            config.screen.blit(label, (230, 120))
+>>>>>>> master
 
                 # config.screen.blit(config.monkeyImg, (-50, 300))
                 # config.screen.blit(config.monkeyImg, (730, 300))
