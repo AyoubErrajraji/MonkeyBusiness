@@ -470,9 +470,9 @@ class Crosstheroad:
                         self.quit = True
                         pygame.quit()
                         sys.exit()
-                    self.blit()
-                    self.gameOverlay()
+                self.blit()
+                self.gameOverlay()
 
-            self.clock.tick(30)
+            self.clock.tick(60)
             pygame.display.update()
 
