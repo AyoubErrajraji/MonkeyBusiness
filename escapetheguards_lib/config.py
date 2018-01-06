@@ -12,7 +12,6 @@ yellow = (204, 204, 0)
 
 
 ### SCREEN: ###
-<<<<<<< HEAD
 w = 1280
 h = 720
 screen_width = w
@@ -24,18 +23,6 @@ gs_height = 720
 player_width = 70
 player_height = 70
 
-=======
-#<<<<<<< HEAD
-#<<<<<<< HEAD
-display_width = 1280
-display_height = 720
-
-#=======
-#=======
-#>>>>>>> b974ad614c5984829e61a4c5d34a4f215e175ffb
-screen_width = 1280
-screen_height = 720
->>>>>>> master
 
 ### CLOCK: ###
 
@@ -80,7 +67,6 @@ superMonkey = pygame.image.load("data/escapetheguards/super_monkey_top.png").con
 
 
 
-<<<<<<< HEAD
 # Transforming Characters
 acid = pygame.transform.scale(acid, (70,70))
 apprentice = pygame.transform.scale(apprentice, (70,70))
@@ -102,20 +88,3 @@ monkeyImg = pygame.transform.scale(monkeyImg, (500, 600))
 guard_leftImg = pygame.transform.scale(guard_leftImg, (400,250))
 guard_bottomImg = pygame.transform.scale(guard_bottomImg, (100,100))
 guard_topImg = pygame.transform.scale(guard_topImg, (280, 350))
-=======
-#<<<<<<< HEAD
-backgroundintro = pygame.image.load('data/escapetheguards/bgintro.png').convert()
-backgroundintro = pygame.transform.scale(backgroundintro, (screen_width,screen_height))
-logoImg = pygame.image.load('data/escapetheguards/logo.png')
-playerImg = pygame.image.load('data/escapetheguards/player.png')
-playerImg = pygame.transform.scale(playerImg, (70,70))
-containerImg = pygame.image.load('data/escapetheguards/container1.png')
-#>>>>>>> master
-barrelsideImg = pygame.image.load('data/escapetheguards/barrelside.png')
-barrelsideImg = pygame.transform.scale(barrelsideImg, (200,250))
-#=======
-display_width = 1280
-display_height = 720
-
-#>>>>>>> b974ad614c5984829e61a4c5d34a4f215e175ffb
->>>>>>> master
