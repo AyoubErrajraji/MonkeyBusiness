@@ -4,6 +4,7 @@ import json
 import os
 import math
 import itertools
+import random
 from menu_lib import slidemenu
 from finalfight_lib import game as finalfight
 from pygame.locals import *
@@ -46,6 +47,11 @@ class Player(Game):  # represents the bird, not the game
         # the bird's position
         self.x = 300
         self.y = 550
+        self.a = 520
+        self.b = 300
+        bosscheckhitX = 520 + 150
+        bosscheckhitY = 300 + 170
+        bulletcheckhit = 520 + 20
 
         self.bullets = []
 
@@ -68,6 +74,10 @@ class Player(Game):  # represents the bird, not the game
         if key[pygame.K_SPACE]:
             self.bullets.append(Bullet(self.x + 64, self.y))
 
+
+          #  print("Hit")
+
+
     def draw(self, screen):
         """ Draw on surface """
          #blit yourself at your current position
@@ -77,6 +87,7 @@ class Bullet():
     def __init__(self, x, y):
         self.x = x
         self.y = y
+        self.damage = 10
 
         self.loadBullet("data/finalfight/bullet.png")
 
@@ -90,9 +101,14 @@ class Bullet():
 class Boss(Game):
     def __init__(self,screen):
         Game.__init__(self, screen)
-        self.bossX = 350
+        self.bossX = 520
         self.bossY = 300
         self.boss = None
+        self.health = 100
+
+    #def update(self):
+     #   if self.health <= 0:
+      #      state = YOUWON
 
     def loadBoss(self,name):
         self.boss = pygame.image.load(name).convert_alpha()
@@ -236,6 +252,9 @@ class Pause(Game):
     def task(self):
         slidemenu.run().runm(200)
 
+    def task2(self):
+        slidemenu.run().runm()
+
     def restartGame(self):
         mymenu = finalfight.run()
         mymenu.runm()
@@ -318,10 +337,11 @@ class run():
 
         Score.setMemory("score", 876)
 
-        RUNNING, notRUNNING, PAUSE = 0, 1, 2
+        RUNNING, PAUSE, YOUWON = 0, 1, 2
         state = RUNNING
 
         pause_text = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 60).render('Paused', True, pygame.color.Color('White'))
+        won_text = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 60).render('You Won!!!', True, pygame.color.Color('White'))
 
         s = pygame.Surface((width, height), pygame.SRCALPHA)  # per-pixel alpha
         s.fill((0, 0, 0, 150))
@@ -335,6 +355,7 @@ class run():
         while True:
 
             for e in pygame.event.get():
+                dt = clock.tick(60) / 1000
                 counter -= 1
                 text = str(counter).rjust(3) if counter > 0 else 'GO!'
                 click = pygame.mouse.get_pressed()
@@ -348,8 +369,13 @@ class run():
                     state = RUNNING
                 if pygame.mouse.get_pressed()[0] and 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[1] > 320:
                     newPause.restartGame()
-                if pygame.mouse.get_pressed()[0] and 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
+                if pygame.mouse.get_pressed()[0] and 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320 and state == YOUWON:
                     newPause.task()
+                if pygame.mouse.get_pressed()[0] and 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
+                    newPause.task2()
+                if newBoss.health <= 0:
+                    state = YOUWON
+
 
             else:
                 screen.fill((0, 0, 0))
@@ -369,6 +395,14 @@ class run():
                         # Check if bullet is inside screen, else kill
                         if bullet.y < 0:
                             player.bullets.remove(bullet)
+
+                        if bullet.y <= 520 and bullet.y >= 519 and bullet.x>= 520 and bullet.x <= 647:
+                            bullet.damage = 10
+                            newBoss.health -= 10
+                            #newBoss.update()
+                            #if newBoss.health <= 0:
+                             # state = YOUWON
+                            print("hit")
 
                         # Draw Bullet
                         bullet.blitBullet(screen)
@@ -405,6 +439,28 @@ class run():
                         newPause.blitReplayButton(screen)
                     newScore.blitScore(screen)
                     screen.blit(pause_text, (600, 260))
+
+                elif state == YOUWON:
+                    background.blitForrest()
+                    screen.blit(s, (0, 0))
+                    mouse = pygame.mouse.get_pos()
+
+                    if 600 + 50 > mouse[0] > 600 and 320 + 50 > mouse[1] > 320:
+                        newPause.blitHoverPlayButton(screen)
+                    else:
+                        newPause.blitPlayButton(screen)
+
+                    if 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
+                        newPause.blitHoverExitButton(screen)
+                    else:
+                        newPause.blitExitButton(screen)
+
+                    if 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[1] > 320:
+                        newPause.blitHoverReplayButton(screen)
+                    else:
+                        newPause.blitReplayButton(screen)
+                    newScore.blitScore(screen)
+                    screen.blit(won_text, (550, 260))
 
 
             pygame.display.flip()
