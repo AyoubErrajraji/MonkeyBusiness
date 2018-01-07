@@ -153,7 +153,11 @@ class BananAttack(game.Game):
             if self.waves_comp == self.waves - 1:
                 self.last_state = self.state
                 self.state = config.BA_SUCCESS
-        print("State updated to: %d by %s from %s" % (self.state, button, " the bottom of the begin_wave function"))
+            print("State updated to: %d by %s from %s" % (self.state, button, " the bottom of the begin_wave function"))
+
+        if self.lives <= 0:
+            self.last_state = self.state
+            self.state = config.BA_FAILURE
 
     # check whether the next wave is running
     def wave_started(self):
@@ -170,7 +174,7 @@ class BananAttack(game.Game):
         # if the game is being played
         # draw the world, enemys, towers,
         # and menus
-        if self.state == config.BA_PLAYING or self.state == config.BA_PAUSE or self.state == config.BA_CLEAR or self.state == config.BA_SUCCESS:
+        if self.state == config.BA_PLAYING or self.state == config.BA_PAUSE or self.state == config.BA_CLEAR or self.state == config.BA_SUCCESS or self.state == config.BA_FAILURE:
             ### Draw Right Info Box ###
             self.rightInfoBox()
 
@@ -202,7 +206,7 @@ class BananAttack(game.Game):
                 enemy.paint(surface, enemy.health)
 
             ### Show waypoints ###
-            self.showWaypoints()
+            #self.showWaypoints()
 
             ### Draw monkeys ###
             for index, tower in enumerate(self.rects):
@@ -220,10 +224,13 @@ class BananAttack(game.Game):
                     tower.paint(surface, range=False)
                     tower.paint_bullets(surface)
 
-
             ### Pause Overlay ###
             if self.state == config.BA_PAUSE:
                 self.pauseOverlay()
+
+            ### Fail Game ###
+            if self.state == config.BA_FAILURE:
+                self.failGame()
 
             ### End Game ###
             if self.state == config.BA_SUCCESS:
@@ -269,6 +276,11 @@ class BananAttack(game.Game):
         # State 30
         if self.state == config.BA_CLEAR:
             self.buttons = [button.startWave(self.state, self.can_start_wave()), button.monkeyButton(self.state)]
+
+        # State 40
+        if self.state == config.BA_FAILURE:
+            self.buttons = [button.exitGame(self.state)]
+            self.failGame()
 
         # State 50
         if self.state == config.BA_SUCCESS:
@@ -333,13 +345,24 @@ class BananAttack(game.Game):
         temp_surface = self.big_font.render(text, 1, self.font_color)
         self.screen.blit(temp_surface, (450, 280))
 
+    def failGame(self):
+        # overlay
+        s = pygame.Surface((config.SCREEN_WIDTH, config.SCREEN_HEIGHT), pygame.SRCALPHA)  # per-pixel alpha
+        s.fill((0, 0, 0, 150))  # notice the alpha value in the color
+        self.screen.blit(s, (0, 0))
+
+        # fail text #
+        text = "You loser...!"
+        temp_surface = self.big_font.render(text, 1, self.font_color)
+        self.screen.blit(temp_surface, (450, 280))
+
     def endGame(self):
         # overlay
         s = pygame.Surface((config.SCREEN_WIDTH, config.SCREEN_HEIGHT), pygame.SRCALPHA)  # per-pixel alpha
         s.fill((0, 0, 0, 150))  # notice the alpha value in the color
         self.screen.blit(s, (0, 0))
 
-        # pause text #
+        # completed text #
         text = "Game Completed!"
         temp_surface = self.big_font.render(text, 1, self.font_color)
         self.screen.blit(temp_surface, (450, 280))
