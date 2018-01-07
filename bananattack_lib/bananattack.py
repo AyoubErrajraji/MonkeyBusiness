@@ -116,9 +116,10 @@ class BananAttack(game.Game):
 
                                 # Check if enemy is dead
                                 if enemy.is_dead():
-                                    self.enemies[self.wave].pop(0)
-                                    self.money += config.DEFAULT_KILLVALUE
-                                    completed += 1
+                                    if len(self.enemies[self.wave]) > 0:
+                                        self.enemies[self.wave].pop(0)
+                                        self.money += config.DEFAULT_KILLVALUE
+                                        completed += 1
 
                         # Update Screen
                         pygame.display.update()
