@@ -88,7 +88,7 @@ class run():
     def runm(self):
 
 
-        def back(self):
+        def back():
             mymenu = slidemenu.run()
             mymenu.runm()
 
@@ -117,7 +117,7 @@ class run():
             else:
                 config.screen.blit(iimg, (x, y, w, h))
 
-        def spot(self):
+        def spot():
             dodged = 0
             banana = 0
             things_dodged(dodged)
@@ -197,11 +197,11 @@ class run():
                 pygame.display.update()
                 clock.tick(15)
 
-        def unpause(self):
+        def unpause():
             global pause
             pause = False
 
-        def paused(self):
+        def paused():
 
             pause = True
             dodged = 0
@@ -264,7 +264,7 @@ class run():
                 pygame.display.update()
                 clock.tick(15)
 
-        def game_intro(self):
+        def game_intro():
             global pause
             intro = True
 
@@ -419,10 +419,10 @@ class run():
         # balance = getMemory("balance")
         # monkey = getMemory("bought")
 
-        def things(self, thingx, thingy, thingw, thingh, color):
+        def things( thingx, thingy, thingw, thingh, color):
             pygame.draw.rect(config.screen, color, [thingx, thingy, thingw, thingh])
 
-        def message_display(self, text):
+        def message_display( text):
             largeText = pygame.font.Font('freesansbold.ttf', 115)
             TextSurf, TextRect = text_objects(text, largeText)
             TextRect.center = ((config.screen_width / 2), (config.screen_height / 2))
@@ -432,7 +432,7 @@ class run():
 
             time.sleep(2)
 
-        def face_level1(self):
+        def face_level1():
             gameExit = False
             dodged = 0
             banana = 0
@@ -498,7 +498,7 @@ class run():
                 pygame.display.update()
                 config.clock.tick(60)
 
-        def level_1(self):
+        def level_1():
 
             global pause
 
@@ -626,9 +626,3 @@ class run():
                 # print('screen is updated!')
                 config.clock.tick(60)
 
-class runm(self):
-    self.game_intro()
-    self.level_1()
-    self.paused()
-    pygame.quit()
-    sys.quit()
