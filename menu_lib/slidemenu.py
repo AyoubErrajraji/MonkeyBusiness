@@ -14,7 +14,7 @@ from monkeywar_lib import monkeywar
 from crosstheroad_lib import main as crosstheroad
 from finalfight_lib import game as finalfight
 from fightclub_lib import fightclub
-from escapetheguards_lib import etg as escapetheguards
+#from escapetheguards_lib import etg as escapetheguards
 from purchase_lib import purchase
 from menu_lib import config
 from os.path import dirname, join
@@ -267,8 +267,9 @@ class run(object):
                 bananattack.main()
 
             if resp == 'EscapeTheGuards':
-                mygame = escapetheguards.run()
-                mygame.runm()
+                #mygame = escapetheguards.run()
+                #mygame.runm()
+                pass
 
             if resp == 'FinalFight':
                 mygame = finalfight.run()

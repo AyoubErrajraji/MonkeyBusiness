@@ -40,10 +40,37 @@ class run(object):
             #FPS
             clock.tick(60)
 
-            # set Background
-            surface.blit(pygame.transform.scale(pygame.image.load('data/monkeywar/bg.png').convert(), (1280, 720)),
-                         (0, 0))
+            #set Background
+            surface.blit(pygame.transform.scale(pygame.image.load('data/monkeywar/bg.png').convert(), (1280, 720)), (0, 0))
 
+            #bullet
+            for bullet in firstMonkey.bullets:
+                # Move bullet
+                bullet.y -= 30
+
+                # Check if bullet is inside screen, else kill
+                if bullet.y < 0:
+                    firstMonkey.bullets.remove(bullet)
+                if bullet.y <= 470 and bullet.y >= 469 and bullet.x >= 520 and bullet.x <= 647:
+                    firstMonkey.bullets.remove(bullet)
+                    print("hit")
+
+                # Draw Bullet
+                bullet.blitBullet(surface)
+
+            for bullet in secondMonkey.bullets:
+                # Move bullet
+                bullet.y -= 30
+
+                # Check if bullet is inside screen, else kill
+                if bullet.y < 0:
+                    secondMonkey.bullets.remove(bullet)
+                if bullet.y <= 470 and bullet.y >= 469 and bullet.x >= 520 and bullet.x <= 647:
+                    secondMonkey.bullets.remove(bullet)
+                    print("hit")
+
+                # Draw Bullet
+                bullet.blitBullet(surface)
 
 
             #call classes
@@ -85,6 +112,22 @@ class run(object):
 
 
 
+class Bullet():
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.damage = 10
+
+        self.loadBullet("data/monkeywar/bullet.png")
+
+    def loadBullet(self,name):
+        self.bulletpicture = pygame.image.load(name)
+        self.bulletpicture = pygame.transform.scale(self.bulletpicture, (15, 15))
+
+    def blitBullet(self,surface):
+        surface.blit(self.bulletpicture, (self.x, self.y))
+
+
 class PlaceHolder:
     def __init__(self, win, left, top, width, height, color):
         self.win = win
@@ -105,13 +148,14 @@ class projectWin:
         pygame.draw.rect(surface, GREY, (0, 550, 1280, 170), 0)
 
 
-class Monkey(object):
+class Monkey():
     def __init__(self, x, image, movement):
         self.x = x
         self.y = 478
         self.image = image
         self.movement = movement
         self.bullets = []
+        self.bullet_timer = 0
 
 
 
@@ -136,22 +180,27 @@ class Monkey(object):
 
 
     def shoot(self):
-        keyinput = pygame.key.get_pressed()
-        bullet = pygame.draw.circle(surface, BLACK, (self.x, 478), 5, 0)
 
-        if keyinput[pygame.K_ESCAPE]:
-            raise SystemExit
+        """ Handles Space """
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                raise SystemExit
+        clock = pygame.time.Clock()
+        dt = clock.tick(60) / 1000
+        key = pygame.key.get_pressed()
+        self.bullet_timer -= dt  # Subtract the time since the last tick.
+        if self.bullet_timer <= 0:
+            self.bullet_timer = 0  # Bullet ready.
+            if self.movement == "ARROWS":
+                if key[pygame.K_UP]:
+                    print("shoot")
+                    self.bullets.append(Bullet(self.x + 55, self.y))
+                    self.bullet_timer = .1  # Reset the timer.
+            if self.movement == "WASD":
+                if key[pygame.K_w]:
+                    print("shoot 2")
+                    self.bullets.append(Bullet(self.x + 55, self.y))
+                    self.bullet_timer = .1  # Reset the timer.
 
-        if self.movement =="ARROWS":
-            if keyinput [pygame.K_UP]:
-                bullet
-
-        self.draw((self.x, 478))
+        #  print("Hit")
 
     def move(self):
         pygame.event.pump()
