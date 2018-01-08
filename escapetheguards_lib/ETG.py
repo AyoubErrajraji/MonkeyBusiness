@@ -626,6 +626,6 @@ class run():
                 pygame.display.update()
                 # print('screen is updated!')
                 config.clock.tick(60)
-        
+
 
 
