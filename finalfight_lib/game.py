@@ -49,12 +49,6 @@ class Player(Game):  # represents the bird, not the game
         # the bird's position
         self.x = 300
         self.y = 550
-        self.a = 520
-        self.b = 300
-        bosscheckhitX = 520 + 150
-        bosscheckhitY = 300 + 170
-        bulletcheckhit = 520 + 20
-
         self.bullets = []
 
     def movePlayer(self):
@@ -80,7 +74,7 @@ class Player(Game):  # represents the bird, not the game
             self.bullet_timer = 0  # Bullet ready.
             if key[pygame.K_SPACE]:
                 self.bullets.append(Bullet(self.x + 64, self.y))
-                self.bullet_timer = .2  # Reset the timer.
+                self.bullet_timer = .5  # Reset the timer.
           #  print("Hit")
 
 
@@ -396,18 +390,6 @@ class run():
                 if state == RUNNING:
                     player.movePlayer()
                     player.shoot()
-
-                    #mouse = pygame.mouse.get_pos()
-                    #key = pygame.key.get_pressed()
-                    #game.bullet_timer = .1
-                    #dt = clock.tick(clock.get_fps())/ 1000
-                    #game.bullet_timer -= dt
-                    #if game.bullet_timer <= 0:
-                     #   game.bullet_timer = 0  # Bullet ready.
-                      #  if key[pygame.K_SPACE]:  # Left mouse button.
-                            # Create a new bullet instance and add it to the groups.
-                            #Bullet(pg.mouse.get_pos(), self.all_sprites, self.bullets)
-                       #     self.bullet_timer = .1  # Reset the timer.
                     background.blitForrest()
 
                     for bullet in player.bullets:
