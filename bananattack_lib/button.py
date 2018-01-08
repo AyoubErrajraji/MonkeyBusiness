@@ -4,9 +4,9 @@ Created on Nov 25, 2017
 '''
 from bananattack_lib import config
 from bananattack_lib import draw
-from bananattack_lib import bananattack
-from bananattack_lib import monkey
+from bananattack_lib import main
 from menu_lib import slidemenu
+import json
 import pygame
 
 class Button(draw.Draw):
@@ -75,6 +75,12 @@ class Button(draw.Draw):
     def get_state(self):
         return self.state
 
+    def getMemory(self, key):
+        with open("data/memory.json", "r+") as jsonFile:
+            data = json.load(jsonFile)
+
+            return data[key]
+
 # Available Buttons
 class startWave(Button):
     def __init__(self, state, canStartWave):
@@ -86,8 +92,6 @@ class startWave(Button):
     def task(self):
         if self.canStartWave:
             self.state = config.BA_PLAYING
-        else:
-            print("Trying to start Wave while MAX_WAVES is reached")
 
 class playGame(Button):
     def __init__(self, state, running):
@@ -103,18 +107,28 @@ class playGame(Button):
             self.state = config.BA_CLEAR
 
 class exitGame(Button):
-    def __init__(self, state):
+    def __init__(self, state, balance=0, unlocked=None):
         Button.__init__(self, (config.BUTTON_EXITGAME_X,config.BUTTON_EXITGAME_Y), config.BUTTON_EXITGAME_WIDTH, config.BUTTON_EXITGAME_HEIGHT, config.BUTTON_EXITGAME_IMG, config.BUTTON_EXITGAME_HOVER_IMG)
         self.item = None
         self.state = state
+        self.balance = balance
+        self.unlocked = unlocked
 
     def task(self):
         mymenu = slidemenu.run()
-        mymenu.runm(100) #voeg 100 balance punten toe aan het hoofdmenu
+        mymenu.runm(self.balance, self.unlocked)
+
+class restartGame(Button):
+    def __init__(self):
+        Button.__init__(self, (config.BUTTON_RESTARTGAME_X,config.BUTTON_RESTARTGAME_Y), config.BUTTON_RESTARTGAME_WIDTH, config.BUTTON_RESTARTGAME_HEIGHT, config.BUTTON_RESTARTGAME_IMG, config.BUTTON_RESTARTGAME_HOVER_IMG)
+        self.item = None
+
+    def task(self):
+        main.main()
 
 class monkeyButton(Button):
     def __init__(self, state):
-        Button.__init__(self, (config.BUTTON_MONKEYBUTTON_X,config.BUTTON_MONKEYBUTTON_Y), config.BUTTON_MONKEYBUTTON_WIDTH, config.BUTTON_MONKEYBUTTON_HEIGHT, config.BUTTON_MONKEYBUTTON_IMG, config.BUTTON_MONKEYBUTTON_HOVER_IMG)
+        Button.__init__(self, (config.BUTTON_MONKEYBUTTON_X,config.BUTTON_MONKEYBUTTON_Y), config.BUTTON_MONKEYBUTTON_WIDTH, config.BUTTON_MONKEYBUTTON_HEIGHT, "data/" + self.getMemory("monkey"), "data/" + self.getMemory("monkey"))
         self.item = None
         self.state = state
 

@@ -69,9 +69,10 @@ MONEY_Y = 60
 STATE_X = 950
 STATE_Y = 100
 
-# State #
-SCORE_X = 950
-SCORE_Y = 140
+# Lives #
+LIVES_X = 950
+LIVES_Y = 140
+LIVES = 100
 
 # StartWave Button
 BUTTON_STARTWAVE_IMG = "data/bananattack/buttons/startWave.png"
@@ -81,19 +82,26 @@ BUTTON_STARTWAVE_HEIGHT = 100
 BUTTON_STARTWAVE_X = 950
 BUTTON_STARTWAVE_Y = 400
 
-BUTTON_PLAYGAME_IMG = "data/bananattack/buttons/playGame.png"
-BUTTON_PLAYGAME_HOVER_IMG = "data/bananattack/buttons/playGameHover.png"
+BUTTON_PLAYGAME_IMG = "data/bananattack/buttons/continueButton.png"
+BUTTON_PLAYGAME_HOVER_IMG = "data/bananattack/buttons/continueButtonHover.png"
 BUTTON_PLAYGAME_WIDTH = 100
 BUTTON_PLAYGAME_HEIGHT = 100
-BUTTON_PLAYGAME_X = 580
-BUTTON_PLAYGAME_Y = 450
+BUTTON_PLAYGAME_X = 480
+BUTTON_PLAYGAME_Y = 350
 
-BUTTON_EXITGAME_IMG = "data/bananattack/buttons/exitGame.png"
-BUTTON_EXITGAME_HOVER_IMG = "data/bananattack/buttons/exitGameHover.png"
-BUTTON_EXITGAME_WIDTH = 300
+BUTTON_EXITGAME_IMG = "data/bananattack/buttons/exitToMenuButton.png"
+BUTTON_EXITGAME_HOVER_IMG = "data/bananattack/buttons/exitToMenuButtonHover.png"
+BUTTON_EXITGAME_WIDTH = 100
 BUTTON_EXITGAME_HEIGHT = 100
-BUTTON_EXITGAME_X = 480
+BUTTON_EXITGAME_X = 680
 BUTTON_EXITGAME_Y = 350
+
+BUTTON_RESTARTGAME_IMG = "data/bananattack/buttons/replayButton.png"
+BUTTON_RESTARTGAME_HOVER_IMG = "data/bananattack/buttons/replayButtonHover.png"
+BUTTON_RESTARTGAME_WIDTH = 100
+BUTTON_RESTARTGAME_HEIGHT = 100
+BUTTON_RESTARTGAME_X = 580
+BUTTON_RESTARTGAME_Y = 350
 
 BUTTON_MONKEYBUTTON_IMG = "data/bananattack/buttons/monkeyButton.png"
 BUTTON_MONKEYBUTTON_HOVER_IMG = "data/bananattack/buttons/monkeyButtonHover.png"
@@ -105,18 +113,32 @@ BUTTON_MONKEYBUTTON_Y = 200
 # Kind of draw
 KIND_BUTTON = 36
 KIND_ENEMY = 37
+KIND_BULLET = 38
 
 # ENEMY #
 DEFAULT_HEALTH = 100
-DEFAULT_SPEED = 30
+DEFAULT_SPEED = 70
 DEFAULT_WIDTH = 30
 DEFAULT_HEIGHT = 30
 DEFAULT_IMAGE = "data/bananattack/sprites/truck_right.png"
 DEFAULT_DELAY = 100
+DEFAULT_PRICE = 50
+DEFAULT_KILLVALUE = 20
+DEFAULT_HEALTH_RADIUS = 10
+
+# BULLET #
+BULLET_WIDTH = 20
+BULLET_HEIGHT = 20
+BULLET_IMAGE = "data/bananattack/sprites/bullet.png"
+BULLET_DAMAGE = 10
+BULLET_SPEED = 150
 
 # MONKEY #
 MONKEY_SIZE = 50
-MONKEY_IMAGE = "data/bananattack/sprites/monkey.png"
+MONKEY_IMAGE = "data/default_monkey.png"
+MONKEY_IMAGE_TOP = "data/default_monkey_top.png"
+MONKEY_RADIUS = 100
+MONKEY_ATTACK_SPEED = 1.4
 
 # WAYPOINTS #
 STARTPOINT = (0, 311)

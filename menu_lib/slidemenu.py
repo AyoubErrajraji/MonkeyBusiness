@@ -135,7 +135,7 @@ def menu(menu, clickList, pos='center', font1=None, font2=None, color1=(128, 128
             if menu[idx].label in clickList:
                 ret = menu[idx].label, idx                              #clickable menu item
             else:
-                ret = menu[idx].label, idx                              #nonclickable menu item
+                ret = menu                                              #nonclickable menu item
             break
         elif ev.type == KEYDOWN:
             try:
@@ -168,13 +168,13 @@ def menu(menu, clickList, pos='center', font1=None, font2=None, color1=(128, 128
 
 class run(object):
     def getMemory(self, key):
-        with open("menu_lib/memory.json", "r+") as jsonFile:
+        with open("data/memory.json", "r+") as jsonFile:
             data = json.load(jsonFile)
 
             return data[key]
 
     def setMemory(self, key, value):
-        with open("menu_lib/memory.json", "r+") as jsonFile:
+        with open("data/memory.json", "r+") as jsonFile:
             data = json.load(jsonFile)
 
             data[key] = value
@@ -183,7 +183,7 @@ class run(object):
             json.dump(data, jsonFile)
             jsonFile.truncate()
 
-    def runm(self,balance=None,resolution=(1280,720)):
+    def runm(self,balance=None,unlocked=None,resolution=(1280,720)):
 
         time.Clock()
         from os.path import join
@@ -200,6 +200,13 @@ class run(object):
         # Update Balance
         if balance != None:
             self.setMemory("balance",self.getMemory("balance") + balance)
+
+        # Update Unlocked
+        if unlocked != None:
+            if unlocked not in self.getMemory("unlocked"):
+                list = self.getMemory("unlocked")
+                list.append(unlocked)
+                self.setMemory("unlocked",list)
 
         # Achtergrond instellen
         background_main = image.load('data/menu/bg.png').convert()
@@ -283,12 +290,8 @@ class run(object):
                 sys.exit()
 
             else:
-                scr.fill((0, 0, 0))
-                scr.blit(background_main, (0, 0))
-                scr.blit(f.render('Monkey Business', 1, (255, 255, 255)), (450, 180))
-                display.update()
-                resp = menu(**menu1)[0]
-                response(resp)
+                pygame.quit()
+                sys.exit()
 
         resp = "re-show"
         while resp == "re-show":
