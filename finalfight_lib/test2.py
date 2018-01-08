@@ -82,7 +82,7 @@ class Game:
             if mouse_pressed[0]:  # Left mouse button.
                 # Create a new bullet instance and add it to the groups.
                 Bullet(pg.mouse.get_pos(), self.all_sprites, self.bullets)
-                self.bullet_timer = .1  # Reset the timer.
+                self.bullet_timer = .5  # Reset the timer.
         # hits is a dict. The enemies are the keys and bullets the values.
         hits = pg.sprite.groupcollide(self.enemies, self.bullets, False, True)
         for enemy, bullet_list in hits.items():

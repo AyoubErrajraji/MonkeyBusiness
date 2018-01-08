@@ -5,6 +5,7 @@ import os
 import math
 import itertools
 import random
+import time
 from menu_lib import slidemenu
 from finalfight_lib import game as finalfight
 from pygame.locals import *
@@ -20,7 +21,7 @@ class Game:
         self.fps = 30
         self.frame = pygame.time.Clock()
         self.screen = screen
-        self.bullet_timer = .1
+        self.bullet_timer = 0
 
     def updateFrame(self):
         self.frame.tick(self.fps)
@@ -71,11 +72,15 @@ class Player(Game):  # represents the bird, not the game
 
     def shoot(self):
         """ Handles Space """
+        clock = pygame.time.Clock()
+        dt = clock.tick(60) / 1000
         key = pygame.key.get_pressed()
-        if key[pygame.K_SPACE]:
-            self.bullets.append(Bullet(self.x + 64, self.y))
-
-
+        self.bullet_timer -= dt  # Subtract the time since the last tick.
+        if self.bullet_timer <= 0:
+            self.bullet_timer = 0  # Bullet ready.
+            if key[pygame.K_SPACE]:
+                self.bullets.append(Bullet(self.x + 64, self.y))
+                self.bullet_timer = .2  # Reset the timer.
           #  print("Hit")
 
 
@@ -393,20 +398,21 @@ class run():
                     player.shoot()
 
                     #mouse = pygame.mouse.get_pos()
-                    game.bullet_timer = .1
-                    dt = clock.tick(60) / 1000
-                    game.bullet_timer -= dt
-                    if game.bullet_timer <= 0:
-                        game.bullet_timer = 0  # Bullet ready.
-                        #if mouse_pressed[0]:  # Left mouse button.
+                    #key = pygame.key.get_pressed()
+                    #game.bullet_timer = .1
+                    #dt = clock.tick(clock.get_fps())/ 1000
+                    #game.bullet_timer -= dt
+                    #if game.bullet_timer <= 0:
+                     #   game.bullet_timer = 0  # Bullet ready.
+                      #  if key[pygame.K_SPACE]:  # Left mouse button.
                             # Create a new bullet instance and add it to the groups.
-                         #   Bullet(pg.mouse.get_pos(), self.all_sprites, self.bullets)
-                          #  self.bullet_timer = .1  # Reset the timer.
+                            #Bullet(pg.mouse.get_pos(), self.all_sprites, self.bullets)
+                       #     self.bullet_timer = .1  # Reset the timer.
                     background.blitForrest()
 
                     for bullet in player.bullets:
                         # Move bullet
-                        bullet.y -= 20
+                        bullet.y -= 10
 
                         # Check if bullet is inside screen, else kill
                         if bullet.y < 0:
