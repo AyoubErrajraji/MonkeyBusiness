@@ -95,7 +95,6 @@ class run():
                 config.screen.blit(config.bananaImg, (600, 620))
                 config.screen.blit(config.bananaImg, (900, 300))
 
-                player()
                 things_dodged(dodged)
                 banana_count(banana)
 
@@ -182,9 +181,6 @@ class run():
                 config.screen.blit(config.bananaImg, (600, 620))
                 config.screen.blit(config.bananaImg, (900, 300))
 
-                monkey = ("apprentice_monkey.png")
-
-                player()
                 things_dodged(dodged)
                 banana_count(banana)
 
@@ -221,17 +217,9 @@ class run():
 
                 config.screen.blit(config.backgroundintro, (0, 0))
 
-
                 myfont = pygame.font.SysFont("comicsansms", 80)
-                label = myfont.render("Escape Those Guards!", 1, (config.black))
-                config.screen.blit(label, (230, 120))
-
-                pygame.display.set_caption('Escape The Guards')
-
-                myfont = pygame.font.SysFont("comicsansms", 80)
-                label = myfont.render("Escape Those Guards!", 1, (config.black))
-                config.screen.blit(label, (230, 120))
-
+                label = myfont.render("Escape The Guards!", 1, (config.black))
+                config.screen.blit(label, (265, 120))
 
                 # config.screen.blit(config.monkeyImg, (-50, 300))
                 # config.screen.blit(config.monkeyImg, (730, 300))
@@ -263,13 +251,13 @@ class run():
                 label = myfont.render("Key Left and Key Right", 1, (config.black))
                 config.screen.blit(label, (960, 400))
 
-                label = myfont.render("Key P", 1, (config.black))
+                label = myfont.render("Pause Button", 1, (config.black))
                 config.screen.blit(label, (960, 430))
 
                 label = myfont.render("Quit The Game:", 1, (config.black))
                 config.screen.blit(label, (780, 460))
 
-                label = myfont.render("Key Escape or top left X", 1, (config.black))
+                label = myfont.render("Top Right X", 1, (config.black))
                 config.screen.blit(label, (960, 460))
 
                 config.screen.blit(config.monkeyImg, (0, 190))
@@ -280,11 +268,93 @@ class run():
                 pygame.display.update()
                 clock.tick(15)
 
-        def player():
-            x_player = (200)
-            y_player = (300)
+        def player(x, y):
 
-            config.screen.blit(config.apprentice, (x_player, y_player))
+            config.screen.blit(config.apprentice, (x, y))
+
+        def character(x, y):
+            config.screen.blit(config.mainImg, (x, y))
+
+        def charwithFlag(x, y):
+            config.screen.blit(config.charwFlagImg, (x, y))
+
+        def char(x, y):
+            config.screen.blit(config.apprentice, (x, y))
+
+        x = (config.screen_width * 0.8)
+        y = (config.screen_height * 0.8)
+        x_change = 0
+        y_change = 0
+        speed = 1
+
+        def flag(x, y):
+            config.screen.blit(config.flagImg, (x, y))
+
+        def setFlag(x, y):
+            config.screen.blit(config.flagImg, (x, y))
+
+        x_flag = 600
+        y_flag = 300
+        flag_width = 70
+        flag_height = 70
+
+        def noFlag(x, y):
+            config.screen.blit(config.noFlagImg, (x, y))
+
+        x_noflag = 600
+        y_noflag = 300
+
+        def flag2(x, y):
+            config.screen.blit(config.flagImg, (x, y))
+
+        x2_flag = 300
+        y2_flag = 350
+
+        def flag3(x, y):
+            config.screen.blit(config.flagImg, (x, y))
+
+        x3_flag = 600
+        y3_flag = 620
+
+        def flag4(x, y):
+            config.screen.blit(config.flagImg, (x, y))
+
+        x4_flag = 900
+        y4_flag = 300
+
+        def target(x, y):
+            config.screen.blit(config.targetImg, (x, y))
+
+        def target2(x, y):
+            config.screen.blit(config.targetImg, (x, y))
+
+        x_target = 1024
+        y_target = 576
+
+        x_target2 = config.screen_width * 0.2
+        y_target2 = config.screen_height * 0.2
+
+        points = 0
+        points2 = 0
+
+        # def getMemory(key):
+        # with open("data/memory.json", "r+") as jsonFile:
+        # data = json.load(jsonFile)
+
+        # return data[key]
+
+        # def setMemory(key, value):
+        # with open("data/memory.json", "r+") as jsonFile:
+        # data = json.load(jsonFile)
+
+        # data[key] = value
+
+        # jsonFile.seek(0)  # rewind
+        # json.dump(data, jsonFile)
+        # jsonFile.truncate()
+
+        # balance = getMemory("balance")
+        # monkey = getMemory("bought")
 
         def things(thingx, thingy, thingw, thingh, color):
             pygame.draw.rect(config.screen, color, [thingx, thingy, thingw, thingh])
@@ -344,7 +414,6 @@ class run():
                 config.screen.blit(config.bananaImg, (600, 620))
                 config.screen.blit(config.bananaImg, (900, 300))
 
-                player()
                 things_dodged(dodged)
                 banana_count(banana)
 
@@ -370,15 +439,6 @@ class run():
 
             global pause
 
-            x_player = (200)
-            y_player = (300)
-
-            x = 500
-            y = 500
-
-            x_change = 0
-            y_change = 0
-
             thing_startx = random.randrange(0, config.gs_width)
             thing_starty = -600
             thing_speed = 7
@@ -389,14 +449,21 @@ class run():
             dodged = 0
             banana = 0
 
-            gameExit = False
+            y = 0
+            x = 0
+
+            x2 = (200)
+            y2 = (300)
+
+            x_change = 0
+            y_change = 0
+
             done = False
             global pause
             while done == False:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         done = True
-                        quit()
 
                     # Moving Player 1
                     if event.type == pygame.KEYDOWN:
@@ -412,18 +479,11 @@ class run():
                             pause = True
                             paused()
 
-                        if event.key == pygame.K_SPACE:
-                            pause = False
-                            unpause()
-
                     if event.type == pygame.KEYUP:
                         if event.key == pygame.K_a or event.key == pygame.K_d:
                             x_change = 0
                         if event.key == pygame.K_w or event.key == pygame.K_s:
                             y_change = 0
-
-                x_player += x_change
-                y_player += y_change
 
                 x += x_change
                 y += y_change
@@ -451,9 +511,6 @@ class run():
                 config.screen.blit(config.guard_topImg, (230, 320))
 
                 config.screen.blit(config.logoImg, (1010, 340))
-                config.screen.blit(config.bananaImg, (300, 350))
-                config.screen.blit(config.bananaImg, (600, 620))
-                config.screen.blit(config.bananaImg, (900, 300))
 
                 # things(thing_startx, thing_starty, thing_width, thing_height, config.black)
                 thing_starty += thing_speed
@@ -471,18 +528,44 @@ class run():
                         print('player spotted!!')
                         spot()
 
-                player()
                 things_dodged(dodged)
                 banana_count(banana)
 
                 # button("Back to Intro", 1140, 670, 140, 50, config.black, config.yellow, "leave")
                 # button("Start Game", 980, 670, 140, 50, config.black, config.yellow, "level1")
 
+                flag = setFlag
+                player = char
+
+                player(x, y)
+
+                flag(x_flag, y_flag)
+                flag2(x2_flag, y2_flag)
+                flag3(x3_flag, y3_flag)
+                flag4(x4_flag, y4_flag)
+
+                # Flag Collision Player 1
+                if flag == setFlag and player == char:
+                    if x > 570 and x < 630 and y > 270 and y < 330:
+                        player = charwithFlag
+
+                    if player == charwithFlag:
+                        flag = noFlag
+                        target(x_target, y_target)
+                        if x > 994 and x < 1054 and y > 546 and y < 606:
+                            player = char
+
                 button("Back to menu", 993, 580, 100, 50, config.exitgame, config.exitgamehover, game_intro)
 
+                button("Pause", 1000, 250, 100, 50, config.pausegame, config.pausegamehover, paused)
+
                 pygame.display.update()
+                # print('screen is updated!')
                 config.clock.tick(60)
 
-
-pygame.quit()
-sys.exit()
+class runm():
+    game_intro()
+    level_1()
+    paused()
+    pygame.quit()
+    sys.quit()
