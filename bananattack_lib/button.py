@@ -92,8 +92,6 @@ class startWave(Button):
     def task(self):
         if self.canStartWave:
             self.state = config.BA_PLAYING
-        else:
-            print("Trying to start Wave while MAX_WAVES is reached")
 
 class playGame(Button):
     def __init__(self, state, running):
@@ -109,15 +107,16 @@ class playGame(Button):
             self.state = config.BA_CLEAR
 
 class exitGame(Button):
-    def __init__(self, state, lives):
+    def __init__(self, state, balance=0, unlocked=None):
         Button.__init__(self, (config.BUTTON_EXITGAME_X,config.BUTTON_EXITGAME_Y), config.BUTTON_EXITGAME_WIDTH, config.BUTTON_EXITGAME_HEIGHT, config.BUTTON_EXITGAME_IMG, config.BUTTON_EXITGAME_HOVER_IMG)
         self.item = None
         self.state = state
-        self.lives = lives
+        self.balance = balance
+        self.unlocked = unlocked
 
     def task(self):
         mymenu = slidemenu.run()
-        mymenu.runm(self.lives)
+        mymenu.runm(self.balance, self.unlocked)
 
 class restartGame(Button):
     def __init__(self):
