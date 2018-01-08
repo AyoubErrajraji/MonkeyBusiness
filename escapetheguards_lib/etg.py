@@ -92,36 +92,36 @@ class run():
             mymenu = slidemenu.run()
             mymenu.runm()
 
-        def things_dodged(count):
+        def things_dodged(self, count):
             font = pygame.font.SysFont(None, 30)
             text = font.render("Current Score: " + str(count), True, config.white)
             config.screen.blit(text, (982, 70))
 
-        def banana_count(count):
+        def banana_count(self, count):
             font = pygame.font.SysFont(None, 30)
             text = font.render("Banana's picked up: " + str(count), True, config.white)
             config.screen.blit(text, (982, 20))
 
-        def text_objects(text, font):
+        def text_objects(self, text, font):
             config.screen = font.render(text, False, config.white)
             return config.screen, config.screen.get_rect()
 
-        def button(msg, x, y, w, h, iimg, aimg, action=None):
+        def button(self, msg, x, y, w, h, iimg, aimg, action=None):
             mouse = pygame.mouse.get_pos()
             click = pygame.mouse.get_pressed()
             if x + w > mouse[0] > x and y + h > mouse[1] > y:
                 config.screen.blit(aimg, (x, y, w, h))
 
                 if click[0] == 1 and action != None:
-                    action()
+                    self.action()
             else:
                 config.screen.blit(iimg, (x, y, w, h))
 
-        def spot():
+        def spot(self):
             dodged = 0
             banana = 0
-            things_dodged(dodged)
-            banana_count(banana)
+            self.things_dodged(dodged)
+            self.banana_count(banana)
             spotted = True
 
             s = pygame.Surface((config.screen_width, config.screen_height), pygame.SRCALPHA)
@@ -158,8 +158,8 @@ class run():
                 config.screen.blit(logoImg, (1010, 350))
 
 
-                things_dodged(dodged)
-                banana_count(banana)
+                self.things_dodged(dodged)
+                self.banana_count(banana)
 
                 config.screen.blit(s, (0, 0))
 
@@ -170,8 +170,8 @@ class run():
                 # button("Back to Intro", 590, 350, 100, 50, config.black, config.yellow, "leave")
                 # button("Start Game", 590, 550, 100, 50, config.black, config.yellow, "level1")
 
-                button("Lets Play", 450, 400, 20, 20, playgame, playgamehover, level_1)
-                button("Back to menu", 600, 380, 100, 50, exitgame, exitgamehover, game_intro)
+                self.button("Lets Play", 450, 400, 20, 20, playgame, playgamehover, level_1)
+                self.button("Back to menu", 600, 380, 100, 50, exitgame, exitgamehover, game_intro)
 
                 # button("Play Again!", 590, 350, 100, 50, config.yellow, config.light_black, level_1())
 
@@ -197,11 +197,11 @@ class run():
                 pygame.display.update()
                 clock.tick(15)
 
-        def unpause():
+        def unpause(self):
             global pause
             pause = False
 
-        def paused():
+        def paused(self):
 
             pause = True
             dodged = 0
@@ -244,8 +244,8 @@ class run():
                 config.screen.blit(config.bananaImg, (600, 620))
                 config.screen.blit(config.bananaImg, (900, 300))
 
-                things_dodged(dodged)
-                banana_count(banana)
+                self.things_dodged(dodged)
+                self.banana_count(banana)
 
                 # button("Back to Intro", 1140, 670, 140, 50, config.black, config.yellow, "leave")
                 # button("Start Game", 980, 670, 140, 50, config.black, config.yellow, "level1")
@@ -259,12 +259,12 @@ class run():
                 # button("Back to Intro", 590, 350, 100, 50, config.black, config.yellow, "leave")
                 # button("Start Game", 590, 550, 100, 50, config.black, config.yellow, "level1")
 
-                button("Back To Menu", 680, 380, 100, 50, config.exitgame, config.exitgamehover, game_intro)
-                button("Continue", 450, 400, 20, 20, config.playgame, config.playgamehover, level_1)
+                self.button("Back To Menu", 680, 380, 100, 50, config.exitgame, config.exitgamehover, game_intro)
+                self.button("Continue", 450, 400, 20, 20, config.playgame, config.playgamehover, level_1)
                 pygame.display.update()
                 clock.tick(15)
 
-        def game_intro():
+        def game_intro(self):
             global pause
             intro = True
 
@@ -325,8 +325,8 @@ class run():
 
                 config.screen.blit(config.monkeyImg, (0, 190))
 
-                button("Lets Play", 580, 300, 20, 20, config.playgame, config.playgamehover, face_level1)
-                button("Back to menu", 500, 450, 100, 50, config.exitgame, config.exitgamehover, back)
+                self.button("Lets Play", 580, 300, 20, 20, config.playgame, config.playgamehover, face_level1)
+                self.button("Back to menu", 500, 450, 100, 50, config.exitgame, config.exitgamehover, back)
 
                 pygame.display.update()
                 clock.tick(15)
@@ -432,7 +432,7 @@ class run():
 
             time.sleep(2)
 
-        def face_level1():
+        def face_level1(self):
             gameExit = False
             dodged = 0
             banana = 0
@@ -477,8 +477,8 @@ class run():
                 config.screen.blit(config.bananaImg, (600, 620))
                 config.screen.blit(config.bananaImg, (900, 300))
 
-                things_dodged(dodged)
-                banana_count(banana)
+                self.things_dodged(dodged)
+                self.banana_count(banana)
 
                 # button("Back to Intro", 1140, 670, 140, 50, config.black, config.yellow, "leave")
                 # button("Start Game", 980, 670, 140, 50, config.black, config.yellow, "level1")
@@ -492,13 +492,13 @@ class run():
                 # button("Back to Intro", 590, 350, 100, 50, config.black, config.yellow, "leave")
                 # button("Start Game", 590, 550, 100, 50, config.black, config.yellow, "level1")
 
-                button("Lets Play", 450, 400, 20, 20, config.playgame, config.playgamehover, level_1)
-                button("Back to menu", 600, 380, 100, 50, config.exitgame, config.exitgamehover, back)
+                self.button("Lets Play", 450, 400, 20, 20, config.playgame, config.playgamehover, level_1)
+                self.button("Back to menu", 600, 380, 100, 50, config.exitgame, config.exitgamehover, back)
 
                 pygame.display.update()
                 config.clock.tick(60)
 
-        def level_1():
+        def level_1(self):
 
             global pause
 
@@ -540,7 +540,7 @@ class run():
                             y_change = 5
                         if event.key == pygame.K_ESCAPE:
                             pause = True
-                            paused()
+                            self.paused()
 
                     if event.type == pygame.KEYUP:
                         if event.key == pygame.K_a or event.key == pygame.K_d:
@@ -589,10 +589,10 @@ class run():
                     if x > thing_startx and x < thing_startx + thing_width or x + config.player_width > thing_startx and x + config.player_width < thing_startx + thing_width:
                         print('x crossover')
                         print('player spotted!!')
-                        spot()
+                        self.spot()
 
-                things_dodged(dodged)
-                banana_count(banana)
+                self.things_dodged(dodged)
+                self.banana_count(banana)
 
                 # button("Back to Intro", 1140, 670, 140, 50, config.black, config.yellow, "leave")
                 # button("Start Game", 980, 670, 140, 50, config.black, config.yellow, "level1")
@@ -618,11 +618,16 @@ class run():
                         if x > 994 and x < 1054 and y > 546 and y < 606:
                             player = char
 
-                button("Back to menu", 993, 580, 100, 50, config.exitgame, config.exitgamehover, game_intro)
+                self.button("Back to menu", 993, 580, 100, 50, config.exitgame, config.exitgamehover, game_intro)
 
-                button("Pause", 1000, 250, 100, 50, config.pausegame, config.pausegamehover, paused)
+                self.button("Pause", 1000, 250, 100, 50, config.pausegame, config.pausegamehover, paused)
 
                 pygame.display.update()
                 # print('screen is updated!')
                 config.clock.tick(60)
 
+def runm(self):
+    self.game_intro()
+    self.level_1()
+    pygame.quit()
+    sys.quit()
