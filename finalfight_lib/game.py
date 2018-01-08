@@ -60,11 +60,11 @@ class Player(Game):  # represents the bird, not the game
     def movePlayer(self):
         """ Handles Keys """
         key = pygame.key.get_pressed()
-        dist = 1  # distance moved in 1 frame, try changing it to 5
-        if key[pygame.K_DOWN] and self.y < 590:  # down key
-            self.y += dist  # move down
-        elif key[pygame.K_UP] and self.y > -20:  # up key
-            self.y -= dist  # move up
+        dist = 3  # distance moved in 1 frame, try changing it to 5
+        #if key[pygame.K_DOWN] and self.y < 590:  # down key
+          #  self.y += dist  # move down
+        #elif key[pygame.K_UP] and self.y > -20:  # up key
+         #   self.y -= dist  # move up
         if key[pygame.K_RIGHT] and self.x < 1166:  # right key
             self.x += dist  # move right
         elif key[pygame.K_LEFT] and self.x > -43:  # left key
