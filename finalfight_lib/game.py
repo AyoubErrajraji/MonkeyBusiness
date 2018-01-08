@@ -380,7 +380,7 @@ class run():
                     newPause.task()
                 if pygame.mouse.get_pressed()[0] and 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[1] > 320:
                     newPause.task2()
-                if newScore.score == 100:
+                if newBoss.health <= 0:
                     state = YOUWON
 
 
@@ -392,7 +392,7 @@ class run():
                     player.movePlayer()
                     player.shoot()
 
-                    mouse = pygame.mouse.get_pos()
+                    #mouse = pygame.mouse.get_pos()
                     game.bullet_timer = .1
                     dt = clock.tick(60) / 1000
                     game.bullet_timer -= dt
@@ -410,6 +410,8 @@ class run():
 
                         # Check if bullet is inside screen, else kill
                         if bullet.y < 0:
+                            player.bullets.remove(bullet)
+                        if bullet.y <= 470 and bullet.y >= 469 and bullet.x>= 520 and bullet.x <= 647:
                             player.bullets.remove(bullet)
 
                         if bullet.y <= 520 and bullet.y >= 519 and bullet.x>= 520 and bullet.x <= 647:
@@ -431,7 +433,7 @@ class run():
                     else:
                         newPause.blitPauseButton(screen)
 
-                    newWolk.blitwolk(screen)
+                    #newWolk.blitwolk(screen)
                     newBoss.blitBoss(screen)
                     player.draw(screen)
                     newScore.blitScore(screen)
