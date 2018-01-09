@@ -232,6 +232,9 @@ class Crosstheroad:
                 # Reset monkey that collided
                 self.monkeys[0].reset()
 
+                pygame.mixer.music.load("crosstheroad_lib/src/sounds/killed.wav")
+                pygame.mixer.music.play()
+
     def loadPause(self):
         self.state = 'Paused'
 
