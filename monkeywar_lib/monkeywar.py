@@ -37,20 +37,31 @@ class run(object):
             # get Mouse
             mouse = pygame.mouse.get_pos()
 
-            #FPS
-            clock.tick(60)
 
-            #set Background
+            #set background
             surface.blit(pygame.transform.scale(pygame.image.load('data/monkeywar/bg.png').convert(), (1280, 720)), (0, 0))
+
+            #grafity
+            grafity = -0.5
+            speedy = 30
+            speedx = 20
 
             #bullet
             for bullet in firstMonkey.bullets:
                 # Move bullet
-                bullet.y -= 30
+                bullet.y -= speedy
+                speedy = speedy + grafity
+
+                bullet.x += speedx
+                print(speedy)
+
 
                 # Check if bullet is inside screen, else kill
                 if bullet.y < 0:
                     firstMonkey.bullets.remove(bullet)
+                if bullet.x > 1280:
+                    firstMonkey.bullets.remove(bullet)
+
                 if bullet.y <= 470 and bullet.y >= 469 and bullet.x >= 520 and bullet.x <= 647:
                     firstMonkey.bullets.remove(bullet)
                     print("hit")
@@ -61,7 +72,7 @@ class run(object):
             for bullet in secondMonkey.bullets:
                 # Move bullet
                 bullet.y -= 30
-
+                bullet.x -= 20
                 # Check if bullet is inside screen, else kill
                 if bullet.y < 0:
                     secondMonkey.bullets.remove(bullet)
@@ -106,7 +117,8 @@ class run(object):
                 if event.type == QUIT:
                     Quit = True
 
-
+        # FPS
+        clock.tick(60)
         pygame.quit()  # always exit cleanly
         sys.exit()
 
@@ -191,12 +203,10 @@ class Monkey():
             self.bullet_timer = 0  # Bullet ready.
             if self.movement == "ARROWS":
                 if key[pygame.K_UP]:
-                    print("shoot")
                     self.bullets.append(Bullet(self.x + 55, self.y))
                     self.bullet_timer = .1  # Reset the timer.
             if self.movement == "WASD":
                 if key[pygame.K_w]:
-                    print("shoot 2")
                     self.bullets.append(Bullet(self.x + 55, self.y))
                     self.bullet_timer = .1  # Reset the timer.
 
