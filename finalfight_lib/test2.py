@@ -1,100 +1,114 @@
+import pygame
+import time
 import random
-import pygame as pg
+
+pygame.init()
+
+display_width = 800
+display_height = 600
+
+black = (0, 0, 0)
+white = (255, 255, 255)
+red = (255, 0, 0)
+
+car_width = 73
+
+gameDisplay = pygame.display.set_mode((display_width, display_height))
+pygame.display.set_caption('A bit Racey')
+clock = pygame.time.Clock()
+
+carImg = pygame.image.load('../data/finalfight/boss2.png')
 
 
-pg.init()
-
-BG_COLOR = pg.Color('gray12')
-ENEMY_IMG = pg.Surface((50, 30))
-ENEMY_IMG.fill(pg.Color('darkorange1'))
-BULLET_IMG = pg.Surface((9, 15))
-BULLET_IMG.fill(pg.Color('aquamarine2'))
+def things(thingx, thingy, thingw, thingh, color):
+    pygame.draw.rect(gameDisplay, color, [thingx, thingy, thingw, thingh])
 
 
-class Enemy(pg.sprite.Sprite):
-
-    def __init__(self, pos, *sprite_groups):
-        super().__init__(*sprite_groups)
-        self.image = ENEMY_IMG
-        self.rect = self.image.get_rect(center=pos)
-        self.health = 20
-
-    def update(self, dt):
-        if self.health <= 0:
-            self.kill()
+def car(x, y):
+    gameDisplay.blit(carImg, (x, y))
 
 
-class Bullet(pg.sprite.Sprite):
-
-    def __init__(self, pos, *sprite_groups):
-        super().__init__(*sprite_groups)
-        self.image = BULLET_IMG
-        self.rect = self.image.get_rect(center=pos)
-        self.pos = pg.math.Vector2(pos)
-        self.vel = pg.math.Vector2(0, -450)
-        self.damage = 10
-
-    def update(self, dt):
-        # Add the velocity to the position vector to move the sprite.
-        self.pos += self.vel * dt
-        self.rect.center = self.pos  # Update the rect pos.
-        if self.rect.bottom <= 0:
-            self.kill()
+def text_objects(text, font):
+    textSurface = font.render(text, True, black)
+    return textSurface, textSurface.get_rect()
 
 
-class Game:
+def message_display(text):
+    largeText = pygame.font.Font('freesansbold.ttf', 115)
+    TextSurf, TextRect = text_objects(text, largeText)
+    TextRect.center = ((display_width / 2), (display_height / 2))
+    gameDisplay.blit(TextSurf, TextRect)
 
-    def __init__(self):
-        self.clock = pg.time.Clock()
-        self.screen = pg.display.set_mode((800, 600))
+    pygame.display.update()
 
-        self.all_sprites = pg.sprite.Group()
-        self.enemies = pg.sprite.Group()
-        self.bullets = pg.sprite.Group()
+    time.sleep(2)
 
-        for i in range(15):
-            pos = (random.randrange(30, 750), random.randrange(500))
-            Enemy(pos, self.all_sprites, self.enemies)
-
-        self.bullet_timer = .1
-        self.done = False
-
-    def run(self):
-        while not self.done:
-            # dt = time since last tick in milliseconds.
-            dt = self.clock.tick(60) / 1000
-            self.handle_events()
-            self.run_logic(dt)
-            self.draw()
-
-    def handle_events(self):
-        for event in pg.event.get():
-            if event.type == pg.QUIT:
-                self.done = True
-
-    def run_logic(self, dt):
-        mouse_pressed = pg.mouse.get_pressed()
-        self.all_sprites.update(dt)
-
-        self.bullet_timer -= dt  # Subtract the time since the last tick.
-        if self.bullet_timer <= 0:
-            self.bullet_timer = 0  # Bullet ready.
-            if mouse_pressed[0]:  # Left mouse button.
-                # Create a new bullet instance and add it to the groups.
-                Bullet(pg.mouse.get_pos(), self.all_sprites, self.bullets)
-                self.bullet_timer = .5  # Reset the timer.
-        # hits is a dict. The enemies are the keys and bullets the values.
-        hits = pg.sprite.groupcollide(self.enemies, self.bullets, False, True)
-        for enemy, bullet_list in hits.items():
-            for bullet in bullet_list:
-                enemy.health -= bullet.damage
-
-    def draw(self):
-        self.screen.fill(BG_COLOR)
-        self.all_sprites.draw(self.screen)
-        pg.display.flip()
+    game_loop()
 
 
-if __name__ == '__main__':
-    Game().run()
-    pg.quit()
+def crash():
+    message_display('You Crashed')
+
+
+def game_loop():
+    x = (display_width * 0.45)
+    y = (display_height * 0.8)
+
+    x_change = 0
+
+    thing_startx = random.randrange(0, display_width)
+    thing_starty = 0
+    thing_speed = 15
+    thing_width = 25
+    thing_height = 25
+
+    gameExit = False
+
+    while not gameExit:
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    x_change = -5
+                if event.key == pygame.K_RIGHT:
+                    x_change = 5
+
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                    x_change = 0
+
+        x += x_change
+        gameDisplay.fill(white)
+
+        # things(thingx, thingy, thingw, thingh, color)
+        things(thing_startx, thing_starty, thing_width, thing_height, black)
+        thing_starty += thing_speed
+        car(x, y)
+
+        if x > display_width - car_width or x < 0:
+            crash()
+
+        if thing_starty > display_height:
+            thing_starty = 0 - thing_height
+            thing_startx = random.randrange(0, display_width)
+
+        ####
+        if y < thing_starty + thing_height:
+            print('y crossover')
+
+            if x > thing_startx and x < thing_startx + thing_width or x + car_width > thing_startx and x + car_width < thing_startx + thing_width:
+                print('x crossover')
+                crash()
+        ####
+
+        pygame.display.update()
+        clock.tick(60)
+
+
+game_loop()
+pygame.quit()
+quit()
