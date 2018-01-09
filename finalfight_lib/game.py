@@ -55,7 +55,23 @@ class Player(Game):  # represents the bird, not the game
         self.x = 300
         self.y = 550
         self.bullets = []
-        self.health = 50
+        monkey = getMemory("monkey")
+        if monkey == "default_monkey.png":
+            self.health = 50
+        elif monkey == "ninja_monkey.png":
+            self.health = 55
+        elif monkey == "engineer_monkey.png":
+            self.health = 60
+        elif monkey == "apprentice_monkey.png":
+            self.health = 65
+        elif monkey == "dragon_monkey.png":
+            self.health = 70
+        elif monkey == "super_monkey.png":
+            self.health = 80
+        elif monkey == "robo_monkey.png":
+            self.health = 90
+        else:
+            self.health = 50
 
     def movePlayer(self):
         """ Handles Keys """
@@ -77,7 +93,7 @@ class Player(Game):  # represents the bird, not the game
         elif monkey == "robo_monkey.png":
             dist = 7
         else:
-            dist = 8
+            dist = 7
         if key[pygame.K_RIGHT] and self.x < 1166:  # right key
             self.x += dist  # move right
         elif key[pygame.K_LEFT] and self.x > -43:  # left key
@@ -118,9 +134,9 @@ class Bullet():
         elif monkey == "dragon_monkey.png":
             self.damage = 30
         elif monkey == "super_monkey.png":
-            self.damage = 35
-        elif monkey == "robo_monkey.png":
             self.damage = 40
+        elif monkey == "robo_monkey.png":
+            self.damage = 50
         else:
             self.damage = 50
 
@@ -141,6 +157,7 @@ class Boss(Game):
         self.bossY = 300
         self.boss = None
         self.health = 100
+        self.damage = 10
 
     #def update(self):
      #   if self.health <= 0:
@@ -307,9 +324,9 @@ class run():
         screen = pygame.display.set_mode(screenDim)
         black = (0,0,0)
 
-        def things( thingx, thingy, thingw, thingh, color):
+        def things(thingx, thingy, thingw, thingh, color):
             pygame.draw.rect(screen,color,[thingx, thingy, thingw, thingh])
-            damage = 10
+
         pauseButton = pygame.image.load("data/finalfight/pause_button.png")
         hoverPauseButton = pygame.image.load("data/finalfight/hoverPause_button.png")
 
@@ -384,11 +401,13 @@ class run():
 
         #newScore.score("score", 0)
 
-        RUNNING, PAUSE, YOUWON = 0, 1, 2
+        RUNNING, PAUSE, YOUWON, GAMEOVER = 0, 1, 2, 3
         state = RUNNING
 
         pause_text = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 60).render('Paused', True, pygame.color.Color('White'))
         won_text = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 60).render('You Won!!!', True, pygame.color.Color('White'))
+        lose_text = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 60).render('Game Over!', True,
+                                                                               pygame.color.Color('White'))
 
         s = pygame.Surface((width, height), pygame.SRCALPHA)  # per-pixel alpha
         s.fill((0, 0, 0, 150))
@@ -400,9 +419,11 @@ class run():
         font = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 60)
 
         x_change = 0
-        thing_startx = random.randrange(0,200)
+        thing_startx = random.randrange(0,width)
         thing_starty = 0
         thing_speed = 15
+        thing_speed1 = 30
+        thing_speed2 = 45
         thing_width = 25
         thing_height = 25
 
@@ -429,6 +450,8 @@ class run():
                     newPause.task2()
                 if newBoss.health <= 0:
                     state = YOUWON
+                if player.health <= 0:
+                    state = GAMEOVER
 
 
             else:
@@ -436,6 +459,7 @@ class run():
 
 
                 if state == RUNNING:
+                    mouse = pygame.mouse.get_pos()
                     player.movePlayer()
                     player.shoot()
 
@@ -454,9 +478,16 @@ class run():
                     background.blitForrest()
                     things(thing_startx, thing_starty, thing_width, thing_height, (0, 0, 0))
                     thing_starty += thing_speed
+
                     if thing_starty > height:
                         thing_starty = 0 - thing_height
                         thing_startx = random.randrange(0, width)
+                    if player.y < thing_starty + thing_height:
+                        #print('y crossover')
+
+                        if player.x > thing_startx and player.x < thing_startx + thing_width or player.x + 100 > thing_startx and player.x + 100 < thing_startx + thing_width and player.y >= thing_startx and player.y <= 550 :
+                            print('x crossover')
+                            player.health -= 10
 
                     for bullet in player.bullets:
                         # Move bullet
@@ -534,6 +565,27 @@ class run():
                     #    newPause.blitReplayButton(screen)
                     newScore.blitScore(screen)
                     screen.blit(won_text, (550, 260))
+                elif state == GAMEOVER:
+                    background.blitForrest()
+                    screen.blit(s, (0, 0))
+                    mouse = pygame.mouse.get_pos()
+
+                    #if 600 + 50 > mouse[0] > 600 and 320 + 50 > mouse[1] > 320:
+                     #   newPause.blitHoverPlayButton(screen)
+                    #else:
+                     #   newPause.blitPlayButton(screen)
+
+                    if 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[1] > 320:
+                        newPause.blitHoverExitButton(screen)
+                    else:
+                        newPause.blitExitButton(screen)
+
+                    if 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
+                        newPause.blitHoverReplayButton(screen)
+                    else:
+                        newPause.blitReplayButton(screen)
+                    newScore.blitScore(screen)
+                    screen.blit(lose_text, (550, 260))
 
 
             pygame.display.flip()
