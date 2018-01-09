@@ -135,6 +135,15 @@ class monkeyButton(Button):
     def task(self):
         self.pressed = 1
 
+class skipTutorial(Button):
+    def __init__(self, state):
+        Button.__init__(self, (config.BUTTON_SKIPTUTORIAL_X,config.BUTTON_SKIPTUTORIAL_Y), config.BUTTON_SKIPTUTORIAL_WIDTH, config.BUTTON_SKIPTUTORIAL_HEIGHT, config.BUTTON_SKIPTUTORIAL_IMG, config.BUTTON_SKIPTUTORIAL_HOVER_IMG)
+        self.item = None
+        self.state = state
+
+    def task(self):
+        self.state = config.BA_CLEAR
+
     #operator overloading
 
 

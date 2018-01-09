@@ -16,8 +16,8 @@ class BananAttack(game.Game):
         game.Game.__init__(self, name, screen_width, screen_height, screen)
 
         ### Set state to playing ###
-        self.state = config.BA_CLEAR
-        self.last_state = config.BA_CLEAR
+        self.state = config.BA_STARTING
+        self.last_state = config.BA_STARTING
 
         ### Enemy setup ###
         self.enemies = [
@@ -175,7 +175,7 @@ class BananAttack(game.Game):
         # if the game is being played
         # draw the world, enemys, towers,
         # and menus
-        if self.state == config.BA_PLAYING or self.state == config.BA_PAUSE or self.state == config.BA_CLEAR or self.state == config.BA_SUCCESS or self.state == config.BA_FAILURE:
+        if self.state == config.BA_STARTING or self.state == config.BA_PLAYING or self.state == config.BA_PAUSE or self.state == config.BA_CLEAR or self.state == config.BA_SUCCESS or self.state == config.BA_FAILURE:
             ### Draw Right Info Box ###
             self.rightInfoBox()
 
@@ -225,6 +225,10 @@ class BananAttack(game.Game):
                     tower.paint(surface, range=False)
                     tower.paint_bullets(surface)
 
+            ### Start Overlay ###
+            if self.state == config.BA_STARTING:
+                self.startOverlay()
+
             ### Pause Overlay ###
             if self.state == config.BA_PAUSE:
                 self.pauseOverlay()
@@ -259,6 +263,10 @@ class BananAttack(game.Game):
 
     def game_logic(self, keys):
         ### Push correct buttons ###
+        # State 0
+        if self.state == config.BA_STARTING:
+            self.buttons = [button.skipTutorial(self.state)]
+
         # State 10
         if self.state == config.BA_PAUSE:
             self.buttons = [button.playGame(self.state, self.wave_started()), button.restartGame(),button.exitGame(self.state, 0, 1)]
@@ -281,7 +289,6 @@ class BananAttack(game.Game):
         # State 40
         if self.state == config.BA_FAILURE:
             self.buttons = [button.exitGame(self.state)]
-            self.failGame()
 
         # State 50
         if self.state == config.BA_SUCCESS:
@@ -334,6 +341,47 @@ class BananAttack(game.Game):
 
     def rightInfoBox(self):
         pygame.draw.rect(self.screen, config.INFO_BOX_BG_COLOR, (940,10,320,500), 1)
+
+    def startOverlay(self):
+        # overlay
+        s = pygame.Surface((config.SCREEN_WIDTH, config.SCREEN_HEIGHT), pygame.SRCALPHA)  # per-pixel alpha
+        s.fill((0, 0, 0, 150))  # notice the alpha value in the color
+        self.screen.blit(s, (0, 0))
+
+        # start text #
+        text = "How to play?!"
+        temp_surface = self.big_font.render(text, 1, self.font_color)
+        self.screen.blit(temp_surface, (450, 80))
+
+        text = "What is the goal of this game?"
+        temp_surface = self.font.render(text, 1, self.font_color)
+        self.screen.blit(temp_surface, (50, 220))
+
+        text = "Prevent the Trucks from reaching their destination"
+        temp_surface = self.font.render(text, 1, self.font_color)
+        self.screen.blit(temp_surface, (110, 260))
+
+        text = "How do I do that?"
+        temp_surface = self.font.render(text, 1, self.font_color)
+        self.screen.blit(temp_surface, (50, 320))
+
+        text = "1. Use your mouse to buy a monkey from the green right block"
+        temp_surface = self.font.render(text, 1, self.font_color)
+        self.screen.blit(temp_surface, (110, 360))
+
+        text = "2. Drag the monkey to the postion where you would like to place it"
+        temp_surface = self.font.render(text, 1, self.font_color)
+        self.screen.blit(temp_surface, (110, 400))
+
+        text = "3. Press start wave to make the enemied trucks drive to their destination"
+        temp_surface = self.font.render(text, 1, self.font_color)
+        self.screen.blit(temp_surface, (110, 440))
+
+        text = "4. Your monkeys will automatically attack the trucks once they are in range"
+        temp_surface = self.font.render(text, 1, self.font_color)
+        self.screen.blit(temp_surface, (110, 480))
+
+
 
     def pauseOverlay(self):
         # overlay
