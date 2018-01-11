@@ -171,6 +171,19 @@ class BananAttack(game.Game):
             if self.waves_comp == self.waves - 1:
                 self.last_state = self.state
                 self.state = config.BA_SUCCESS
+
+                # Check if next game is unlocked
+                if 5 not in self.getMemory("unlocked") and 6 not in self.getMemory("unlocked"):
+
+                    # Fetch de huidige unlocked
+                    unlocked = self.getMemory("unlocked")
+
+                    # Voeg daar de volgende game aan toe
+                    unlocked.append(2)
+
+                    # Update de memory
+                    self.setMemory("unlocked",unlocked)
+
             print("State updated to: %d by %s from %s" % (self.state, button, " the bottom of the begin_wave function"))
 
         if self.lives <= 0:
@@ -315,13 +328,13 @@ class BananAttack(game.Game):
             self.buttons = [button.exitGame(self.state, self.money)]
 
     def getMemory(self, key):
-        with open("bananattack_lib/memory.json", "r+") as jsonFile:
+        with open("data/memory.json", "r+") as jsonFile:
             data = json.load(jsonFile)
 
             return data[key]
 
     def setMemory(self, key, value):
-        with open("bananattack_lib/memory.json", "r+") as jsonFile:
+        with open("data/memory.json", "r+") as jsonFile:
             data = json.load(jsonFile)
 
             data[key] = value
