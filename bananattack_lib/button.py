@@ -95,6 +95,9 @@ class startWave(Button):
 
         pygame.mixer.Channel(0).play(pygame.mixer.Sound('data/bananattack/sounds/Truck.wav'))
 
+        pygame.mixer.music.load('data/bananattack/FBM.mp3')
+        pygame.mixer.music.play()
+
 class playGame(Button):
     def __init__(self, state, running):
         Button.__init__(self, (config.BUTTON_PLAYGAME_X,config.BUTTON_PLAYGAME_Y), config.BUTTON_PLAYGAME_WIDTH, config.BUTTON_PLAYGAME_HEIGHT, config.BUTTON_PLAYGAME_IMG, config.BUTTON_PLAYGAME_HOVER_IMG)
@@ -105,8 +108,14 @@ class playGame(Button):
     def task(self):
         if self.running:
             self.state = config.BA_PLAYING
+
+            pygame.mixer.music.load('data/bananattack/FBM.mp3')
+            pygame.mixer.music.play()
         else:
             self.state = config.BA_CLEAR
+
+            pygame.mixer.music.load('data/bananattack/SBM.mp3')
+            pygame.mixer.music.play()
 
 class exitGame(Button):
     def __init__(self, state, balance=0, unlocked=None):
@@ -117,6 +126,7 @@ class exitGame(Button):
         self.unlocked = unlocked
 
     def task(self):
+        pygame.mixer.music.stop()
         mymenu = slidemenu.run()
         mymenu.runm(self.balance, self.unlocked)
 

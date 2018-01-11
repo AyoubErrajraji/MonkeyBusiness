@@ -19,6 +19,10 @@ class BananAttack(game.Game):
         self.state = config.BA_STARTING
         self.last_state = config.BA_STARTING
 
+        ### Start Music ###
+        pygame.mixer.music.load('data/bananattack/SBM.mp3')
+        pygame.mixer.music.play()
+
         ### Enemy setup ###
         self.enemies = [
             [],
@@ -143,6 +147,8 @@ class BananAttack(game.Game):
                     print("State updated to: %d by Escape from %s" % (self.state, " the event in step"))
 
                     pygame.mixer.pause()
+                    pygame.mixer.music.load('data/bananattack/SBM.mp3')
+                    pygame.mixer.music.play()
 
                 else:
                     # Recursion
@@ -150,6 +156,9 @@ class BananAttack(game.Game):
             else:
                 # no Trucks Alive
                 pygame.mixer.Channel(0).stop()
+
+                pygame.mixer.music.load('data/bananattack/SBM.mp3')
+                pygame.mixer.music.play()
 
         step(completed, length, ticks)
 
