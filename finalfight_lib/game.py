@@ -162,11 +162,6 @@ class Boss(Game):
         self.health = 100
         self.damage = 10
 
-
-    #def update(self):
-     #   if self.health <= 0:
-      #      state = YOUWON
-
     def loadBoss(self,name):
         self.boss = pygame.image.load(name).convert_alpha()
         bossWidth = self.boss.get_rect().width
@@ -517,9 +512,9 @@ class run():
                     state = YOUWON
                 if player.health <= 0 and newScore.score < 100:
                     state = GAMEOVER
-                if player.health <= 0 and newScore.score > 100 and newScore.score < 300:
+                if player.health <= 0 and newScore.score > 100 and newScore.score < 400:
                     state = GAMEOVER2
-                if player.health <= 0 and newScore.score > 300 and newScore.score < 500:
+                if player.health <= 0 and newScore.score > 400 and newScore.score < 1000:
                     state = GAMEOVER3
 
 
