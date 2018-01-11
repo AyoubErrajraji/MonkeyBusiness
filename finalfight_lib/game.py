@@ -252,7 +252,7 @@ class Pause(Game):
         self.pauseButton = pygame.transform.scale(self.pauseButton, (50, 50))
 
     def blitPauseButton(self, screen):
-        screen.blit(self.pauseButton, (1190, 50))
+        screen.blit(self.pauseButton, (1190, 60))
 
     def loadHoverPauseButton(self,name):
         self.hoverPauseButton = pygame.image.load(name).convert_alpha()
@@ -260,7 +260,7 @@ class Pause(Game):
         self.hoverPauseButton = pygame.transform.scale(self.hoverPauseButton, (50, 50))
 
     def blitHoverPauseButton(self, screen):
-        screen.blit(self.hoverPauseButton, (1190, 50))
+        screen.blit(self.hoverPauseButton, (1190, 60))
 
     def loadPlayButton(self,name):
         self.playButton = pygame.image.load(name).convert_alpha()
@@ -551,7 +551,7 @@ class run():
                     #newScore.blitScore(screen)
                 elif state == RUNNING:
                     mouse = pygame.mouse.get_pos()
-                    if pygame.mouse.get_pressed()[0] and 1190 + 50 > mouse[0] > 1190 and 50 + 50 > mouse[1] > 50:
+                    if pygame.mouse.get_pressed()[0] and 1190 + 50 > mouse[0] > 1190 and 60 + 50 > mouse[1] > 60:
                         old_state = state
                         state = PAUSE
 
@@ -594,7 +594,7 @@ class run():
                         # Draw Bullet
                         bullet.blitBullet(screen)
 
-                    if 1190 + 50 > mouse[0] > 1190 and 50 + 50 > mouse[1] > 50:
+                    if 1190 + 50 > mouse[0] > 1190 and 60 + 50 > mouse[1] > 60:
                         newPause.blitHoverPauseButton(screen)
                     else:
                         newPause.blitPauseButton(screen)
@@ -608,7 +608,7 @@ class run():
 
                 if state == RUNNING2:
                     mouse = pygame.mouse.get_pos()
-                    if pygame.mouse.get_pressed()[0] and 1190 + 50 > mouse[0] > 1190 and 50 + 50 > mouse[1] > 50:
+                    if pygame.mouse.get_pressed()[0] and 1190 + 50 > mouse[0] > 1190 and 60 + 50 > mouse[1] > 60:
                         old_state = state
                         state = PAUSE
                     player.movePlayer()
@@ -651,7 +651,7 @@ class run():
                         # Draw Bullet
                         bullet.blitBullet(screen)
 
-                    if 1190 + 50 > mouse[0] > 1190 and 50 + 50 > mouse[1] > 50:
+                    if 1190 + 50 > mouse[0] > 1190 and 60 + 50 > mouse[1] > 60:
                         newPause.blitHoverPauseButton(screen)
                     else:
                         newPause.blitPauseButton(screen)
@@ -664,7 +664,7 @@ class run():
 
                 if state == RUNNING3:
                     mouse = pygame.mouse.get_pos()
-                    if pygame.mouse.get_pressed()[0] and 1190 + 50 > mouse[0] > 1190 and 50 + 50 > mouse[1] > 50:
+                    if pygame.mouse.get_pressed()[0] and 1190 + 50 > mouse[0] > 1190 and 60 + 50 > mouse[1] > 60:
                         old_state = state
                         state = PAUSE
                     player.movePlayer()
@@ -706,7 +706,7 @@ class run():
                         # Draw Bullet
                         bullet.blitBullet(screen)
 
-                    if 1190 + 50 > mouse[0] > 1190 and 50 + 50 > mouse[1] > 50:
+                    if 1190 + 50 > mouse[0] > 1190 and 60 + 50 > mouse[1] > 60:
                         newPause.blitHoverPauseButton(screen)
                     else:
                         newPause.blitPauseButton(screen)
