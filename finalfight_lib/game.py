@@ -49,8 +49,10 @@ class Player(Game):  # represents the bird, not the game
     def __init__(self,screen):
         Game.__init__(self, screen)
         """ The constructor of the class """
+        self.width = 100
+        self.height = 100
         self.image = pygame.image.load("data/" + getMemory("monkey").replace(".png", ".png"))
-        self.image = pygame.transform.scale(self.image, (100, 100))
+        self.image = pygame.transform.scale(self.image, (self.width, self.height))
         # the bird's position
         self.x = 300
         self.y = 550
@@ -219,12 +221,13 @@ class Score(Game):
         font = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 30)
         score = "score: %d" % self.score
         self.temp_surface = font.render(score, 1, (255, 255, 255))
-        screen.blit(self.temp_surface, (1150, 10))
+        screen.blit(self.temp_surface, (1135, 10))
 
 class Pause(Game):
     def __init__(self, screen):
         Game.__init__(self, screen)
         RUNNING, PAUSE = 0, 1
+
         self.state = RUNNING
 
     def magnitude(v):
@@ -327,47 +330,14 @@ class Pause(Game):
 
     def task2(self):
         slidemenu.run().runm()
+    def task3(self):
+        slidemenu.run().runm(100)
+    def task4(self):
+        slidemenu.run().runm(300)
 
     def restartGame(self):
         mymenu = finalfight.run()
         mymenu.runm()
-
-class Pause2(Game):
-    def __init__(self, screen):
-        Game.__init__(self, screen)
-        RUNNING2 , PAUSE2 = 0, 1
-        self.state = RUNNING2
-
-    def magnitude(v):
-        return math.sqrt(sum(v[i] * v[i] for i in range(len(v))))
-
-    def sub(u, v):
-        return [u[i] - v[i] for i in range(len(u))]
-
-    def normalize(v):
-        return [v[i] / magnitude(v) for i in range(len(v))]
-
-    def loadPause(self):
-        self.pause_text = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 60).render('Paused', True,
-                                                                                 pygame.color.Color('White'))
-        s = pygame.Surface((1280, 720), pygame.SRCALPHA)  # per-pixel alpha
-        s.fill((0, 0, 0, 150))
-
-    def loadPauseButton(self,name):
-        self.pauseButton = pygame.image.load(name).convert_alpha()
-
-        self.pauseButton = pygame.transform.scale(self.pauseButton, (50, 50))
-
-    def blitPauseButton(self, screen):
-        screen.blit(self.pauseButton, (1190, 50))
-
-    def loadHoverPauseButton(self,name):
-        self.hoverPauseButton = pygame.image.load(name).convert_alpha()
-
-        self.hoverPauseButton = pygame.transform.scale(self.hoverPauseButton, (50, 50))
-
-    def blitHoverPauseButton(self, screen):
-        screen.blit(self.hoverPauseButton, (1190, 50))
 
 class run():
     def runm(self):
@@ -394,7 +364,6 @@ class run():
         background = Background(screen)
         newScore = Score(screen)
         newPause = Pause(screen)
-        newPause2 = Pause2(screen)
         #newBullet = Bullet()
         game = Game(screen)
 
@@ -428,8 +397,6 @@ class run():
 
         newPause.loadPause()
 
-        newPause2.loadPause()
-
         background.blitForrest()
 
         newWolk.blitwolk(screen)
@@ -462,7 +429,8 @@ class run():
 
         #newScore.score("score", 0)
 
-        RUNNING, RUNNING2, RUNNING3, PAUSE, PAUSE2, YOUWON, GAMEOVER = 0, 1, 2, 3, 4, 5, 6
+        RUNNING, RUNNING2, RUNNING3, PAUSE, PAUSE2, PAUSE3, YOUWON, GAMEOVER, GAMEOVER2, GAMEOVER3 = 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+        old_state = PAUSE
         state = RUNNING
 
 
@@ -470,6 +438,10 @@ class run():
         won_text = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 60).render('You Won!!!', True, pygame.color.Color('White'))
         lose_text = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 60).render('Game Over!', True,
                                                                                pygame.color.Color('White'))
+        lose_text2 = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 60).render('Completed level 1!', True,
+                                                                               pygame.color.Color('White'))
+        lose_text3 = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 60).render('Completed level 2!', True,
+                                                                                 pygame.color.Color('White'))
 
         s = pygame.Surface((width, height), pygame.SRCALPHA)  # per-pixel alpha
         s.fill((0, 0, 0, 150))
@@ -484,8 +456,8 @@ class run():
         thing_startx = random.randrange(400,800)
         thing_starty = 0
         thing_speed = 5
-        thing_speed1 = 15
-        thing_speed2 = 30
+        thing_speed1 = 25
+        thing_speed2 = 25
         thing_width = 25
         thing_height = 25
 
@@ -500,27 +472,21 @@ class run():
                 if e.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-                #if pygame.mouse.get_pressed()[0] and 1190 + 50 > mouse[0] > 1190 and 50 + 50 > mouse[1] > 50:
-                 #   state = PAUSE
-                #if pygame.mouse.get_pressed()[0] and 600 + 50 > mouse[0] > 600 and 320 + 50 > mouse[1] > 320:
-                 #   state = RUNNING
-                #if pygame.mouse.get_pressed()[0] and 1200 + 50 > mouse[0] > 1200 and 100 + 50 > mouse[1] > 100:
-                 #   state = RUNNING2
-                #if pygame.mouse.get_pressed()[0] and 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
-                 #   newPause.restartGame()
-                #if pygame.mouse.get_pressed()[0] and 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[1] > 320 and state == YOUWON:
-                 #   newPause.task()
-                #if pygame.mouse.get_pressed()[0] and 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[1] > 320:
-                   # newPause.task2()
-                if newScore.score >= 100:
+                if newScore.score >= 100 and state != PAUSE:
+                    old_state = state
                     state = RUNNING2
-                if newScore.score >= 300:
+                if newScore.score >= 400 and state != PAUSE:
+                    old_state = state
                     state = RUNNING3
-                if newScore.score >= 500:
+                if newScore.score >= 1000:
+                    old_state = state
                     state = YOUWON
-
-                if player.health <= 0:
+                if player.health <= 0 and newScore.score < 100:
                     state = GAMEOVER
+                if player.health <= 0 and newScore.score > 100 and newScore.score < 300:
+                    state = GAMEOVER2
+                if player.health <= 0 and newScore.score > 300 and newScore.score < 500:
+                    state = GAMEOVER3
 
 
             else:
@@ -530,6 +496,7 @@ class run():
                 if state == RUNNING:
                     mouse = pygame.mouse.get_pos()
                     if pygame.mouse.get_pressed()[0] and 1190 + 50 > mouse[0] > 1190 and 50 + 50 > mouse[1] > 50:
+                        old_state = state
                         state = PAUSE
 
                     player.movePlayer()
@@ -545,7 +512,7 @@ class run():
                     if player.y < thing_starty + thing_height:
                         #print('y crossover')
 
-                        if player.x > thing_startx and player.x < thing_startx + thing_width or player.x + 100 > thing_startx and player.x + 100 < thing_startx + thing_width and player.y >= thing_startx and player.y <= 550 :
+                        if player.x < thing_startx and player.x + player.width > thing_startx and player.y == thing_starty:
                             print('x crossover')
                             player.health -= 10
 
@@ -586,7 +553,8 @@ class run():
                 if state == RUNNING2:
                     mouse = pygame.mouse.get_pos()
                     if pygame.mouse.get_pressed()[0] and 1190 + 50 > mouse[0] > 1190 and 50 + 50 > mouse[1] > 50:
-                        state = PAUSE2
+                        old_state = state
+                        state = PAUSE
                     player.movePlayer()
                     player.shoot()
 
@@ -600,9 +568,10 @@ class run():
                     if player.y < thing_starty + thing_height:
                         #print('y crossover')
 
-                        if player.x > thing_startx and player.x < thing_startx + thing_width or player.x + 100 > thing_startx and player.x + 100 < thing_startx + thing_width and player.y >= thing_startx and player.y <= 550 :
-                            print('x crossover')
-                            player.health -= 10
+                        if player.x < thing_startx and player.x + player.width > thing_startx and player.y == thing_starty:
+
+                                    print('x crossover')
+                                    player.health -= 10
 
                     for bullet in player.bullets:
                         # Move bullet
@@ -640,6 +609,7 @@ class run():
                 if state == RUNNING3:
                     mouse = pygame.mouse.get_pos()
                     if pygame.mouse.get_pressed()[0] and 1190 + 50 > mouse[0] > 1190 and 50 + 50 > mouse[1] > 50:
+                        old_state = state
                         state = PAUSE
                     player.movePlayer()
                     player.shoot()
@@ -654,7 +624,7 @@ class run():
                     if player.y < thing_starty + thing_height:
                         #print('y crossover')
 
-                        if player.x > thing_startx and player.x < thing_startx + thing_width or player.x + 100 > thing_startx and player.x + 100 < thing_startx + thing_width and player.y >= thing_startx and player.y <= 550 :
+                        if player.x < thing_startx and player.x + player.width > thing_startx and player.y == thing_starty:
                             print('x crossover')
                             player.health -= 10
 
@@ -696,35 +666,8 @@ class run():
                     screen.blit(s, (0, 0))
                     mouse = pygame.mouse.get_pos()
                     if pygame.mouse.get_pressed()[0] and 600 + 50 > mouse[0] > 600 and 320 + 50 > mouse[1] > 320:
-                        state = RUNNING
-                    if pygame.mouse.get_pressed()[0] and 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
-                        newPause.restartGame()
-                    if pygame.mouse.get_pressed()[0] and 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[1] > 320:
-                        newPause.task2()
-
-                    if 600 + 50 > mouse[0] > 600 and 320 + 50 > mouse[1] > 320:
-                        newPause.blitHoverPlayButton(screen)
-                    else:
-                        newPause.blitPlayButton(screen)
-
-                    if 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[1] > 320:
-                        newPause.blitHoverExitButton(screen)
-                    else:
-                        newPause.blitExitButton(screen)
-
-                    if 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
-                        newPause.blitHoverReplayButton(screen)
-                    else:
-                        newPause.blitReplayButton(screen)
-                    newScore.blitScore(screen)
-                    screen.blit(pause_text, (600, 260))
-
-                elif state == PAUSE2:
-                    background.blitForrest()
-                    screen.blit(s, (0, 0))
-                    mouse = pygame.mouse.get_pos()
-                    if pygame.mouse.get_pressed()[0] and 600 + 50 > mouse[0] > 600 and 320 + 50 > mouse[1] > 320:
-                        state = RUNNING2
+                        state = old_state
+                        old_state = PAUSE
                     if pygame.mouse.get_pressed()[0] and 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
                         newPause.restartGame()
                     if pygame.mouse.get_pressed()[0] and 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[1] > 320:
@@ -751,31 +694,19 @@ class run():
                     background.blitForrest()
                     screen.blit(s, (0, 0))
                     mouse = pygame.mouse.get_pos()
-                    #if pygame.mouse.get_pressed()[0] and 1200 + 50 > mouse[0] > 1200 and 100 + 50 > mouse[1] > 100:
-                     #   state = RUNNING2
-                    #if pygame.mouse.get_pressed()[0] and 600 + 50 > mouse[0] > 600 and 320 + 50 > mouse[1] > 320:
-                        #state = RUNNING
                     if pygame.mouse.get_pressed()[0] and 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[
                         1] > 320 and state == YOUWON:
                         newPause.task()
                     if pygame.mouse.get_pressed()[0] and 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
                         newPause.restartGame()
-                    #if 600 + 50 > mouse[0] > 600 and 320 + 50 > mouse[1] > 320:
-                     #   newPause.blitHoverPlayButton(screen)
-                    #else:
-                        #newPause.blitPlayButton(screen)
+                    screen.blit(won_text, (550, 260))
 
                     if 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[1] > 320:
                         newPause.blitHoverExitButton(screen)
                     else:
                         newPause.blitExitButton(screen)
 
-                    if 1200 + 50 > mouse[0] > 1200 and 80 + 50 > mouse[1] > 80:
-                        newPause.blitHoverNextButton(screen)
-                    else:
-                        newPause.blitNextButton(screen)
                     newScore.blitScore(screen)
-                    screen.blit(won_text, (550, 260))
 
                 elif state == GAMEOVER:
                     background.blitForrest()
@@ -802,6 +733,59 @@ class run():
                         newPause.blitReplayButton(screen)
                     newScore.blitScore(screen)
                     screen.blit(lose_text, (550, 260))
+
+                elif state == GAMEOVER2:
+                    background.blitForrest()
+                    screen.blit(s, (0, 0))
+                    mouse = pygame.mouse.get_pos()
+                    if pygame.mouse.get_pressed()[0] and 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
+                        newPause.restartGame()
+                    if pygame.mouse.get_pressed()[0] and 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[1] > 320:
+                        newPause.task3()
+
+                    #if 600 + 50 > mouse[0] > 600 and 320 + 50 > mouse[1] > 320:
+                     #   newPause.blitHoverPlayButton(screen)
+                    #else:
+                     #   newPause.blitPlayButton(screen)
+
+                    if 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[1] > 320:
+                        newPause.blitHoverExitButton(screen)
+                    else:
+                        newPause.blitExitButton(screen)
+
+                    if 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
+                        newPause.blitHoverReplayButton(screen)
+                    else:
+                        newPause.blitReplayButton(screen)
+                    newScore.blitScore(screen)
+                    screen.blit(lose_text2, (500, 260))
+
+                elif state == GAMEOVER3:
+                    background.blitForrest()
+                    screen.blit(s, (0, 0))
+                    mouse = pygame.mouse.get_pos()
+                    if pygame.mouse.get_pressed()[0] and 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
+                        newPause.restartGame()
+                    if pygame.mouse.get_pressed()[0] and 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[1] > 320:
+                        newPause.task4()
+
+                    #if 600 + 50 > mouse[0] > 600 and 320 + 50 > mouse[1] > 320:
+                     #   newPause.blitHoverPlayButton(screen)
+                    #else:
+                     #   newPause.blitPlayButton(screen)
+
+                    if 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[1] > 320:
+                        newPause.blitHoverExitButton(screen)
+                    else:
+                        newPause.blitExitButton(screen)
+
+                    if 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
+                        newPause.blitHoverReplayButton(screen)
+                    else:
+                        newPause.blitReplayButton(screen)
+                    newScore.blitScore(screen)
+                    screen.blit(lose_text3, (500, 260))
+
 
 
             pygame.display.flip()
