@@ -162,11 +162,6 @@ class Boss(Game):
         self.health = 100
         self.damage = 10
 
-
-    #def update(self):
-     #   if self.health <= 0:
-      #      state = YOUWON
-
     def loadBoss(self,name):
         self.boss = pygame.image.load(name).convert_alpha()
         bossWidth = self.boss.get_rect().width
@@ -470,7 +465,7 @@ class run():
         intro_text4 = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 50).render('The Goal?', True, pygame.color.Color('White'))
         intro_text5 = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 40).render('It is simple, destroy the boss before he destroys you! ', True, pygame.color.Color('White'))
         intro_text6 = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 40).render('But watch out...', True, pygame.color.Color('White'))
-        intro_text7 = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 40).render('He has allies trowing stones from the tries!!!', True, pygame.color.Color('White'))
+        intro_text7 = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 40).render('He has allies trowing stones from the trees!!!', True, pygame.color.Color('White'))
         intro_text8 = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 50).render('CONTROLS', True, pygame.color.Color('White'))
         intro_text9 = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 40).render('Use the arrows(left/right) avoid the stones', True, pygame.color.Color('White'))
         intro_text10 = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 40).render('Use the spacebar to attack the boss', True, pygame.color.Color('White'))
@@ -486,7 +481,7 @@ class run():
         pygame.time.set_timer(pygame.USEREVENT, 1000)
         font = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 60)
 
-        x_change = 0
+        x_change = 10
         thing_startx = random.randrange(400,800)
         thing_starty = 0
         thing_speed = 5
@@ -517,9 +512,9 @@ class run():
                     state = YOUWON
                 if player.health <= 0 and newScore.score < 100:
                     state = GAMEOVER
-                if player.health <= 0 and newScore.score > 100 and newScore.score < 300:
+                if player.health <= 0 and newScore.score > 100 and newScore.score < 400:
                     state = GAMEOVER2
-                if player.health <= 0 and newScore.score > 300 and newScore.score < 500:
+                if player.health <= 0 and newScore.score > 400 and newScore.score < 1000:
                     state = GAMEOVER3
 
 
