@@ -1,3 +1,7 @@
+'''
+Created on Nov 25, 2017
+@author: lexdewilligen
+'''
 import pygame
 import json
 from os.path import join
