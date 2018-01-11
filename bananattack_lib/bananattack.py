@@ -145,7 +145,6 @@ class BananAttack(game.Game):
                     self.state = config.BA_PAUSE
                     self.buttons = [button.playGame(self.state, self.wave_started()), button.exitGame(self.state, self.lives)]
                     self.paint(self.screen)
-                    print("State updated to: %d by Escape from %s" % (self.state, " the event in step"))
 
                     pygame.mixer.pause()
                     pygame.mixer.music.load('data/bananattack/SBM.mp3')
@@ -183,8 +182,6 @@ class BananAttack(game.Game):
 
                     # Update de memory
                     self.setMemory("unlocked",unlocked)
-
-            print("State updated to: %d by %s from %s" % (self.state, button, " the bottom of the begin_wave function"))
 
         if self.lives <= 0:
             self.last_state = self.state
@@ -280,9 +277,6 @@ class BananAttack(game.Game):
                 if button.get_state() != self.state and button.get_state() != 0:
                     self.last_state = self.state
                     self.state = button.get_state()
-
-                    print("State updated to: %d by %s from %s" % (
-                    button.get_state(), button, " the bottom of the paint function"))
 
                     # if button has changed state, stop performing other buttons
                     break
