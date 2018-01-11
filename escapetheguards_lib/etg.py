@@ -52,6 +52,70 @@ class run():
             text = font.render("Banana's picked up: " + str(count), True, config.white)
             config.screen.blit(text, (982, 20))
 
+        def loadImages(self):
+            self.monkey = getMemory("bought")
+            if self.monkey == ["apprentice_monkey.png"]:
+                self.monkey = pygame.image.load("data/apprentice_monkey_top.png").convert_alpha()
+                self.flagMonkey = pygame.image.load("data/fightclub/images/apprentice_monkey_flag.png").convert_alpha()
+            elif self.monkey == ["acid_monkey.png"]:
+                self.monkey = pygame.image.load("data/acid_monkey.png").convert_alpha()
+                self.flagMonkey = pygame.image.load("data/fightclub/images/acid_monkey_flag.png").convert_alpha()
+            elif self.monkey == ["dragon_monkey.png"]:
+                self.monkey = pygame.image.load("data/dragon_monkey_top.png").convert_alpha()
+                self.flagMonkey = pygame.image.load("data/fightclub/images/dragon_monkey_flag.png").convert_alpha()
+            elif self.monkey == ["engineer_monkey.png"]:
+                self.monkey = pygame.image.load("data/engineer_monkey_top.png").convert_alpha()
+                self.flagMonkey = pygame.image.load("data/fightclub/images/engineer_monkey_flag.png").convert_alpha()
+            elif self.monkey == ["farmer_monkey.png"]:
+                self.monkey = pygame.image.load("data/farmer_monkey.png").convert_alpha()
+                self.flagMonkey = pygame.image.load("data/fightclub/images/farmer_monkey_flag.png").convert_alpha()
+            elif self.monkey == ["ninja_monkey.png"]:
+                self.monkey = pygame.image.load("data/ninja_monkey_top.png").convert_alpha()
+                self.flagMonkey = pygame.image.load("data/fightclub/images/ninja_monkey_flag.png").convert_alpha()
+            elif self.monkey == ["robo_monkey.png"]:
+                self.monkey = pygame.image.load("data/robo_monkey_top.png").convert_alpha()
+                self.flagMonkey = pygame.image.load("data/fightclub/images/robo_monkey_flag.png").convert_alpha()
+            elif self.monkey == ["super_monkey.png"]:
+                self.monkey = pygame.image.load("data/super_monkey_top.png").convert_alpha()
+                self.flagMonkey = pygame.image.load("data/fightclub/images/super_monkey_flag.png").convert_alpha()
+            else:
+                self.monkey = pygame.image.load("data/default_monkey_top.png").convert_alpha()
+                self.flagMonkey = pygame.image.load("data/fightclub/images/charwflag.png").convert_alpha()
+            self.monkey = pygame.transform.scale(self.monkey, (50, 50))
+
+        def blitMonkey(self):
+            self.rect.x = 300
+            self.rect.y = 100
+            self.gameDisplay.blit(self.image, (self.rect.x, self.rect.y))
+
+        def getMemory(self,key):
+            with open("data/memory.json", "r+") as jsonFile:
+                data = json.load(jsonFile)
+
+                return data[key]
+
+        def setMemory(self,key, value):
+            with open("data/memory.json", "r+") as jsonFile:
+                data = json.load(jsonFile)
+
+                data[key] = value
+
+                jsonFile.seek(0)  # rewind
+                json.dump(data, jsonFile)
+                jsonFile.truncate()
+
+        #balance = getMemory("balance")
+        #monkey = getMemory("bought")
+
+
+
+
+        player1Group = pygame.sprite.Group()
+        player2Group = pygame.sprite.Group()
+        flagGroup = pygame.sprite.Group()
+        targetGroup1 = pygame.sprite.Group()
+        targetGroup2 = pygame.sprite.Group()
+
 
 
         def button(self,msg, x, y, w, h, iimg, aimg, action=None):
