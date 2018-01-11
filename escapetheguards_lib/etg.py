@@ -93,10 +93,10 @@ class run():
             mymenu = slidemenu.run()
             mymenu.runm()
 
-        def things_dodged(count):
-            font = pygame.font.SysFont(None, 30)
-            text = font.render("Current Score: " + str(count), True, config.white)
-            config.screen.blit(text, (982, 70))
+            def things_dodged(count):
+                font = pygame.font.SysFont(None, 30)
+                text = font.render("Current Score: " + str(count), True, config.white)
+                config.screen.blit(text, (982, 70))
 
         def banana_count(count):
             font = pygame.font.SysFont(None, 30)
@@ -147,17 +147,19 @@ class run():
 
                 pygame.draw.rect(config.screen, config.brown, [0, 690, 750, 30])  # Bottom row!!
 
-                config.screen.blit(cage2Img, (30, 0))
-                config.screen.blit(cage3Img, (30, 490))
-                config.screen.blit(cage3Img, (400, 490))
-                config.screen.blit(cagedoorImg, (290, 70))
-                config.screen.blit(tableImg, (600, 200))
+                config.screen.blit(config.cage2Img, (30, 0))
+                config.screen.blit(config.cage3Img, (30, 490))
+                config.screen.blit(config.cage3Img, (400, 490))
+                config.screen.blit(config.cagedoorImg, (290, 70))
+                config.screen.blit(config.tableImg, (600, 200))
 
-                config.screen.blit(guard_leftImg, (550, 30))
-                config.screen.blit(guard_topImg, (230, 320))
+                config.screen.blit(config.guard_leftImg, (550, 30))
+                config.screen.blit(config.guard_topImg, (230, 320))
 
-                config.screen.blit(logoImg, (1010, 350))
-
+                config.screen.blit(config.logoImg, (1010, 350))
+                config.screen.blit(config.bananaImg, (300, 350))
+                config.screen.blit(config.bananaImg, (600, 620))
+                config.screen.blit(config.bananaImg, (900, 300))
 
                 things_dodged(dodged)
                 banana_count(banana)
@@ -171,8 +173,8 @@ class run():
                 # button("Back to Intro", 590, 350, 100, 50, config.black, config.yellow, "leave")
                 # button("Start Game", 590, 550, 100, 50, config.black, config.yellow, "level1")
 
-                button("Lets Play", 450, 400, 20, 20, playgame, playgamehover, level_1)
-                button("Back to menu", 600, 380, 100, 50, exitgame, exitgamehover, game_intro)
+                button("Lets Play", 500, 380, 20, 20, config.replaygame, config.replaygamehover, level_1)
+                button("Back to menu", 660, 380, 100, 50, config.exitgame, config.exitgamehover, game_intro)
 
                 # button("Play Again!", 590, 350, 100, 50, config.yellow, config.light_black, level_1())
 
@@ -208,7 +210,7 @@ class run():
             dodged = 0
             banana = 0
 
-            s = pygame.Surface((screen_width, screen_height), pygame.SRCALPHA)
+            s = pygame.Surface((config.screen_width, config.screen_height), pygame.SRCALPHA)
             s.fill((0, 0, 0, 150))
 
             while pause:
@@ -231,10 +233,10 @@ class run():
 
                 pygame.draw.rect(config.screen, config.brown, [0, 690, 750, 30])  # Bottom row!!
 
-                config.screen.blit(cage2Img, (30, 0))
-                config.screen.blit(cage3Img, (30, 490))
-                config.screen.blit(cage3Img, (400, 490))
-                config.screen.blit(cagedoorImg, (290, 70))
+                config.screen.blit(config.cage2Img, (30, 0))
+                config.screen.blit(config.cage3Img, (30, 490))
+                config.screen.blit(config.cage3Img, (400, 490))
+                config.screen.blit(config.cagedoorImg, (290, 70))
                 config.screen.blit(config.tableImg, (600, 200))
 
                 config.screen.blit(config.guard_leftImg, (550, 30))
@@ -255,13 +257,13 @@ class run():
 
                 myfont = pygame.font.SysFont("comicsansms", 60)
                 label = myfont.render("Game is Paused", 2, (config.white))
-                config.screen.blit(label, (430, 280))
+                config.screen.blit(label, (400, 280))
 
                 # button("Back to Intro", 590, 350, 100, 50, config.black, config.yellow, "leave")
                 # button("Start Game", 590, 550, 100, 50, config.black, config.yellow, "level1")
 
-                button("Back To Menu", 680, 380, 100, 50, config.exitgame, config.exitgamehover, game_intro)
-                button("Continue", 450, 400, 20, 20, config.playgame, config.playgamehover, level_1)
+                button("Back To Menu", 660, 380, 100, 50, config.exitgame, config.exitgamehover, game_intro)
+                button("Continue", 500, 380, 20, 20, config.playgame, config.playgamehover, level_1)
                 pygame.display.update()
                 clock.tick(15)
 
@@ -288,7 +290,7 @@ class run():
                 # config.screen.blit(config.monkeyImg, (-50, 300))
                 # config.screen.blit(config.monkeyImg, (730, 300))
 
-                pygame.draw.rect(config.screen, config.brown, [775, 280, 420, 220])
+                pygame.draw.rect(config.screen, config.brown, [775, 280, 445, 430])
 
                 myfont = pygame.font.SysFont("comicsansms", 20)
                 label = myfont.render("Controls:", 1, (config.black))
@@ -315,7 +317,7 @@ class run():
                 label = myfont.render("Key Left and Key Right", 1, (config.black))
                 config.screen.blit(label, (960, 400))
 
-                label = myfont.render("Pause Button", 1, (config.black))
+                label = myfont.render("Pause Button or Key Escape", 1, (config.black))
                 config.screen.blit(label, (960, 430))
 
                 label = myfont.render("Quit The Game:", 1, (config.black))
@@ -324,17 +326,32 @@ class run():
                 label = myfont.render("Top Right X", 1, (config.black))
                 config.screen.blit(label, (960, 460))
 
+                label = myfont.render("The purpose of this game is to get to the ", 1, (config.black))
+                config.screen.blit(label, (780, 520))
+
+                label = myfont.render("other side of the zoo before the guards ", 1, (config.black))
+                config.screen.blit(label, (780, 550))
+
+                label = myfont.render("spot you, while you try to escape, ", 1, (config.black))
+                config.screen.blit(label, (780, 580))
+
+                label = myfont.render("get banana's for extra credits !", 1, (config.black))
+                config.screen.blit(label, (780, 610))
+
+                label = myfont.render("Good luck, see you on the other side ! ;)", 1, (config.black))
+                config.screen.blit(label, (780, 670))
+
                 config.screen.blit(config.monkeyImg, (0, 190))
 
-                button("Lets Play", 580, 300, 20, 20, config.playgame, config.playgamehover, face_level1)
-                button("Back to menu", 500, 450, 100, 50, config.exitgame, config.exitgamehover, back)
+                button("Lets Play", 580, 300, 20, 20, config.startgame, config.startgamehover, face_level1)
+                button("Back to menu", 580, 450, 100, 50, config.exitgame, config.exitgamehover, back)
 
                 pygame.display.update()
                 clock.tick(15)
 
         def player(x, y):
 
-            config.screen.blit(config.apprentice, (x, y))
+            config.screen.blit(config.robo, (x, y))
 
         def character(x, y):
             config.screen.blit(config.mainImg, (x, y))
@@ -420,10 +437,10 @@ class run():
         # balance = getMemory("balance")
         # monkey = getMemory("bought")
 
-        def things( thingx, thingy, thingw, thingh, color):
+        def things(thingx, thingy, thingw, thingh, color):
             pygame.draw.rect(config.screen, color, [thingx, thingy, thingw, thingh])
 
-        def message_display( text):
+        def message_display(text):
             largeText = pygame.font.Font('freesansbold.ttf', 115)
             TextSurf, TextRect = text_objects(text, largeText)
             TextRect.center = ((config.screen_width / 2), (config.screen_height / 2))
@@ -487,14 +504,63 @@ class run():
                 config.screen.blit(s, (0, 0))
 
                 myfont = pygame.font.SysFont("comicsansms", 50)
-                label = myfont.render("NOW GO AND ESCAPE THOSE GUARDS!!", 2, (config.white))
-                config.screen.blit(label, (130, 280))
+                label = myfont.render("How to play??", 2, (config.white))
+                config.screen.blit(label, (470, 150))
 
                 # button("Back to Intro", 590, 350, 100, 50, config.black, config.yellow, "leave")
                 # button("Start Game", 590, 550, 100, 50, config.black, config.yellow, "level1")
 
-                button("Lets Play", 450, 400, 20, 20, config.playgame, config.playgamehover, level_1)
-                button("Back to menu", 600, 380, 100, 50, config.exitgame, config.exitgamehover, back)
+                myfont = pygame.font.SysFont("comicsansms", 20)
+                label = myfont.render("Controls:", 1, (config.white))
+                config.screen.blit(label, (780, 280))
+
+                label = myfont.render("Move forwards:", 1, (config.white))
+                config.screen.blit(label, (780, 340))
+
+                label = myfont.render("Move backwards:", 1, (config.white))
+                config.screen.blit(label, (780, 370))
+
+                label = myfont.render("Move Sideways:", 1, (config.white))
+                config.screen.blit(label, (780, 400))
+
+                label = myfont.render("Pause the game:", 1, (config.white))
+                config.screen.blit(label, (780, 430))
+
+                label = myfont.render("Key Up", 1, (config.white))
+                config.screen.blit(label, (960, 340))
+
+                label = myfont.render("Key Down", 1, (config.white))
+                config.screen.blit(label, (960, 370))
+
+                label = myfont.render("Key Left and Key Right", 1, (config.white))
+                config.screen.blit(label, (960, 400))
+
+                label = myfont.render("Pause Button or Key Escape", 1, (config.white))
+                config.screen.blit(label, (960, 430))
+
+                label = myfont.render("Quit The Game:", 1, (config.white))
+                config.screen.blit(label, (780, 460))
+
+                label = myfont.render("Top Right X", 1, (config.white))
+                config.screen.blit(label, (960, 460))
+
+                label = myfont.render("The purpose of this game is to get to the ", 1, (config.white))
+                config.screen.blit(label, (780, 520))
+
+                label = myfont.render("other side of the zoo before the guards ", 1, (config.white))
+                config.screen.blit(label, (780, 550))
+
+                label = myfont.render("spot you, while you try to escape, ", 1, (config.white))
+                config.screen.blit(label, (780, 580))
+
+                label = myfont.render("get banana's for extra credits !", 1, (config.white))
+                config.screen.blit(label, (780, 610))
+
+                label = myfont.render("Good luck, see you on the other side ! ;)", 1, (config.white))
+                config.screen.blit(label, (780, 670))
+
+                button("Lets Play", 500, 580, 20, 20, config.playgame, config.playgamehover, level_1)
+                button("Back to menu", 660, 580, 100, 50, config.exitgame, config.exitgamehover, back)
 
                 pygame.display.update()
                 config.clock.tick(60)
@@ -531,7 +597,7 @@ class run():
 
                     # Moving Player 1
                     if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_a:
+                        if event.key == pygame.K_a and x > config.w - config.w:
                             x_change = -5
                         elif event.key == pygame.K_d:
                             x_change = 5
@@ -576,6 +642,8 @@ class run():
 
                 config.screen.blit(config.logoImg, (1010, 340))
 
+                config.screen.blit(config.roboflat, (1130, 150))
+
                 # things(thing_startx, thing_starty, thing_width, thing_height, config.black)
                 thing_starty += thing_speed
 
@@ -590,7 +658,7 @@ class run():
                     if x > thing_startx and x < thing_startx + thing_width or x + config.player_width > thing_startx and x + config.player_width < thing_startx + thing_width:
                         print('x crossover')
                         print('player spotted!!')
-                        spot()
+                        # spot()
 
                 things_dodged(dodged)
                 banana_count(banana)
@@ -614,14 +682,23 @@ class run():
                         player = charwithFlag
 
                     if player == charwithFlag:
-                        flag = noFlag
+
                         target(x_target, y_target)
                         if x > 994 and x < 1054 and y > 546 and y < 606:
                             player = char
 
-                button("Back to menu", 993, 580, 100, 50, config.exitgame, config.exitgamehover, game_intro)
+                player_speed = 0
 
-                button("Pause", 1000, 250, 100, 50, config.pausegame, config.pausegamehover, paused)
+                x += player_speed
+
+                if x > config.gs_width - player_width or x < 0:
+                    player_speed = 0
+                if y > config.gs_height - player_height or y < 0:
+                    player_speed = 0
+
+                button("Back to menu", 993, 600, 100, 50, config.exitwoodgame, config.exitwoodgamehover, game_intro)
+
+                button("Pause", 1000, 250, 100, 50, config.pausewoodgame, config.pausewoodgamehover, paused)
 
                 pygame.display.update()
                 # print('screen is updated!')
