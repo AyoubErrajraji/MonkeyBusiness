@@ -619,7 +619,7 @@ class run():
                     if x > thing_startx and x < thing_startx + thing_width or x + config.player_width > thing_startx and x + config.player_width < thing_startx + thing_width:
                         print('x crossover')
                         print('player spotted!!')
-                        self.spot()
+                    #self.spot()
 
                 self.things_dodged(dodged)
                 self.banana_count(banana)
