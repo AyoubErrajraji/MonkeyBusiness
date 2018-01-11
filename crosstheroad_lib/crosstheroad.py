@@ -1,9 +1,24 @@
-import pygame, sys, random
+import pygame, json, sys, random
 from menu_lib import slidemenu
 
 from crosstheroad_lib.button import *
 from crosstheroad_lib.monkey import *
 from crosstheroad_lib.car import *
+
+def getSettings(key):
+    with open("crosstheroad_lib/settings.json", "r+") as jsonFile:
+        data = json.load(jsonFile)
+        return data[key]
+
+def setSettings(key, value):
+    with open("crosstheroad_lib/settings.json", "r+") as jsonFile:
+        data = json.load(jsonFile)
+
+        data[key] = value
+
+        jsonFile.seek(0)  # rewind
+        json.dump(data, jsonFile)
+        jsonFile.truncate()
 
 
 class Crosstheroad:
@@ -63,7 +78,7 @@ class Crosstheroad:
                                 self.config.screenDim[1] - next.get_rect().height - self.config.grid/2))
 
         # Add FPS to side menu IF FPS is true in settings
-        if self.settings['FPS']:
+        if getSettings('FPS'):
             fps = self.font2.render("fps: " + str(round(self.clock.get_fps(), 3)), 1, self.config.yellow)
             self.screen.blit(fps, (self.config.screenDim[0] - fps.get_rect().width - 20,
                                    self.config.sideMenu[1] - fps.get_rect().height))
@@ -232,6 +247,9 @@ class Crosstheroad:
                 # Reset monkey that collided
                 self.monkeys[0].reset()
 
+                pygame.mixer.music.load("crosstheroad_lib/src/sounds/killed.wav")
+                pygame.mixer.music.play()
+
     def loadPause(self):
         self.state = 'Paused'
 
@@ -251,6 +269,12 @@ class Crosstheroad:
     def exitGame(self):
         slidemenu.run().runm(self.score)
         self.quit = True
+
+    def toggleFPS(self):
+        if getSettings('FPS'):
+            setSettings('FPS', False)
+        else:
+            setSettings('FPS', True)
 
     def pauseOverlay(self):
         Pscreen = pygame.Surface((self.config.screenDim[0], self.config.screenDim[1]), pygame.SRCALPHA)
@@ -289,6 +313,32 @@ class Crosstheroad:
                                   'Exit to menu')
         exitToMenuButton.show()
 
+        text2 = self.font1.render("FPS:", 1, self.config.white)
+
+        Pscreen.blit(text2,
+                     ((self.config.screenDim[0] / 2 - text2.get_rect().width/2 - 10) - (text1.get_rect().width / 2),
+                      600))
+
+        if getSettings('FPS'):
+            fpsButton = Button(self.config.screenDim[0]/2 + 10,
+                               600,
+                               50,
+                               50,
+                               'crosstheroad_lib/src/toggle.png',
+                               'none',
+                               Pscreen,
+                               '')
+        else:
+            fpsButton = Button(self.config.screenDim[0] / 2 + 10,
+                               600,
+                               50,
+                               50,
+                               'crosstheroad_lib/src/toggle_active.png',
+                               'none',
+                               Pscreen,
+                               '')
+        fpsButton.show()
+
         # Button functionallities
         # Continue
         if pygame.mouse.get_pressed()[0] and continueButton.x <= pygame.mouse.get_pos()[0] <= continueButton.x + continueButton.w and continueButton.y <= pygame.mouse.get_pos()[1] <= continueButton.y + continueButton.h:
@@ -299,6 +349,9 @@ class Crosstheroad:
         # Exit to menu
         if pygame.mouse.get_pressed()[0] and exitToMenuButton.x <= pygame.mouse.get_pos()[0] <= exitToMenuButton.x + exitToMenuButton.w and exitToMenuButton.y <= pygame.mouse.get_pos()[1] <= exitToMenuButton.y + exitToMenuButton.h:
             self.exitGame()
+        # Toggle FPS
+        if pygame.mouse.get_pressed()[0] and fpsButton.x <= pygame.mouse.get_pos()[0] <= fpsButton.x + fpsButton.w and fpsButton.y <= pygame.mouse.get_pos()[1] <= fpsButton.y + fpsButton.h:
+            self.toggleFPS()
 
         self.screen.blit(Pscreen, (0, 0))
 
