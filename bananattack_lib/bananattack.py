@@ -173,7 +173,7 @@ class BananAttack(game.Game):
                 self.state = config.BA_SUCCESS
 
                 # Check if next game is unlocked
-                if 5 not in self.getMemory("unlocked") and 6 not in self.getMemory("unlocked"):
+                if 2 not in self.getMemory("unlocked"):
 
                     # Fetch de huidige unlocked
                     unlocked = self.getMemory("unlocked")
