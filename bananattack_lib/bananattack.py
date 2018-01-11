@@ -9,6 +9,7 @@ from bananattack_lib import game
 from bananattack_lib import button
 from bananattack_lib import enemy
 from bananattack_lib import monkey
+from bananattack_lib import draw
 
 class BananAttack(game.Game):
     def __init__(self, name, screen_width, screen_height, screen = None):
@@ -218,6 +219,9 @@ class BananAttack(game.Game):
             ### Draw path ###
             self.drawPath()
 
+            ### Draw arrow ###
+            self.drawArrow()
+
             ### Draw enemies ###
             for index, enemy in enumerate(self.enemies[self.wave]):
                 enemy.paint(surface, enemy.health)
@@ -354,6 +358,12 @@ class BananAttack(game.Game):
         pygame.draw.line(self.screen, config.SAND, (575, 432), (575, 384), 2)
         pygame.draw.line(self.screen, config.SAND, (576, 383), (816, 383), 2)
         pygame.draw.line(self.screen, config.SAND, (815, 384), (815, 0), 2)
+
+    def drawArrow(self):
+        arrow = pygame.image.load("data/bananattack/arrow.png")
+        arrow.convert_alpha()
+        arrow = pygame.transform.scale(arrow, (48, 48))
+        self.screen.blit(arrow, (0,287))
 
     def rightInfoBox(self):
         pygame.draw.rect(self.screen, config.INFO_BOX_BG_COLOR, (940,10,320,500), 1)
