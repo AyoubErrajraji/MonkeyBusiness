@@ -93,6 +93,8 @@ class startWave(Button):
         if self.canStartWave:
             self.state = config.BA_PLAYING
 
+        pygame.mixer.Channel(0).play(pygame.mixer.Sound('data/bananattack/sounds/Truck.wav'))
+
 class playGame(Button):
     def __init__(self, state, running):
         Button.__init__(self, (config.BUTTON_PLAYGAME_X,config.BUTTON_PLAYGAME_Y), config.BUTTON_PLAYGAME_WIDTH, config.BUTTON_PLAYGAME_HEIGHT, config.BUTTON_PLAYGAME_IMG, config.BUTTON_PLAYGAME_HOVER_IMG)

@@ -120,6 +120,7 @@ class BananAttack(game.Game):
                                         self.enemies[self.wave].pop(0)
                                         self.money += config.DEFAULT_KILLVALUE
                                         completed += 1
+                                        pygame.mixer.Channel(2).play(pygame.mixer.Sound('data/bananattack/sounds/Explosion.wav'))
 
                         # Update Screen
                         pygame.display.update()
@@ -140,9 +141,15 @@ class BananAttack(game.Game):
                     self.buttons = [button.playGame(self.state, self.wave_started()), button.exitGame(self.state, self.lives)]
                     self.paint(self.screen)
                     print("State updated to: %d by Escape from %s" % (self.state, " the event in step"))
+
+                    pygame.mixer.pause()
+
                 else:
                     # Recursion
                     step(completed, length, ticks)
+            else:
+                # no Trucks Alive
+                pygame.mixer.Channel(0).stop()
 
         step(completed, length, ticks)
 
@@ -380,8 +387,6 @@ class BananAttack(game.Game):
         text = "4. Your monkeys will automatically attack the trucks once they are in range"
         temp_surface = self.font.render(text, 1, self.font_color)
         self.screen.blit(temp_surface, (110, 480))
-
-
 
     def pauseOverlay(self):
         # overlay
