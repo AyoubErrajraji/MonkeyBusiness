@@ -12,7 +12,7 @@ from fightclub_lib import fightclub
 from monkeywar_lib import monkeywar
 from purchase_lib import purchase
 
-debug = 0
+debug = 5
 
 if debug == 0:
     mymenu = slidemenu.run()
@@ -29,7 +29,7 @@ elif debug == 4:
     mymenu.runm()
 elif debug == 5:
     mymenu = fightclub.run()
-    mymenu.runm()
+    mymenu.run()
 elif debug == 6:
     mymenu = monkeywar.run()
     mymenu.runm()
