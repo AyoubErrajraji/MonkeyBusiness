@@ -68,6 +68,8 @@ class Monkey():
         self.bullets.append(b)
         self.last_attack = time.time()
 
+        pygame.mixer.Channel(1).play(pygame.mixer.Sound('data/bananattack/sounds/Attack.wav'))
+
     def paint_bullets(self, surface):
         for bullet in self.bullets:
             if bullet.alive == 1:
