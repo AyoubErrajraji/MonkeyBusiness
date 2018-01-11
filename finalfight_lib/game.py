@@ -481,7 +481,7 @@ class run():
         pygame.time.set_timer(pygame.USEREVENT, 1000)
         font = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 60)
 
-        x_change = 0
+        x_change = 10
         thing_startx = random.randrange(400,800)
         thing_starty = 0
         thing_speed = 5
