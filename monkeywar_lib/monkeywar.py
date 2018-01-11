@@ -1,6 +1,7 @@
 #Project 2 v1.00
 import pygame, sys, time
 from pygame.locals import *
+from menu_lib import slidemenu
 
 pygame.font.init()
 WHITE = (255, 255, 255)
@@ -132,11 +133,27 @@ class run(object):
 
 
              # pause
-            if pygame.key.get_pressed()[pygame.K_p]:
+            mouse = pygame.mouse.get_pos()
+            click = pygame.mouse.get_pressed()
+
+            ## Pause ##
+            if pygame.key.get_pressed()[pygame.K_ESCAPE]:
                 fase = 4
 
-            if pygame.key.get_pressed()[pygame.K_SPACE] and fase == 4:
-                fase = 1
+            ## Resume ##
+            if mouse[0] > 500 and mouse[0] < 580 and mouse[1] > 300 and mouse[1] < 380 and click[0]==True and fase == 4:
+               fase = 1
+
+            ## Restart ##
+            if mouse[0] > 600 and mouse[0] < 680 and mouse[1] > 300 and mouse[1] < 380 and click[0]==True and fase == 4:
+                run.runm(self)
+
+            ## Quit ##
+            if mouse[0] > 700 and mouse[0] < 780 and mouse[1] > 300 and mouse[1] < 380 and click[0]== True and fase == 4:
+                slidemenu.run().runm()
+
+
+
 
             # update display
             pygame.display.update()
@@ -226,6 +243,14 @@ class Monkey():
         self.sprite = pygame.image.load(self.image).convert_alpha()
         self.amount = 0
         self.life = 3
+        self.play = pygame.image.load("data/monkeywar/play.png")
+        self.restart = pygame.image.load("data/monkeywar/replay_button.png")
+        self.quit = pygame.image.load("data/monkeywar/exitknop.png")
+        self.hplay = pygame.image.load("data/monkeywar/knop.png")
+        self.hrestart = pygame.image.load("data/monkeywar/hoverreplay_button.png")
+        self.hquit = pygame.image.load("data/monkeywar/hoverexitknop.png")
+        self.pause_text = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 90).render('Paused', True,
+                                                                                 pygame.color.Color('White'))
 
 
     def draw(self, position):
@@ -235,16 +260,38 @@ class Monkey():
     def pause(self):
         keyinput = pygame.key.get_pressed()
 
-        if keyinput[pygame.K_ESCAPE]:
-            raise SystemExit
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 raise SystemExit
 
-        pygame.draw.rect(surface, BLACK, (550, 478, 200, 100), 0)
+        s = pygame.Surface((1280, 720), pygame.SRCALPHA)  # per-pixel alpha
+        s.fill((0, 0, 0, 150))
         self.draw((self.x, 478))
+
+        ## Dark background ##
+        surface.blit(s, (0, 0))
+
+        ## Buttons ##
+        mouse = pygame.mouse.get_pos()
+
+        if mouse[0] > 500 and mouse[0] < 580 and mouse[1] > 300 and mouse[1] < 380:
+            surface.blit(pygame.transform.scale(self.hplay, (80, 80)), (500, 300))
+        else:
+            surface.blit(pygame.transform.scale(self.play, (80, 80)), (500, 300))
+
+        if mouse[0] > 600 and mouse[0] < 680 and mouse[1] > 300 and mouse[1] < 380:
+            surface.blit(pygame.transform.scale(self.hrestart, (80, 80)), (600, 300))
+        else:
+            surface.blit(pygame.transform.scale(self.restart, (80, 80)), (600, 300))
+
+        if mouse[0] > 700 and mouse[0] < 780 and mouse[1] > 300 and mouse[1] < 380:
+            surface.blit(pygame.transform.scale(self.hquit, (80, 80)), (700, 300))
+        else:
+            surface.blit(pygame.transform.scale(self.quit, (80, 80)), (700, 300))
+
+        surface.blit(self.pause_text, (525, 200))
 
 
     def shoot(self):
@@ -279,9 +326,7 @@ class Monkey():
         # a key has been pressed
         keyinput = pygame.key.get_pressed()
 
-        # press escape key to quit game
-        if keyinput[pygame.K_ESCAPE]:
-            raise SystemExit
+
         # optional exit on window corner x click
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -312,6 +357,8 @@ class Monkey():
 
 
         self.draw((self.x,478))
+
+
 
 
 
