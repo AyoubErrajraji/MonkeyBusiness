@@ -5,7 +5,7 @@ Created on Nov 25, 2017
 
 from menu_lib import slidemenu
 from bananattack_lib import main as bananattack
-from escapetheguards_lib import etg as escapetheguards
+from escapetheguards_lib import ETG as escapetheguards
 from crosstheroad_lib import main as crosstheroad
 from finalfight_lib import game as finalfight
 from fightclub_lib import fightclub
