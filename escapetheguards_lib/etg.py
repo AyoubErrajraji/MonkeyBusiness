@@ -355,11 +355,14 @@ class run():
         def target(self,x, y):
             config.screen.blit(config.targetImg, (x, y))
 
+        x_target = 1024
+        y_target = 576
+
+
         def target2(self,x, y):
             config.screen.blit(config.targetImg, (x, y))
 
-        x_target = 1024
-        y_target = 576
+
 
         x_target2 = config.screen_width * 0.2
         y_target2 = config.screen_height * 0.2
@@ -530,6 +533,14 @@ class run():
             x4_flag = 900
             y4_flag = 300
 
+            x_target = 1024
+            y_target = 576
+
+            x_target2 = config.screen_width * 0.2
+            y_target2 = config.screen_height * 0.2
+
+
+
             thing_startx = random.randrange(0, config.gs_width)
             thing_starty = -600
             thing_speed = 7
@@ -646,7 +657,7 @@ class run():
 
                     if player == self.charwithFlag:
 
-                        target(x_target, y_target)
+                        self.target(x_target, y_target)
                         if x > 994 and x < 1054 and y > 546 and y < 606:
                             player = self.char
 
