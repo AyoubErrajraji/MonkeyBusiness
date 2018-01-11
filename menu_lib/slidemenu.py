@@ -135,7 +135,7 @@ def menu(menu, clickList, pos='center', font1=None, font2=None, color1=(128, 128
             if menu[idx].label in clickList:
                 ret = menu[idx].label, idx                              #clickable menu item
             else:
-                ret = menu[idx].label, idx                              #nonclickable menu item
+                ret = menu                                              #nonclickable menu item
             break
         elif ev.type == KEYDOWN:
             try:
@@ -183,7 +183,7 @@ class run(object):
             json.dump(data, jsonFile)
             jsonFile.truncate()
 
-    def runm(self,balance=None,resolution=(1280,720)):
+    def runm(self,balance=None,unlocked=None,resolution=(1280,720)):
 
         time.Clock()
         from os.path import join
@@ -201,6 +201,13 @@ class run(object):
         if balance != None:
             self.setMemory("balance",self.getMemory("balance") + balance)
 
+        # Update Unlocked
+        if unlocked != None:
+            if unlocked not in self.getMemory("unlocked"):
+                list = self.getMemory("unlocked")
+                list.append(unlocked)
+                self.setMemory("unlocked",list)
+
         # Achtergrond instellen
         background_main = image.load('data/menu/bg.png').convert()
         scr.blit(background_main, (0, 0))
@@ -208,11 +215,9 @@ class run(object):
         scr.blit(mainmenu, r)
         display.flip()
 
-        menu1 = {"menu": ['PLAY', 'ABOUT','SETTINGS','STORE', 'EXIT'], "clickList": ['PLAY', 'ABOUT','SETTINGS','STORE', 'EXIT'], "font1": f1, "pos":'center', "color1": (154, 180, 61), "light": 6, "speed": 200, "lag": 20}
+        menu1 = {"menu": ['PLAY', 'ABOUT','STORE', 'EXIT'], "clickList": ['PLAY', 'ABOUT','STORE', 'EXIT'], "font1": f1, "pos":'center', "color1": (154, 180, 61), "light": 6, "speed": 200, "lag": 20}
         menu2 = {"menu": ['BananAttack', 'EscapeTheGuards', 'CrossTheRoad', 'FinalFight', 'BananaFightClub', 'MonkeyWar', 'BACK'], "clickList": ['BananAttack', 'EscapeTheGuards', 'CrossTheRoad', 'FinalFight', 'BananaFightClub', 'MonkeyWar', 'BACK'], "font1": f1, "font2": f, "pos": 'center', "color1": (154, 180, 61), "light": 5, "speed": 200, "lag": 20}
         menu3 = {"menu": ['Lex de Willigen', 'Luke Hol', 'Ayoub Errajraji', 'Richard van der Knaap', 'Wesley van Balen', 'Milo Brasser', 'BACK'], "clickList": ['BACK'], "font1": f1,"font2": f, "pos": 'center', "color1": (154, 180, 61), "light": 5, "speed": 200, "lag": 20}
-        menu4 = {"menu": ['1920 x 1080', '1280 x 720', 'BACK'], "clickList": ['1920 x 1080', '1280 x 720', 'BACK'], "font1": f1, "pos": 'center', "color1": (154, 180, 61), "light": 6,"speed": 200, "lag": 20}
-
         def response(resp):
             if resp == 'ABOUT':
                 display.update(scr.blit(bg, (0, 0)))
@@ -228,23 +233,6 @@ class run(object):
                 display.update()
                 resp = menu(**menu1)[0]
                 response(resp)
-
-            if resp == 'SETTINGS':
-                display.update(scr.blit(bg, (0, 0)))
-                display.update(
-                    scr.blit(f.render('SETTINGS', 1, (255, 255, 255)), (550, 220)))
-                resp = menu(**menu4)[0]
-                response(resp)
-
-            if resp == '1920 x 1080':
-                resolution = (1920,1080)
-                mymenu = run()
-                mymenu.runm(resolution)
-
-            if resp == '1280 x 720':
-                resolution = (1280,720)
-                mymenu = run()
-                mymenu.runm(resolution)
 
             if resp == 'STORE':
                 purchase.main()
@@ -283,16 +271,14 @@ class run(object):
                 sys.exit()
 
             else:
-                pygame.quit()
-                sys.exit()
+                scr.fill((0, 0, 0))
+                scr.blit(background_main, (0, 0))
+                scr.blit(f.render('Monkey Business', 1, (255, 255, 255)), (450, 180))
+                display.update()
+                resp = menu(**menu1)[0]
+                response(resp)
 
         resp = "re-show"
         while resp == "re-show":
             resp = menu(**menu1)[0]
             response(resp)
-
-
-
-
-
-

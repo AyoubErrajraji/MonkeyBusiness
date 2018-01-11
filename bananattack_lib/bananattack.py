@@ -16,8 +16,12 @@ class BananAttack(game.Game):
         game.Game.__init__(self, name, screen_width, screen_height, screen)
 
         ### Set state to playing ###
-        self.state = config.BA_CLEAR
-        self.last_state = config.BA_CLEAR
+        self.state = config.BA_STARTING
+        self.last_state = config.BA_STARTING
+
+        ### Start Music ###
+        pygame.mixer.music.load('data/bananattack/SBM.mp3')
+        pygame.mixer.music.play()
 
         ### Enemy setup ###
         self.enemies = [
@@ -86,30 +90,46 @@ class BananAttack(game.Game):
         completed = 0
         length = len(self.enemies[self.wave])
 
+        time = pygame.time.Clock()
+        ticks = 0
+
         # Draw Enemy #
-        def step(completed, length):
+        def step(completed, length, ticks):
 
             if completed < length:
                 for enemy in self.enemies[self.wave]:
                     if enemy.waypoints_reached < len(config.WAYPOINTS):
 
                         # Move enemy
-                        enemy.move()
+                        enemy.move(ticks, len(self.enemies[self.wave]))
 
                         # Paint game + new enemy location
                         self.paint(self.screen)
 
                         # Check for Monkey Shots
                         for monkey in self.rects:
+
+                            # Run monkey logic
+                            monkey.game_logic()
+
                             if monkey.getDistance(enemy.position) <= monkey.radius:
-                                enemy.health -= config.MONKEY_DAMAGE
-                                if enemy.health <= 0:
-                                    self.enemies[self.wave].pop(0)
-                                    self.money += config.DEFAULT_KILLVALUE
-                                    completed += 1
+
+                                # Create Bullet
+                                if monkey.can_attack():
+                                    monkey.attack(enemy)
+
+                                # Check if enemy is dead
+                                if enemy.is_dead():
+                                    if len(self.enemies[self.wave]) > 0:
+                                        self.enemies[self.wave].pop(0)
+                                        self.money += config.DEFAULT_KILLVALUE
+                                        completed += 1
+                                        pygame.mixer.Channel(2).play(pygame.mixer.Sound('data/bananattack/sounds/Explosion.wav'))
 
                         # Update Screen
                         pygame.display.update()
+
+                        ticks = time.tick(60)
 
                     else:
                         # Kill enemies -> hasReached base
@@ -125,11 +145,22 @@ class BananAttack(game.Game):
                     self.buttons = [button.playGame(self.state, self.wave_started()), button.exitGame(self.state, self.lives)]
                     self.paint(self.screen)
                     print("State updated to: %d by Escape from %s" % (self.state, " the event in step"))
+
+                    pygame.mixer.pause()
+                    pygame.mixer.music.load('data/bananattack/SBM.mp3')
+                    pygame.mixer.music.play()
+
                 else:
                     # Recursion
-                    step(completed, length)
+                    step(completed, length, ticks)
+            else:
+                # no Trucks Alive
+                pygame.mixer.Channel(0).stop()
 
-        step(completed, length)
+                pygame.mixer.music.load('data/bananattack/SBM.mp3')
+                pygame.mixer.music.play()
+
+        step(completed, length, ticks)
 
         if self.state == config.BA_PLAYING:
             # Wave Done
@@ -139,7 +170,11 @@ class BananAttack(game.Game):
             if self.waves_comp == self.waves - 1:
                 self.last_state = self.state
                 self.state = config.BA_SUCCESS
-        print("State updated to: %d by %s from %s" % (self.state, button, " the bottom of the begin_wave function"))
+            print("State updated to: %d by %s from %s" % (self.state, button, " the bottom of the begin_wave function"))
+
+        if self.lives <= 0:
+            self.last_state = self.state
+            self.state = config.BA_FAILURE
 
     # check whether the next wave is running
     def wave_started(self):
@@ -156,7 +191,7 @@ class BananAttack(game.Game):
         # if the game is being played
         # draw the world, enemys, towers,
         # and menus
-        if self.state == config.BA_PLAYING or self.state == config.BA_PAUSE or self.state == config.BA_CLEAR or self.state == config.BA_SUCCESS:
+        if self.state == config.BA_STARTING or self.state == config.BA_PLAYING or self.state == config.BA_PAUSE or self.state == config.BA_CLEAR or self.state == config.BA_SUCCESS or self.state == config.BA_FAILURE:
             ### Draw Right Info Box ###
             self.rightInfoBox()
 
@@ -188,7 +223,7 @@ class BananAttack(game.Game):
                 enemy.paint(surface, enemy.health)
 
             ### Show waypoints ###
-            self.showWaypoints()
+            #self.showWaypoints()
 
             ### Draw monkeys ###
             for index, tower in enumerate(self.rects):
@@ -204,10 +239,19 @@ class BananAttack(game.Game):
                             tower.closest_pos = truck.position
                             break
                     tower.paint(surface, range=False)
+                    tower.paint_bullets(surface)
+
+            ### Start Overlay ###
+            if self.state == config.BA_STARTING:
+                self.startOverlay()
 
             ### Pause Overlay ###
             if self.state == config.BA_PAUSE:
                 self.pauseOverlay()
+
+            ### Fail Game ###
+            if self.state == config.BA_FAILURE:
+                self.failGame()
 
             ### End Game ###
             if self.state == config.BA_SUCCESS:
@@ -235,9 +279,13 @@ class BananAttack(game.Game):
 
     def game_logic(self, keys):
         ### Push correct buttons ###
+        # State 0
+        if self.state == config.BA_STARTING:
+            self.buttons = [button.skipTutorial(self.state)]
+
         # State 10
         if self.state == config.BA_PAUSE:
-            self.buttons = [button.playGame(self.state, self.wave_started()),button.restartGame(),button.exitGame(self.state, self.lives)]
+            self.buttons = [button.playGame(self.state, self.wave_started()), button.restartGame(),button.exitGame(self.state, 0, 1)]
 
         # State 20
         if self.state == config.BA_PLAYING:
@@ -254,9 +302,13 @@ class BananAttack(game.Game):
         if self.state == config.BA_CLEAR:
             self.buttons = [button.startWave(self.state, self.can_start_wave()), button.monkeyButton(self.state)]
 
+        # State 40
+        if self.state == config.BA_FAILURE:
+            self.buttons = [button.exitGame(self.state)]
+
         # State 50
         if self.state == config.BA_SUCCESS:
-            self.buttons = [button.exitGame(self.state, self.lives)]
+            self.buttons = [button.exitGame(self.state, self.money)]
 
     def getMemory(self, key):
         with open("bananattack_lib/memory.json", "r+") as jsonFile:
@@ -306,6 +358,45 @@ class BananAttack(game.Game):
     def rightInfoBox(self):
         pygame.draw.rect(self.screen, config.INFO_BOX_BG_COLOR, (940,10,320,500), 1)
 
+    def startOverlay(self):
+        # overlay
+        s = pygame.Surface((config.SCREEN_WIDTH, config.SCREEN_HEIGHT), pygame.SRCALPHA)  # per-pixel alpha
+        s.fill((0, 0, 0, 150))  # notice the alpha value in the color
+        self.screen.blit(s, (0, 0))
+
+        # start text #
+        text = "How to play?!"
+        temp_surface = self.big_font.render(text, 1, self.font_color)
+        self.screen.blit(temp_surface, (450, 80))
+
+        text = "What is the goal of this game?"
+        temp_surface = self.font.render(text, 1, self.font_color)
+        self.screen.blit(temp_surface, (50, 220))
+
+        text = "Prevent the Trucks from reaching their destination"
+        temp_surface = self.font.render(text, 1, self.font_color)
+        self.screen.blit(temp_surface, (110, 260))
+
+        text = "How do I do that?"
+        temp_surface = self.font.render(text, 1, self.font_color)
+        self.screen.blit(temp_surface, (50, 320))
+
+        text = "1. Use your mouse to buy a monkey from the green right block"
+        temp_surface = self.font.render(text, 1, self.font_color)
+        self.screen.blit(temp_surface, (110, 360))
+
+        text = "2. Drag the monkey to the postion where you would like to place it"
+        temp_surface = self.font.render(text, 1, self.font_color)
+        self.screen.blit(temp_surface, (110, 400))
+
+        text = "3. Press start wave to make the enemied trucks drive to their destination"
+        temp_surface = self.font.render(text, 1, self.font_color)
+        self.screen.blit(temp_surface, (110, 440))
+
+        text = "4. Your monkeys will automatically attack the trucks once they are in range"
+        temp_surface = self.font.render(text, 1, self.font_color)
+        self.screen.blit(temp_surface, (110, 480))
+
     def pauseOverlay(self):
         # overlay
         s = pygame.Surface((config.SCREEN_WIDTH, config.SCREEN_HEIGHT), pygame.SRCALPHA)  # per-pixel alpha
@@ -317,13 +408,24 @@ class BananAttack(game.Game):
         temp_surface = self.big_font.render(text, 1, self.font_color)
         self.screen.blit(temp_surface, (450, 280))
 
+    def failGame(self):
+        # overlay
+        s = pygame.Surface((config.SCREEN_WIDTH, config.SCREEN_HEIGHT), pygame.SRCALPHA)  # per-pixel alpha
+        s.fill((0, 0, 0, 150))  # notice the alpha value in the color
+        self.screen.blit(s, (0, 0))
+
+        # fail text #
+        text = "You loser...!"
+        temp_surface = self.big_font.render(text, 1, self.font_color)
+        self.screen.blit(temp_surface, (450, 280))
+
     def endGame(self):
         # overlay
         s = pygame.Surface((config.SCREEN_WIDTH, config.SCREEN_HEIGHT), pygame.SRCALPHA)  # per-pixel alpha
         s.fill((0, 0, 0, 150))  # notice the alpha value in the color
         self.screen.blit(s, (0, 0))
 
-        # pause text #
+        # completed text #
         text = "Game Completed!"
         temp_surface = self.big_font.render(text, 1, self.font_color)
         self.screen.blit(temp_surface, (450, 280))

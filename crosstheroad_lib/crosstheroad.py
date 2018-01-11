@@ -1,136 +1,24 @@
-import pygame, sys, random, json
+import pygame, json, sys, random
 from menu_lib import slidemenu
 
+from crosstheroad_lib.button import *
+from crosstheroad_lib.monkey import *
+from crosstheroad_lib.car import *
 
-def getMemory(key):
-    with open("data/memory.json", "r+") as jsonFile:
+def getSettings(key):
+    with open("crosstheroad_lib/settings.json", "r+") as jsonFile:
         data = json.load(jsonFile)
-
         return data[key]
 
-class Rectangle:
-    def __init__(self, x, y, w, h):
-        self.x = x
-        self.y = y
-        self.w = w
-        self.h = h
+def setSettings(key, value):
+    with open("crosstheroad_lib/settings.json", "r+") as jsonFile:
+        data = json.load(jsonFile)
 
-    def intersects(self, other):
-        oleft = other.x
-        oright = other.x + other.w
-        otop = other.y
-        obottom = other.y + other.h
+        data[key] = value
 
-        left = self.x
-        right = self.x + self.w
-        top = self.y
-        bottom = self.y + self.h
-
-        return (left >= oright or
-                right <= oleft or
-                top >= obottom or
-                bottom <= otop)
-
-
-class Button(Rectangle):
-    def __init__(self, x, y, w, h, img, hvr_img, screen, tooltip='none'):
-        Rectangle.__init__(self, x, y, w, h)
-        self.img = img
-        self.hvr_img = hvr_img
-        self.screen = screen
-        self.tooltip = tooltip
-        self.font = pygame.font.Font("data/bananattack/FEASFBRG.ttf", 30)
-
-    def show(self):
-        # Check if the button has a img for on hover
-        if self.hvr_img != 'none':
-            # Check if cursor is on the button
-            if self.x <= pygame.mouse.get_pos()[0] <= self.x + self.w and self.y <= pygame.mouse.get_pos()[1] <= self.y + self.h:
-                # If so, set the img to the hover img
-                img = pygame.image.load(self.hvr_img).convert_alpha()
-                # Check if the button has a tooltip
-                if self.tooltip != 'none':
-                    tooltip = self.font.render(self.tooltip, 1, (255, 255, 255))
-                    self.screen.blit(tooltip, (self.x + self.w/2 - tooltip.get_rect().width/2, self.y - tooltip.get_rect().height - 2))
-            # Else set the img to the normal one
-            else:
-                img = pygame.image.load(self.img).convert_alpha()
-        # Else set the img to the normal one
-        else:
-            img = pygame.image.load(self.img).convert_alpha()
-            if self.x <= pygame.mouse.get_pos()[0] <= self.x + self.w and self.y <= pygame.mouse.get_pos()[1] <= self.y + self.h and self.tooltip != 'none':
-                tooltip = self.font.render(self.tooltip, 1, (255, 255, 255))
-                self.screen.blit(tooltip, (self.x + self.w/2 - tooltip.get_rect().width/2, self.y - tooltip.get_rect().height - 2))
-
-        # Display button img
-        self.screen.blit(img, (self.x, self.y))
-
-
-class Monkey(Rectangle):
-    def __init__(self, x, y, w, h, screen, config, amount, monkeyList):
-        Rectangle.__init__(self, x, y, w, h)
-        self.screen = screen
-        self.config = config
-        self.amount = amount
-        self.monkeys = monkeyList
-
-    def show(self):
-        image = pygame.image.load("data/" + getMemory("monkey").replace(".png", "_top.png"))
-        image = pygame.transform.scale(image, (self.config.grid, self.config.grid))
-        self.screen.blit(image, (self.x, self.y))
-
-        pygame.draw.circle(self.screen, self.config.yellow, (int(self.x + self.w), int(self.y)), self.config.circle_radius)
-        font = pygame.font.Font("data/bananattack/FEASFBRG.ttf", 20)
-
-        amount = font.render(str(self.amount), False, self.config.black)
-        self.screen.blit(amount, (int(self.x + self.w - amount.get_rect().width/2), int(self.y - amount.get_rect().height/2)))
-
-    def place(self, x, y):
-        self.x = x
-        self.y = y
-
-    def reset(self):
-        self.monkeys.pop(0)
-
-    def move(self, xdir, ydir):
-        if xdir == -1:
-            if not self.x == 0:
-                self.x += xdir * self.config.grid
-        elif xdir == 1:
-            if not self.x == self.config.screenDim[0] - self.config.grid - self.config.sideMenu[0]:
-                self.x += xdir * self.config.grid
-        elif ydir == -1:
-            if not self.y == 0:
-                self.y += ydir * self.config.grid
-        elif ydir == 1:
-            if not self.y == self.config.screenDim[1] - self.config.grid:
-                self.y += ydir * self.config.grid
-
-
-class Car(Rectangle):
-    def __init__(self, x, y, w, h, screen, config, speed, img):
-        Rectangle.__init__(self, x, y, w, h)
-        self.screen = screen
-        self.config = config
-        self.speed = speed
-        self.img = img
-
-    def update(self):
-        self.x = self.x + self.speed
-
-        if self.x > self.config.screenDim[0] - self.config.sideMenu[0] and self.speed > 0:
-            self.x = - self.w
-
-        if self.x + self.w < 0 and self.speed < 0:
-            self.x = self.config.screenDim[0] + self.w - self.config.sideMenu[0]
-
-    def show(self):
-        if self.img == 'none':
-            cr = pygame.Rect(self.x, self.y, self.w, self.h)
-            pygame.draw.rect(self.screen, self.config.green, cr)
-        else:
-            img = pygame.image.load(self.img).convert_alpha()
-            self.screen.blit(img, (self.x, self.y))
+        jsonFile.seek(0)  # rewind
+        json.dump(data, jsonFile)
+        jsonFile.truncate()
 
 
 class Crosstheroad:
@@ -141,6 +29,8 @@ class Crosstheroad:
         self.score = 0
         self.settings = settings
         self.state = 'Intro'
+        self.dt = 0
+        self.timer = 90
 
         # Set quit to False, so loop will continue
         self.quit = False
@@ -151,6 +41,8 @@ class Crosstheroad:
         self.font1 = pygame.font.Font("data/bananattack/FEASFBRG.ttf", 60)
         self.font2 = pygame.font.SysFont("Helvetica", 15)
         self.font3 = pygame.font.Font("data/bananattack/FEASFBRG.ttf", 30)
+        self.font4 = pygame.font.Font("data/bananattack/FEASFBRG.ttf", 80)
+        self.font5 = pygame.font.Font("data/bananattack/FEASFBRG.ttf", 100)
 
     def sideMenu(self):
         # Make sidemenu overlay
@@ -161,10 +53,24 @@ class Crosstheroad:
         text = self.font1.render("Score:", 1, self.config.white)
         score = self.font1.render(str(self.score), 1, self.config.white)
 
+        if self.timer < 15:
+            if self.timer == 0.0:
+                color = self.config.white
+            elif self.timer < 7.5:
+                color = self.config.red
+            else:
+                color = self.config.orange
+        else:
+            color = self.config.white
+
+        time = self.font1.render(str(self.timer), 1, color)
+
         self.screen.blit(score, (self.config.screenDim[0] - self.config.sideMenu[0]/2 - score.get_rect().width/2,
                                  self.config.sideMenu[1] / 2 - score.get_rect().height/2))
         self.screen.blit(text, (self.config.screenDim[0] - self.config.sideMenu[0]/2 - text.get_rect().width/2,
                                 self.config.sideMenu[1] / 2 - text.get_rect().height - score.get_rect().height))
+        self.screen.blit(time, (self.config.screenDim[0] - self.config.sideMenu[0]/2 - time.get_rect().width/2,
+                                100))
 
         # Add next monkey text to sidemenu
         next = self.font3.render("Next:", 1, self.config.white)
@@ -172,7 +78,7 @@ class Crosstheroad:
                                 self.config.screenDim[1] - next.get_rect().height - self.config.grid/2))
 
         # Add FPS to side menu IF FPS is true in settings
-        if self.settings['FPS']:
+        if getSettings('FPS'):
             fps = self.font2.render("fps: " + str(round(self.clock.get_fps(), 3)), 1, self.config.yellow)
             self.screen.blit(fps, (self.config.screenDim[0] - fps.get_rect().width - 20,
                                    self.config.sideMenu[1] - fps.get_rect().height))
@@ -267,21 +173,46 @@ class Crosstheroad:
             self.cars[index].update()
         # Add the second monkey if there is only one
         if len(self.monkeys) < 2:
+            monkey = getMemory("monkey")
+            if monkey == "default_monkey.png":
+                randomPoints = random.randrange(1, 10)
+            elif monkey == "ninja_monkey.png":
+                randomPoints = random.randrange(3, 12)
+            elif monkey == "engineer_monkey.png":
+                randomPoints = random.randrange(5, 16)
+            elif monkey == "apprentice_monkey.png":
+                randomPoints = random.randrange(7, 20)
+            elif monkey == "dragon_monkey.png":
+                randomPoints = random.randrange(10, 25)
+            elif monkey == "super_monkey.png":
+                randomPoints = random.randrange(15, 35)
+            elif monkey == "robo_monkey.png":
+                randomPoints = random.randrange(20, 50)
+            else:
+                randomPoints = random.randrange(1, 25)
+
             self.monkeys.append(Monkey((self.config.screenDim[0] - self.config.sideMenu[0])/2 - self.config.grid/2,
                                        self.config.screenDim[1]-self.config.grid,
                                        self.config.grid,
                                        self.config.grid,
                                        self.screen,
                                        self.config,
-                                       random.randrange(1, 20),
+                                       randomPoints,
                                        self.monkeys))
             self.monkeys[0].place((self.config.screenDim[0] - self.config.sideMenu[0])/2 - self.config.grid/2,
                                   self.config.screenDim[1]-self.config.grid,)
 
-        # Set the seconds monkey (next) position to the sidemenu
+        # Set the second's monkey (next) position to the sidemenu
         if len(self.monkeys) == 2:
             self.monkeys[1].place(self.config.screenDim[0] - self.config.sideMenu[0] + self.config.grid * 2,
                                   self.config.screenDim[1] - self.config.grid)
+
+        self.dt = self.clock.tick(self.clock.get_fps()) / 1000
+        self.timer -= self.dt
+
+        self.timer = round(self.timer, 1)
+        if self.timer <= 0:
+            self.state = 'TimeOver'
 
     def move(self, e):
         if e.type == pygame.KEYDOWN and e.key == pygame.K_LEFT:
@@ -311,27 +242,39 @@ class Crosstheroad:
                 if self.score > self.monkeys[0].amount:
                     self.score -= self.monkeys[0].amount
                 else:
-                    self.score = 0
+                    self.state = 'GameOver'
 
                 # Reset monkey that collided
                 self.monkeys[0].reset()
+
+                pygame.mixer.music.load("crosstheroad_lib/src/sounds/killed.wav")
+                pygame.mixer.music.play()
 
     def loadPause(self):
         self.state = 'Paused'
 
     def loadGame(self):
         self.state = 'Game'
-        print("loading game")
 
     def restartGame(self):
         self.score = 0
-        self.monkeys.pop(0)
-        self.monkeys.pop(0)
+        self.timer = 90
+        self.dt = 0
+        if len(self.monkeys) > 0:
+            self.monkeys.pop(0)
+        if len(self.monkeys) > 0:
+            self.monkeys.pop(0)
         self.loadGame()
 
     def exitGame(self):
-        slidemenu.run().runm(10)
+        slidemenu.run().runm(self.score)
         self.quit = True
+
+    def toggleFPS(self):
+        if getSettings('FPS'):
+            setSettings('FPS', False)
+        else:
+            setSettings('FPS', True)
 
     def pauseOverlay(self):
         Pscreen = pygame.Surface((self.config.screenDim[0], self.config.screenDim[1]), pygame.SRCALPHA)
@@ -370,6 +313,32 @@ class Crosstheroad:
                                   'Exit to menu')
         exitToMenuButton.show()
 
+        text2 = self.font1.render("FPS:", 1, self.config.white)
+
+        Pscreen.blit(text2,
+                     ((self.config.screenDim[0] / 2 - text2.get_rect().width/2 - 10) - (text1.get_rect().width / 2),
+                      600))
+
+        if getSettings('FPS'):
+            fpsButton = Button(self.config.screenDim[0]/2 + 10,
+                               600,
+                               50,
+                               50,
+                               'crosstheroad_lib/src/toggle.png',
+                               'none',
+                               Pscreen,
+                               '')
+        else:
+            fpsButton = Button(self.config.screenDim[0] / 2 + 10,
+                               600,
+                               50,
+                               50,
+                               'crosstheroad_lib/src/toggle_active.png',
+                               'none',
+                               Pscreen,
+                               '')
+        fpsButton.show()
+
         # Button functionallities
         # Continue
         if pygame.mouse.get_pressed()[0] and continueButton.x <= pygame.mouse.get_pos()[0] <= continueButton.x + continueButton.w and continueButton.y <= pygame.mouse.get_pos()[1] <= continueButton.y + continueButton.h:
@@ -380,6 +349,9 @@ class Crosstheroad:
         # Exit to menu
         if pygame.mouse.get_pressed()[0] and exitToMenuButton.x <= pygame.mouse.get_pos()[0] <= exitToMenuButton.x + exitToMenuButton.w and exitToMenuButton.y <= pygame.mouse.get_pos()[1] <= exitToMenuButton.y + exitToMenuButton.h:
             self.exitGame()
+        # Toggle FPS
+        if pygame.mouse.get_pressed()[0] and fpsButton.x <= pygame.mouse.get_pos()[0] <= fpsButton.x + fpsButton.w and fpsButton.y <= pygame.mouse.get_pos()[1] <= fpsButton.y + fpsButton.h:
+            self.toggleFPS()
 
         self.screen.blit(Pscreen, (0, 0))
 
@@ -397,7 +369,7 @@ class Crosstheroad:
                             'crosstheroad_lib/src/skipButton.png',
                             'none',
                             Iscreen,
-                            'Skip tutorial')
+                            'Start game')
         skipButton.show()
 
         # Skip tutorial button functionality
@@ -405,6 +377,100 @@ class Crosstheroad:
             self.loadGame()
 
         self.screen.blit(Iscreen, (0, 0))
+
+    def timeOverlay(self):
+        Pscreen = pygame.Surface((self.config.screenDim[0], self.config.screenDim[1]), pygame.SRCALPHA)
+        Pscreen.fill((0, 0, 0, 150))
+
+        text1 = self.font1.render("Time over", 1, self.config.white)
+        Pscreen.blit(text1, ((self.config.screenDim[0] / 2) - (text1.get_rect().width / 2), 200))
+
+        text2 = self.font3.render("You scored:", 1, self.config.black)
+
+        if self.score > 85:
+            font = self.font5
+        else:
+            font = self.font4
+
+        text3 = font.render(str(self.score), 2, self.config.black)
+
+        pygame.draw.circle(Pscreen,
+                           self.config.yellow,
+                           (self.config.screenDim[0] - 200, 300),
+                           120)
+        Pscreen.blit(text2, (self.config.screenDim[0] - 200 - text2.get_rect().width/2, 210))
+        Pscreen.blit(text3, (self.config.screenDim[0] - 200 - text3.get_rect().width/2, 300 - text3.get_rect().height/2))
+
+        replayButton = Button(self.config.screenDim[0]/2 - 75,
+                              self.config.screenDim[1]/2 + 50,
+                              50,
+                              50,
+                              'crosstheroad_lib/src/replayButton.png',
+                              'none',
+                              Pscreen,
+                              'Restart game')
+        replayButton.show()
+
+        exitToMenuButton = Button(self.config.screenDim[0]/2 + 25,
+                                  self.config.screenDim[1] / 2 + 50,
+                                  50,
+                                  50,
+                                  'crosstheroad_lib/src/exitToMenuButton.png',
+                                  'none',
+                                  Pscreen,
+                                  'Exit to menu')
+        exitToMenuButton.show()
+
+        # Button functionallities
+        # Replay
+        if pygame.mouse.get_pressed()[0] and replayButton.x <= pygame.mouse.get_pos()[0] <= replayButton.x + replayButton.w and replayButton.y <= pygame.mouse.get_pos()[1] <= replayButton.y + replayButton.h:
+            self.restartGame()
+        # Exit to menu
+        if pygame.mouse.get_pressed()[0] and exitToMenuButton.x <= pygame.mouse.get_pos()[0] <= exitToMenuButton.x + exitToMenuButton.w and exitToMenuButton.y <= pygame.mouse.get_pos()[1] <= exitToMenuButton.y + exitToMenuButton.h:
+            self.exitGame()
+
+        self.screen.blit(Pscreen, (0, 0))
+
+    def gameOverlay(self):
+        Pscreen = pygame.Surface((self.config.screenDim[0], self.config.screenDim[1]), pygame.SRCALPHA)
+        Pscreen.fill((0, 0, 0, 150))
+
+        text1 = self.font1.render("Game over", 1, self.config.white)
+        Pscreen.blit(text1, ((self.config.screenDim[0] / 2) - (text1.get_rect().width / 2), 200))
+
+        replayButton = Button(self.config.screenDim[0] / 2 - 75,
+                              self.config.screenDim[1] / 2 + 50,
+                              50,
+                              50,
+                              'crosstheroad_lib/src/replayButton.png',
+                              'none',
+                              Pscreen,
+                              'Restart game')
+        replayButton.show()
+
+        exitToMenuButton = Button(self.config.screenDim[0] / 2 + 25,
+                                  self.config.screenDim[1] / 2 + 50,
+                                  50,
+                                  50,
+                                  'crosstheroad_lib/src/exitToMenuButton.png',
+                                  'none',
+                                  Pscreen,
+                                  'Exit to menu')
+        exitToMenuButton.show()
+
+        # Button functionallities
+        # Replay
+        if pygame.mouse.get_pressed()[0] and replayButton.x <= pygame.mouse.get_pos()[
+            0] <= replayButton.x + replayButton.w and replayButton.y <= pygame.mouse.get_pos()[
+            1] <= replayButton.y + replayButton.h:
+            self.restartGame()
+        # Exit to menu
+        if pygame.mouse.get_pressed()[0] and exitToMenuButton.x <= pygame.mouse.get_pos()[
+            0] <= exitToMenuButton.x + exitToMenuButton.w and exitToMenuButton.y <= pygame.mouse.get_pos()[
+            1] <= exitToMenuButton.y + exitToMenuButton.h:
+            self.exitGame()
+
+        self.screen.blit(Pscreen, (0, 0))
 
     def run(self):
         while not self.quit:
@@ -440,6 +506,26 @@ class Crosstheroad:
                 self.blit()
                 self.introOverlay()
 
-            self.clock.tick(30)
+            elif self.state == 'TimeOver':
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        # Set quit to True, so pygame will close
+                        self.quit = True
+                        pygame.quit()
+                        sys.exit()
+                self.blit()
+                self.timeOverlay()
+
+            elif self.state == 'GameOver':
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        # Set quit to True, so pygame will close
+                        self.quit = True
+                        pygame.quit()
+                        sys.exit()
+                self.blit()
+                self.gameOverlay()
+
+            self.clock.tick(60)
             pygame.display.update()
 

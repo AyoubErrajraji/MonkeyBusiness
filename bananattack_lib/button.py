@@ -92,8 +92,11 @@ class startWave(Button):
     def task(self):
         if self.canStartWave:
             self.state = config.BA_PLAYING
-        else:
-            print("Trying to start Wave while MAX_WAVES is reached")
+
+        pygame.mixer.Channel(0).play(pygame.mixer.Sound('data/bananattack/sounds/Truck.wav'))
+
+        pygame.mixer.music.load('data/bananattack/FBM.mp3')
+        pygame.mixer.music.play()
 
 class playGame(Button):
     def __init__(self, state, running):
@@ -105,19 +108,27 @@ class playGame(Button):
     def task(self):
         if self.running:
             self.state = config.BA_PLAYING
+
+            pygame.mixer.music.load('data/bananattack/FBM.mp3')
+            pygame.mixer.music.play()
         else:
             self.state = config.BA_CLEAR
 
+            pygame.mixer.music.load('data/bananattack/SBM.mp3')
+            pygame.mixer.music.play()
+
 class exitGame(Button):
-    def __init__(self, state, lives):
+    def __init__(self, state, balance=0, unlocked=None):
         Button.__init__(self, (config.BUTTON_EXITGAME_X,config.BUTTON_EXITGAME_Y), config.BUTTON_EXITGAME_WIDTH, config.BUTTON_EXITGAME_HEIGHT, config.BUTTON_EXITGAME_IMG, config.BUTTON_EXITGAME_HOVER_IMG)
         self.item = None
         self.state = state
-        self.lives = lives
+        self.balance = balance
+        self.unlocked = unlocked
 
     def task(self):
+        pygame.mixer.music.stop()
         mymenu = slidemenu.run()
-        mymenu.runm(self.lives)
+        mymenu.runm(self.balance, self.unlocked)
 
 class restartGame(Button):
     def __init__(self):
@@ -135,6 +146,15 @@ class monkeyButton(Button):
 
     def task(self):
         self.pressed = 1
+
+class skipTutorial(Button):
+    def __init__(self, state):
+        Button.__init__(self, (config.BUTTON_SKIPTUTORIAL_X,config.BUTTON_SKIPTUTORIAL_Y), config.BUTTON_SKIPTUTORIAL_WIDTH, config.BUTTON_SKIPTUTORIAL_HEIGHT, config.BUTTON_SKIPTUTORIAL_IMG, config.BUTTON_SKIPTUTORIAL_HOVER_IMG)
+        self.item = None
+        self.state = state
+
+    def task(self):
+        self.state = config.BA_CLEAR
 
     #operator overloading
 
