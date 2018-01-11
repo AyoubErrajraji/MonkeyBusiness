@@ -465,7 +465,7 @@ class run():
         intro_text4 = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 50).render('The Goal?', True, pygame.color.Color('White'))
         intro_text5 = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 40).render('It is simple, destroy the boss before he destroys you! ', True, pygame.color.Color('White'))
         intro_text6 = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 40).render('But watch out...', True, pygame.color.Color('White'))
-        intro_text7 = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 40).render('He has allies trowing stones from the tries!!!', True, pygame.color.Color('White'))
+        intro_text7 = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 40).render('He has allies trowing stones from the trees!!!', True, pygame.color.Color('White'))
         intro_text8 = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 50).render('CONTROLS', True, pygame.color.Color('White'))
         intro_text9 = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 40).render('Use the arrows(left/right) avoid the stones', True, pygame.color.Color('White'))
         intro_text10 = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 40).render('Use the spacebar to attack the boss', True, pygame.color.Color('White'))
