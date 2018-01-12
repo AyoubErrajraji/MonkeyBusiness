@@ -133,7 +133,7 @@ class Bullet():
         elif monkey == "engineer_monkey.png":
             self.damage = 20
         elif monkey == "apprentice_monkey.png":
-            self.damage = 2
+            self.damage = 25
         elif monkey == "dragon_monkey.png":
             self.damage = 30
         elif monkey == "super_monkey.png":
@@ -196,13 +196,13 @@ class Score(Game):
         self.score = self.score + new
 
 
-    def getMemory(key):
+    def getMemory(self, key):
         with open("data/memory.json", "r+") as jsonFile:
             data = json.load(jsonFile)
 
             return data[key]
 
-    def setMemory(key, value):
+    def setMemory(self, key, value):
 
         with open("data/memory.json", "r+") as jsonFile:
             data = json.load(jsonFile)
@@ -510,6 +510,11 @@ class run():
                 if newScore.score >= 1000:
                     old_state = state
                     state = YOUWON
+                    if 5 not in newScore.getMemory("unlocked") and 6 not in newScore.getMemory("unlocked"):
+                        unlocked = newScore.getMemory("unlocked")
+                        unlocked.append(5)
+                        unlocked.append(6)
+                        newScore.setMemory("unlocked", unlocked)
                 if player.health <= 0 and newScore.score < 100:
                     state = GAMEOVER
                 if player.health <= 0 and newScore.score > 100 and newScore.score < 400:
