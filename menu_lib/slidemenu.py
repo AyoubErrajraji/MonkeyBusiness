@@ -292,9 +292,3 @@ class run(object):
         while resp == "re-show":
             resp = menu(**menu1)[0]
             response(resp)
-
-
-
-
-
-
