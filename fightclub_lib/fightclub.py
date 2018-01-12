@@ -10,7 +10,9 @@ width = 1280
 height = 720
 screenDims = (width, height)
 gameDisplay = pygame.display.set_mode(screenDims)
-font = pygame.font.SysFont('Comic Sans MS', 30)
+font1 = pygame.font.Font("data/bananattack/FEASFBRG.ttf", 60)
+font2 = pygame.font.Font("data/bananattack/FEASFBRG.ttf", 45)
+font3 = pygame.font.Font("data/bananattack/FEASFBRG.ttf", 30)
 done = False
 
 exitButton = pygame.image.load("data/fightclub/exit.png")
@@ -150,7 +152,7 @@ class Player1(Game, pygame.sprite.Sprite):
         self.gameDisplay.blit(self.image, (self.rect.x, self.rect.y))
 
     def score(self):
-        self.textsurface = font.render(str(self.points), False, (0, 0, 0))
+        self.textsurface = font2.render(str(self.points), False, (0, 0, 0))
         self.gameDisplay.blit(self.textsurface, (5, 5))
 
 
@@ -210,20 +212,31 @@ class Player2(Game, pygame.sprite.Sprite):
         self.gameDisplay.blit(self.image, (self.rect.x, self.rect.y))
 
     def score(self):
-        self.textsurface = font.render(str(self.points), False, (0, 0, 0))
-        self.gameDisplay.blit(self.textsurface, (1240, 5))
+        self.textsurface = font2.render(str(self.points), False, (0, 0, 0))
+        self.gameDisplay.blit(self.textsurface, (1220, 5))
 
 
 def text_objects(text, font):
     textSurface = font.render(text, True, (255, 255, 255))
     return textSurface, textSurface.get_rect()
 
-def draw_text(surf, text, size, x, y):
-    text_surface = font.render(text, True, (255, 255, 255))
+def draw_text1(surf, text, size, x, y):
+    text_surface = font1.render(text, True, (255, 255, 255))
     text_rect = text_surface.get_rect()
     text_rect.midtop = (x, y)
     gameDisplay.blit(text_surface, text_rect)
 
+def draw_text2(surf, text, size, x, y):
+    text_surface = font2.render(text, True, (255, 255, 255))
+    text_rect = text_surface.get_rect()
+    text_rect.midtop = (x, y)
+    gameDisplay.blit(text_surface, text_rect)
+
+def draw_text3(surf, text, size, x, y):
+    text_surface = font3.render(text, True, (255, 255, 255))
+    text_rect = text_surface.get_rect()
+    text_rect.midtop = (x, y)
+    gameDisplay.blit(text_surface, text_rect)
 
 def unpause():
     global pause
@@ -305,9 +318,9 @@ def button(msg, x, y, w, h, iimg, aimg, action=None):
 
 def preGameScreen():
     gameDisplay.blit(background.backgroundImage, screenDims)
-    draw_text(gameDisplay, "Banana Fight CLub", 64, width / 2, height / 4)
-    draw_text(gameDisplay, "W/A/S/D Move left Player. Arrow Keys Move Right player", 32, width / 2, height / 2)
-    draw_text(gameDisplay, "Press A Key To Begin", 45, width / 2, height / 3)
+    draw_text1(gameDisplay, "Banana Fight CLub", 64, width / 2, height / 4)
+    draw_text2(gameDisplay, "W/A/S/D Move left Player. Arrow Keys Move Right player", 32, width / 2, height / 2)
+    draw_text3(gameDisplay, "Press A Key To Begin", 45, width / 2, height / 3)
     pygame.display.update()
     waiting = True
     while waiting:
@@ -332,8 +345,7 @@ def gameOver1():
 
     gameDisplay.blit(s, (0, 0))
 
-    label = font.render("Player1 Has Won!", 2, (255, 255, 255))
-    gameDisplay.blit(label, (130, 280))
+    draw_text1(gameDisplay, "Player 1 has won!", 60, width / 2, height / 2)
 
     # button("Play Again", 450, 400, 20, 20, play, hoverPlay, restart)
     button("Back To Menu", 600, 280, 100, 50, exitButton, hoverExit, exitGame)
@@ -360,8 +372,7 @@ def gameOver2():
 
     gameDisplay.blit(s, (0, 0))
 
-    label = font.render("Player2 Has Won!", 2, (255, 255, 255))
-    gameDisplay.blit(label, (130, 280))
+    draw_text1(gameDisplay, "Player 1 has won!", 60, width / 2, height / 2)
 
     # button("Play Again", 450, 400, 20, 20, play, hoverPlay, restart)
     button("Back To Menu", 600, 280, 100, 50, exitButton, hoverExit, exitGame)
