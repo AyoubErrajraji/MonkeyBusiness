@@ -1,535 +1,361 @@
 import pygame
-import json
 from menu_lib import slidemenu
+import json
+from fightclub_lib import room
 
 pygame.init()
 
-
-
-width = 1280
-height = 720
-screenDims = (width, height)
-gameDisplay = pygame.display.set_mode(screenDims)
-font = pygame.font.SysFont('Comic Sans MS', 30)
-done = False
-
-exitButton = pygame.image.load("data/fightclub/exit.png")
-hoverExit = pygame.image.load("data/fightclub/exit1.png")
-play = pygame.image.load("data/fightclub/play.png")
-hoverPlay = pygame.image.load("data/Fightclub/play1.png")
-
-class Game:
-    def __init__(self, gameDisplay, screenDims):
-        self.fps = 60
-        self.screenDims = screenDims
-        self.frame = pygame.time.Clock()
-        self.gameDisplay = gameDisplay
-
-    def updateFrame(self):
-        self.frame.tick(self.fps)
-        pygame.display.update()
-
-
-class Background(Game):
-    def __init__(self, screen, screenDims):
-        Game.__init__(self, screen, screenDims)
-        self.backgroundImage = None
-
-    def loadImage(self, name):
-        self.backgroundImage = pygame.image.load("data/fightclub/background1.png")
-        self.backgroundImage = pygame.transform.scale(self.backgroundImage, self.screenDims)
-
-    def blitBackground(self):
-        self.gameDisplay.blit(self.backgroundImage, (0, 0))
-
-
-class Flag(Game, pygame.sprite.Sprite):
-    def __init__(self, gameDisplay, screenDims):
-        Game.__init__(self, gameDisplay, screenDims)
-        pygame.sprite.Sprite.__init__(self)
-        self.loadImages()
-        self.image = self.flag
-        self.noFlag = self.noFlag
-        self.rect = self.image.get_rect()
-        self.rect.x = 600
-        self.rect.y = 300
-
-    def loadImages(self):
-        self.flag = pygame.image.load("data/fightclub/flag.png")
-        self.noFlag = pygame.image.load("data/fightclub/noFlag.png")
-
-    def blitFlag(self):
-        self.gameDisplay.blit(self.image, (self.rect.x, self.rect.y))
-
-
-class TargetP1(Game, pygame.sprite.Sprite):
-    def __init__(self, gameDisplay, screenDims):
-        Game.__init__(self, gameDisplay, screenDims)
-        pygame.sprite.Sprite.__init__(self)
-        self.loadImages()
-        self.image = self.target
-        self.rect = self.image.get_rect()
-        self.rect.x = 1024
-        self.rect.y = 576
-
-    def loadImages(self):
-        self.target = pygame.image.load("data/fightclub/target.png")
-
-    def blitTarget(self):
-        self.gameDisplay.blit(self.image, (self.rect.x, self.rect.y))
-
-
-class TargetP2(Game, pygame.sprite.Sprite):
-    def __init__(self, gameDisplay, screenDims):
-        Game.__init__(self, gameDisplay, screenDims)
-        pygame.sprite.Sprite.__init__(self)
-        self.loadImages()
-        self.image = self.target
-        self.rect = self.image.get_rect()
-        self.rect.x = 256
-        self.rect.y = 144
-
-    def loadImages(self):
-        self.target = pygame.image.load("data/fightclub/target.png")
-
-    def blitTarget(self):
-        self.gameDisplay.blit(self.image, (self.rect.x, self.rect.y))
-
-class Player1(Game, pygame.sprite.Sprite):
-    def __init__(self, gameDisplay, screenDims):
-        Game.__init__(self, gameDisplay, screenDims)
-        pygame.sprite.Sprite.__init__(self)
-        self.loadImages()
-        self.image = self.monkey
-        self.flagMonkey= self.flagMonkey
-        self.speedpos = None
-        self.speedneg = None
-        self.points = 0
-        self.y_change = 0
-        self.x_change = 0
-        self.rect = self.image.get_rect()
-        self.rect.x = 1024
-        self.rect.y = 576
-
-    def loadImages(self):
-        self.monkey = getMemory("bought")
-        if self.monkey == ["apprentice_monkey.png"]:
-            self.monkey = pygame.image.load("data/apprentice_monkey_top.png").convert_alpha()
-            self.flagMonkey = pygame.image.load("data/fightclub/images/apprentice_monkey_flag.png").convert_alpha()
-        elif self.monkey == ["acid_monkey.png"]:
-            self.monkey = pygame.image.load("data/acid_monkey.png").convert_alpha()
-            self.flagMonkey = pygame.image.load("data/fightclub/images/acid_monkey_flag.png").convert_alpha()
-        elif self.monkey == ["dragon_monkey.png"]:
-            self.monkey = pygame.image.load("data/dragon_monkey_top.png").convert_alpha()
-            self.flagMonkey = pygame.image.load("data/fightclub/images/dragon_monkey_flag.png").convert_alpha()
-        elif self.monkey == ["engineer_monkey.png"]:
-            self.monkey = pygame.image.load("data/engineer_monkey_top.png").convert_alpha()
-            self.flagMonkey = pygame.image.load("data/fightclub/images/engineer_monkey_flag.png").convert_alpha()
-        elif self.monkey == ["farmer_monkey.png"]:
-            self.monkey = pygame.image.load("data/farmer_monkey.png").convert_alpha()
-            self.flagMonkey = pygame.image.load("data/fightclub/images/farmer_monkey_flag.png").convert_alpha()
-        elif self.monkey == ["ninja_monkey.png"]:
-            self.monkey = pygame.image.load("data/ninja_monkey_top.png").convert_alpha()
-            self.flagMonkey = pygame.image.load("data/fightclub/images/ninja_monkey_flag.png").convert_alpha()
-        elif self.monkey == ["robo_monkey.png"]:
-            self.monkey = pygame.image.load("data/robo_monkey_top.png").convert_alpha()
-            self.flagMonkey = pygame.image.load("data/fightclub/images/robo_monkey_flag.png").convert_alpha()
-        elif self.monkey == ["super_monkey.png"]:
-            self.monkey = pygame.image.load("data/super_monkey_top.png").convert_alpha()
-            self.flagMonkey = pygame.image.load("data/fightclub/images/super_monkey_flag.png").convert_alpha()
-        else:
-            self.monkey = pygame.image.load("data/default_monkey_top.png").convert_alpha()
-            self.flagMonkey = pygame.image.load("data/fightclub/images/charwflag.png").convert_alpha()
-        self.monkey = pygame.transform.scale(self.monkey, (50, 50))
-
-    def speed(self):
-        self.speedpos = 6
-        self.speedneg = -6
-
-    def blitMonkey(self):
-        self.gameDisplay.blit(self.image, (self.rect.x, self.rect.y))
-
-    def score(self):
-        self.textsurface = font.render(str(self.points), False, (0, 0, 0))
-        self.gameDisplay.blit(self.textsurface, (5, 5))
-
-
-class Player2(Game, pygame.sprite.Sprite):
-    def __init__(self, gameDisplay, screenDims):
-        Game.__init__(self, gameDisplay, screenDims)
-        pygame.sprite.Sprite.__init__(self)
-        self.loadImages()
-        self.image = self.monkey
-        self.flagMonkey = self.flagMonkey
-        self.speedpos = None
-        self.speedneg = None
-        self.y_change = 0
-        self.x_change = 0
-        self.rect = self.image.get_rect()
-        self.rect.x = 256
-        self.rect.y = 144
-        self.points = 0
-
-    def loadImages(self):
-        self.monkey = getMemory("bought")
-        if self.monkey == ["apprentice_monkey.png"]:
-            self.monkey = pygame.image.load("data/apprentice_monkey_top.png").convert_alpha()
-            self.flagMonkey = pygame.image.load("data/fightclub/images/apprentice_monkey_flag.png").convert_alpha()
-        elif self.monkey == ["acid_monkey.png"]:
-            self.monkey = pygame.image.load("data/acid_monkey.png").convert_alpha()
-            self.flagMonkey = pygame.image.load("data/fightclub/images/acid_monkey_flag.png").convert_alpha()
-        elif self.monkey == ["dragon_monkey.png"]:
-            self.monkey = pygame.image.load("data/dragon_monkey_top.png").convert_alpha()
-            self.flagMonkey = pygame.image.load("data/fightclub/images/dragon_monkey_flag.png").convert_alpha()
-        elif self.monkey == ["engineer_monkey.png"]:
-            self.monkey = pygame.image.load("data/engineer_monkey_top.png").convert_alpha()
-            self.flagMonkey = pygame.image.load("data/fightclub/images/engineer_monkey_flag.png").convert_alpha()
-        elif self.monkey == ["farmer_monkey.png"]:
-            self.monkey = pygame.image.load("data/farmer_monkey.png").convert_alpha()
-            self.flagMonkey = pygame.image.load("data/fightclub/images/farmer_monkey_flag.png").convert_alpha()
-        elif self.monkey == ["ninja_monkey.png"]:
-            self.monkey = pygame.image.load("data/ninja_monkey_top.png").convert_alpha()
-            self.flagMonkey = pygame.image.load("data/fightclub/images/ninja_monkey_flag.png").convert_alpha()
-        elif self.monkey == ["robo_monkey.png"]:
-            self.monkey = pygame.image.load("data/robo_monkey_top.png").convert_alpha()
-            self.flagMonkey = pygame.image.load("data/fightclub/images/robo_monkey_flag.png").convert_alpha()
-        elif self.monkey == ["super_monkey.png"]:
-            self.monkey = pygame.image.load("data/super_monkey_top.png").convert_alpha()
-            self.flagMonkey = pygame.image.load("data/fightclub/images/super_monkey_flag.png").convert_alpha()
-        else:
-            self.monkey = pygame.image.load("data/default_monkey_top.png").convert_alpha()
-            self.flagMonkey = pygame.image.load("data/fightclub/images/charwflag.png").convert_alpha()
-
-        self.monkey = pygame.transform.scale(self.monkey, (50, 50))
-
-    def speed(self):
-        self.speedpos = 6
-        self.speedneg = -6
-
-    def blitMonkey(self):
-        self.gameDisplay.blit(self.image, (self.rect.x, self.rect.y))
-
-    def score(self):
-        self.textsurface = font.render(str(self.points), False, (0, 0, 0))
-        self.gameDisplay.blit(self.textsurface, (1240, 5))
-
-
-def text_objects(text, font):
-    textSurface = font.render(text, True, (255, 255, 255))
-    return textSurface, textSurface.get_rect()
-
-def draw_text(surf, text, size, x, y):
-    text_surface = font.render(text, True, (255, 255, 255))
-    text_rect = text_surface.get_rect()
-    text_rect.midtop = (x, y)
-    gameDisplay.blit(text_surface, text_rect)
-
-
-def unpause():
-    global pause
-    pause = False
-
-
-def exitGame():
-    pygame.quit()
-    quit()
-
-
-def getMemory(key):
-        with open("data/memory.json", "r+") as jsonFile:
-            data = json.load(jsonFile)
-
-            return data[key]
-
-
-def setMemory(key, value):
-    with open("data/memory.json", "r+") as jsonFile:
-        data = json.load(jsonFile)
-
-        data[key] = value
-
-        jsonFile.seek(0)  # rewind
-        json.dump(data, jsonFile)
-        jsonFile.truncate()
-
-
-balance = getMemory("balance")
-monkey = getMemory("bought")
-
-# Sprite Groups
-player1Group = pygame.sprite.Group()
-player2Group = pygame.sprite.Group()
-flagGroup = pygame.sprite.Group()
-targetGroup1 = pygame.sprite.Group()
-targetGroup2 = pygame.sprite.Group()
-
-
-def addSprites():
-    player1Group.add(player1)
-    player2Group.add(player2)
-    flagGroup.add(flag)
-    targetGroup1.add(target1)
-    targetGroup2.add(target2)
-
-
-def updateFrameImages():
-    global background, player1, player2, flag
-    background.blitBackground()
-    player2.blitMonkey()
-    player1.blitMonkey()
-    flag.blitFlag()
-    if player1.image == player1.flagMonkey:
-        target1.blitTarget()
-    if player2.image == player2.flagMonkey:
-        target2.blitTarget()
-    player1Group.update()
-    player2Group.update()
-    flagGroup.update()
-    targetGroup1.update()
-    targetGroup2.update()
-    target1.update()
-    player2.score()
-    player1.score()
-
-def button(msg, x, y, w, h, iimg, aimg, action=None):
-    mouse = pygame.mouse.get_pos()
-    click = pygame.mouse.get_pressed()
-    if x + w > mouse[0] > x and y + h > mouse[1] + y:
-        gameDisplay.blit(aimg, (x, y, w, h))
-
-        if click[0] == 1 and action != None:
-            action()
-
-    else:
-        gameDisplay.blit(iimg, (x, y, w, h))
-
-def preGameScreen():
-    gameDisplay.blit(background.backgroundImage, screenDims)
-    draw_text(gameDisplay, "Banana Fight CLub", 64, width / 2, height / 4)
-    draw_text(gameDisplay, "W/A/S/D Move left Player. Arrow Keys Move Right player", 32, width / 2, height / 2)
-    draw_text(gameDisplay, "Press A Key To Begin", 45, width / 2, height / 3)
-    pygame.display.update()
-    waiting = True
-    while waiting:
-        game.frame.tick(60)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-            if event.type == pygame.KEYUP:
-                waiting = False
-
-
-def gameOver1():
-
-    s = pygame.Surface((width, height), pygame.SRCALPHA)
-    s.fill((0, 0, 0, 150))
-
-    # Blitting
-    background.blitBackground()
-    player1.blitMonkey()
-    player2.blitMonkey()
-    flag.blitFlag()
-
-    gameDisplay.blit(s, (0, 0))
-
-    label = font.render("Player1 Has Won!", 2, (255, 255, 255))
-    gameDisplay.blit(label, (130, 280))
-
-    # button("Play Again", 450, 400, 20, 20, play, hoverPlay, restart)
-    button("Back To Menu", 600, 280, 100, 50, exitButton, hoverExit, exitGame)
-
-    pygame.display.update()
-    waiting = True
-    while waiting:
-        game.frame.tick(60)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-
-
-
-def gameOver2():
-    s = pygame.Surface((width, height), pygame.SRCALPHA)
-    s.fill((0, 0, 0, 150))
-
-    # Blitting
-    background.blitBackground()
-    player1.blitMonkey()
-    player2.blitMonkey()
-    flag.blitFlag()
-
-    gameDisplay.blit(s, (0, 0))
-
-    label = font.render("Player2 Has Won!", 2, (255, 255, 255))
-    gameDisplay.blit(label, (130, 280))
-
-    # button("Play Again", 450, 400, 20, 20, play, hoverPlay, restart)
-    button("Back To Menu", 600, 280, 100, 50, exitButton, hoverExit, exitGame)
-
-    pygame.display.update()
-    waiting = True
-    while waiting:
-        game.frame.tick(60)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-
-
-def paused():
-    largeText = pygame.font.SysFont("comicsansms", 115)
-    TextSurf, TextRect = text_objects("Paused", largeText)
-    TextRect.center = ((width / 2), (height/2))
-    gameDisplay.blit(TextSurf, TextRect)
-
-    button("Continue", 400, 450, 20, 20, play, hoverPlay, unpause)
-    button("Back To Menu", 600, 450, 100, 50, exitButton, hoverExit, exitGame)
-
-    pygame.display.update()
-    while pause:
-        game.frame.tick(60)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-
-
-# Calling Classes
-
-game = Game(gameDisplay, screenDims)
-player1 = Player1(gameDisplay, screenDims)
-player2 = Player2(gameDisplay, screenDims)
-flag = Flag(gameDisplay, screenDims)
-background = Background(gameDisplay, screenDims)
-target1 = TargetP1(gameDisplay, screenDims)
-target2 = TargetP2(gameDisplay, screenDims)
-
-
-# Loading
-addSprites()
-player1.speed()
-player2.speed()
-background.loadImage("background1.png")
-
-background.blitBackground()
-player1.blitMonkey()
-player2.blitMonkey()
-flag.blitFlag()
-
-
 class run():
-    def __init__(self):
-        self.runm = self.run
+    def runm(self):
+        width = 1280
+        height = 720
 
-    def run(self):
+        black = (0, 0, 0)
+        white = (255, 255, 255)
+        grey = (50, 50, 50)
+
+        font = pygame.font.SysFont('Comic Sans MS', 30)
+        WALLS = pygame.sprite.Group()
+
+        gameDisplay = pygame.display.set_mode((width, height))
+        pygame.display.set_caption('Banana Fight Club')
+
+        clock = pygame.time.Clock()
+
+        wall = room.Wall(0, 600, 300, 30, black, gameDisplay)
+        WALLS.add(wall)
+
         done = False
-        intro = True
-        game_over = False
+        # Loading Images
+        # Characters
+        acid = pygame.image.load("data/acid_monkey.png").convert_alpha()
+        apprentice = pygame.image.load("data/apprentice_monkey_top.png").convert_alpha()
+        default = pygame.image.load("data/default_monkey_top.png").convert_alpha()
+        dragon = pygame.image.load("data/dragon_monkey_top.png").convert_alpha()
+        engineer = pygame.image.load("data/engineer_monkey_top.png").convert_alpha()
+        farmer = pygame.image.load("data/farmer_monkey.png").convert_alpha()
+        ninja = pygame.image.load("data/ninja_monkey_top.png").convert_alpha()
+        robo = pygame.image.load("data/robo_monkey_top.png").convert_alpha()
+        superMonkey = pygame.image.load("data/super_monkey_top.png").convert_alpha()
+
+        # Transforming Characters
+        acid = pygame.transform.scale(acid, (40, 46))
+        apprentice = pygame.transform.scale(apprentice, (40, 46))
+        default = pygame.transform.scale(default, (40, 46))
+        pygame.transform.scale(dragon, (40, 46))
+        engineer = pygame.transform.scale(engineer, (40, 46))
+        farmer = pygame.transform.scale(farmer, (40, 46))
+        ninja = pygame.transform.scale(ninja, (40, 46))
+        robo = pygame.transform.scale(robo, (40, 46))
+        superMonkey = pygame.transform.scale(superMonkey, (40, 46))
+
+        mainImg = pygame.image.load('data/fightclub/monkey.png').convert_alpha()
+        charwFlagImg = pygame.image.load('data/fightclub/charwflag.png').convert_alpha()
+
+        flagImg = pygame.image.load("data/fightclub/flag.png").convert_alpha()
+        noFlagImg = pygame.image.load("data/fightclub/noflag.png").convert_alpha()
+        targetImg = pygame.image.load("data/fightclub/target.png").convert_alpha()
+
+        bckImg = pygame.image.load("data/fightclub/background1.png").convert()
+        bckImg = pygame.transform.scale(bckImg, (width, height))
+
+        exitButton = pygame.image.load("data/fightclub/exit.png")
+        hoverExit = pygame.image.load("data/fightclub/exit1.png")
+        play = pygame.image.load("data/fightclub/play.png")
+        hoverplay = pygame.image.load("data/fightclub/play1.png")
+
+        def back():
+            mymenu = slidemenu.run()
+            mymenu.runm()
+
+        def quit():
+            pygame.quit()
+            quit()
+
+        def background(x, y):
+            gameDisplay.blit(bckImg, (x, y))
+
+        def player(x, y):
+            if monkey == ["apprentice_monkey.png"]:
+                gameDisplay.blit(apprentice, (x, y))
+            elif monkey == ["acid_monkey.png"]:
+                gameDisplay.blit(acid, (x, y))
+            elif monkey == ["dragon_monkey.png"]:
+                gameDisplay.blit(dragon, (x, y))
+            elif monkey == ["engineer_monkey.png"]:
+                gameDisplay.blit(engineer, (x, y))
+            elif monkey == ["farmer_monkey.png"]:
+                gameDisplay.blit(farmer, (x, y))
+            elif monkey == ["ninja_monkey.png"]:
+                gameDisplay.blit(ninja, (x, y))
+            elif monkey == ["robo_monkey.png"]:
+                gameDisplay.blit(robo, (x, y))
+            elif monkey == ["super_monkey.png"]:
+                gameDisplay.blit(superMonkey, (x, y))
+            else:
+                gameDisplay.blit(default, (x, y))
+
+        def player2(x, y):
+            if monkey == ["apprentice_monkey.png"]:
+                gameDisplay.blit(apprentice, (x, y))
+            elif monkey == ["acid_monkey.png"]:
+                gameDisplay.blit(acid, (x, y))
+            elif monkey == ["dragon_monkey.png"]:
+                gameDisplay.blit(dragon, (x, y))
+            elif monkey == ["engineer_monkey.png"]:
+                gameDisplay.blit(engineer, (x, y))
+            elif monkey == ["farmer_monkey.png"]:
+                gameDisplay.blit(farmer, (x, y))
+            elif monkey == ["ninja_monkey.png"]:
+                gameDisplay.blit(ninja, (x, y))
+            elif monkey == ["robo_monkey.png"]:
+                gameDisplay.blit(robo, (x, y))
+            elif monkey == ["super_monkey.png"]:
+                gameDisplay.blit(superMonkey, (x, y))
+            else:
+                gameDisplay.blit(default, (x, y))
+
+        def character(x, y):
+            gameDisplay.blit(mainImg, (x, y))
+
+        def charwithFlag(x, y):
+            gameDisplay.blit(charwFlagImg, (x, y))
+
+        def char(x, y):
+            if monkey == ["apprentice_monkey.png"]:
+                gameDisplay.blit(apprentice, (x, y))
+            elif monkey == ["acid_monkey.png"]:
+                gameDisplay.blit(acid, (x, y))
+            elif monkey == ["dragon_monkey.png"]:
+                gameDisplay.blit(dragon, (x, y))
+            elif monkey == ["engineer_monkey.png"]:
+                gameDisplay.blit(engineer, (x, y))
+            elif monkey == ["farmer_monkey.png"]:
+                gameDisplay.blit(farmer, (x, y))
+            elif monkey == ["ninja_monkey.png"]:
+                gameDisplay.blit(ninja, (x, y))
+            elif monkey == ["robo_monkey.png"]:
+                gameDisplay.blit(robo, (x, y))
+            elif monkey == ["super_monkey.png"]:
+                gameDisplay.blit(superMonkey, (x, y))
+            else:
+                gameDisplay.blit(default, (x, y))
+
+        x = (width * 0.8)
+        y = (height * 0.8)
+        x_change = 0
+        y_change = 0
+        speed = 1
+
+        def character2(x, y):
+            gameDisplay.blit(mainImg, (x, y))
+
+        def charwithFlag2(x, y):
+            gameDisplay.blit(charwFlagImg, (x, y))
+
+        def char2(x, y):
+            if monkey == ["apprentice_monkey.png"]:
+                gameDisplay.blit(apprentice, (x, y))
+            elif monkey == ["acid_monkey.png"]:
+                gameDisplay.blit(acid, (x, y))
+            elif monkey == ["dragon_monkey.png"]:
+                gameDisplay.blit(dragon, (x, y))
+            elif monkey == ["engineer_monkey.png"]:
+                gameDisplay.blit(engineer, (x, y))
+            elif monkey == ["farmer_monkey.png"]:
+                gameDisplay.blit(farmer, (x, y))
+            elif monkey == ["ninja_monkey.png"]:
+                gameDisplay.blit(ninja, (x, y))
+            elif monkey == ["robo_monkey.png"]:
+                gameDisplay.blit(robo, (x, y))
+            elif monkey == ["super_monkey.png"]:
+                gameDisplay.blit(superMonkey, (x, y))
+            else:
+                gameDisplay.blit(default, (x, y))
+
+        x2 = (width * 0.2)
+        y2 = (height * 0.2)
+        x2_change = 0
+        y2_change = 0
+
+        def flag(x, y):
+            gameDisplay.blit(flagImg, (x, y))
+
+        def setFlag(x, y):
+            gameDisplay.blit(flagImg, (x, y))
+
+        x_flag = 600
+        y_flag = 300
+
+        def noFlag(x, y):
+            gameDisplay.blit(noFlagImg, (x, y))
+
+        def flag2(x, y):
+            gameDisplay.blit(flagImg, (x, y))
+
+        def target(x, y):
+            gameDisplay.blit(targetImg, (x, y))
+
+        def target2(x, y):
+            gameDisplay.blit(targetImg, (x, y))
+
+        x_target = 1024
+        y_target = 576
+
+        x_target2 = width * 0.2
+        y_target2 = height * 0.2
+
+        points = 0
+        points2 = 0
+
+        def score(x, y):
+            textsurface = font.render(str(points), False, (0, 0, 0))
+            gameDisplay.blit(textsurface, (x, y))
+
+        def score2(x, y):
+            textsurface2 = font.render(str(points2), False, (0, 0, 0))
+            gameDisplay.blit(textsurface2, (x, y))
+
+        def text_objects(text, font):
+            textSurface = font.render(text, True, white)
+            return textSurface, textSurface.get_rect()
+
+        def button(msg, x, y, w, h, iimg, aimg, action=None):
+            mouse = pygame.mouse.get_pos()
+            click = pygame.mouse.get_pressed()
+            if x + w > mouse[0] > x and y + h > mouse[1] > y:
+                gameDisplay.blit(aimg, (x, y, w, h))
+
+                if click[0] == 1 and action != None:
+                    action()
+            else:
+                gameDisplay.blit(iimg, (x, y, w, h))
+
+        def unpause():
+            global pause
+            pause = False
+
+        def getMemory(key):
+            with open("data/memory.json", "r+") as jsonFile:
+                data = json.load(jsonFile)
+
+                return data[key]
+
+        def setMemory(key, value):
+            with open("data/memory.json", "r+") as jsonFile:
+                data = json.load(jsonFile)
+
+                data[key] = value
+
+                jsonFile.seek(0)  # rewind
+                json.dump(data, jsonFile)
+                jsonFile.truncate()
+
+        balance = getMemory("balance")
+        monkey = getMemory("bought")
+
+        def paused():
+            largeText = pygame.font.SysFont("comicsansms", 115)
+            TextSurf, TextRect = text_objects("Paused", largeText)
+            TextRect.center = ((width / 2), (height / 2))
+            gameDisplay.blit(TextSurf, TextRect)
+
+            while pause:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        quit()
+
+                button("Continue", 400, 450, 20, 20, play, hoverplay, unpause)
+                button("Back To Menu", 600, 450, 100, 50, exitButton, hoverExit, back)
+
+                # balance = setMemory("balance", score)
+
+                pygame.display.update()
+                clock.tick(30)
+
+        # Game Loop
+
         global pause
-        while not done:
-            if game_over:
-                gameOver1()
-
-            elif intro:
-                preGameScreen()
-                intro = False
-
-
-
-
+        while done == False :
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     done = True
-                    pygame.quit()
-                    quit()
 
-
-                # Move Player 1
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_LEFT:
-                        player1.x_change = player1.speedneg
-                    elif event.key == pygame.K_RIGHT:
-                        player1.x_change = player1.speedpos
-                    elif event.key == pygame.K_UP:
-                        player1.y_change = player1.speedneg
-                    elif event.key == pygame.K_DOWN:
-                        player1.y_change = player1.speedpos
-                    if event.key == pygame.K_ESCAPE:
-                        pause = True
-                        paused()
-                    if pause:
-                        if event.key == pygame.K_ESCAPE:
-                            pause = False
-
-                if event.type == pygame.KEYUP:
-                    if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-                        player1.x_change = 0
-                    if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
-                        player1.y_change = 0
-
-                # Move Player 2
+                # Moving Player 1
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_a:
-                        player2.x_change = player2.speedneg
+                        x_change = -5
                     elif event.key == pygame.K_d:
-                        player2.x_change = player2.speedpos
+                        x_change = 5
                     elif event.key == pygame.K_w:
-                        player2.y_change = player2.speedneg
+                        y_change = -5
                     elif event.key == pygame.K_s:
-                        player2.y_change = player2.speedpos
+                        y_change = 5
                     if event.key == pygame.K_ESCAPE:
                         pause = True
                         paused()
 
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_a or event.key == pygame.K_d:
-                        player2.x_change = 0
+                        x_change = 0
                     if event.key == pygame.K_w or event.key == pygame.K_s:
-                        player2.y_change = 0
+                        y_change = 0
 
-            player1.rect.x += player1.x_change
-            player1.rect.y += player1.y_change
+                # Moving Player 2
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_LEFT:
+                        x2_change = -5
+                    elif event.key == pygame.K_RIGHT:
+                        x2_change = 5
+                    elif event.key == pygame.K_UP:
+                        y2_change = -5
+                    elif event.key == pygame.K_DOWN:
+                        y2_change = 5
+                    if event.key == pygame.K_ESCAPE:
+                        pause = True
+                        paused()
 
-            player2.rect.x += player2.x_change
-            player2.rect.y += player2.y_change
+                if event.type == pygame.KEYUP:
+                    if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                        x2_change = 0
+                    if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
+                        y2_change = 0
 
-            # Collisions
+            x += x_change
+            y += y_change
 
-            if player1.image == player1.monkey and player2.image == player2.monkey:
+            x2 += x2_change
+            y2 += y2_change
 
-                if pygame.sprite.spritecollide(player1, flagGroup, False):
-                    player1.image = player1.flagMonkey
-                    target1.blitTarget()
-                    flag.image = flag.noFlag
+            background(0,0)
+            player(x, y)
+            player2(x2, y2)
+            flag(x_flag, y_flag)
 
-                if pygame.sprite.spritecollide(player2, flagGroup, False):
-                    player2.image = player2.flagMonkey
-                    target2.blitTarget()
-                    flag.image = flag.noFlag
+            flag = setFlag
+            player = char
+            player2 = char2
 
-            if player1.image == player1.flagMonkey:
-                if pygame.sprite.spritecollide(player1, targetGroup1, False):
-                    player1.image = player1.monkey
-                    player1.points += 250
-                    flag.image = flag.flag
+            # Flag Collision Player 1
+            if flag == setFlag and player == char:
+                if x > 570 and x < 630 and y > 270 and y < 330:
+                    player = charwithFlag
 
-                if pygame.sprite.spritecollide(player2, player1Group, False):
-                    player1.image = player1.monkey
-                    player2.image = player2.flagMonkey
+                if player == charwithFlag:
+                    flag = noFlag
+                    target(x_target, y_target)
+                    if x > 994 and x < 1054 and y > 546 and y < 606:
+                        player = char
+                        points += 50
 
-            if player2.image == player2.flagMonkey:
-                if pygame.sprite.spritecollide(player2, targetGroup2, False):
-                    player2.image = player2.monkey
-                    player2.points += 250
-                    flag.image = flag.flag
+            # Flag Collision Player 2
 
-                if pygame.sprite.spritecollide(player1, player2Group, False):
-                    player2.image = player2.monkey
-                    player1.image = player1.flagMonkey
+            score(5, 5)
+            score2(1240, 5)
 
-            if player1.points == 250:
-                game_over = True
+            pygame.display.update()
+            clock.tick(60)
 
-            updateFrameImages()
-            game.updateFrame()
-
-        self.runm()
+        pygame.quit()
+        quit()
