@@ -521,59 +521,62 @@ class run():
 
                 myfont = pygame.font.SysFont("comicsansms", 50)
                 label = myfont.render("How to play??", 2, (config.white))
-                config.screen.blit(label, (470, 150))
+                config.screen.blit(label, (470, 100))
 
                 # button("Back to Intro", 590, 350, 100, 50, config.black, config.yellow, "leave")
                 # button("Start Game", 590, 550, 100, 50, config.black, config.yellow, "level1")
 
                 myfont = pygame.font.SysFont("comicsansms", 20)
-                label = myfont.render("Controls:", 1, (config.white))
-                config.screen.blit(label, (780, 280))
+                label = myfont.render("What's the goal of this game??", 1, (config.white))
+                config.screen.blit(label, (100, 200))
 
-                label = myfont.render("Move forwards:", 1, (config.white))
-                config.screen.blit(label, (780, 340))
+                label = myfont.render(
+                    "The goal of this game is to sneak past the guards and collect banana's to get more credits ", 1,
+                    (config.white))
+                config.screen.blit(label, (100, 250))
 
-                label = myfont.render("Move backwards:", 1, (config.white))
-                config.screen.blit(label, (780, 370))
+                label = myfont.render("so you can buy the powerfull robo monkey!! (or some of the other characters.)",
+                                      1, (config.white))
+                config.screen.blit(label, (100, 280))
 
-                label = myfont.render("Move Sideways:", 1, (config.white))
-                config.screen.blit(label, (780, 400))
+                label = myfont.render("But how do I escape those Guards???", 1, (config.white))
+                config.screen.blit(label, (100, 330))
 
-                label = myfont.render("Pause the game:", 1, (config.white))
-                config.screen.blit(label, (780, 430))
+                label = myfont.render("Well...", 1, (config.white))
+                config.screen.blit(label, (100, 360))
 
-                label = myfont.render("Key Up", 1, (config.white))
-                config.screen.blit(label, (960, 340))
+                label = myfont.render(
+                    "Use w/a/s/d to move your character around, once you are out of your cage you have to  ", 1,
+                    (config.white))
+                config.screen.blit(label, (100, 390))
 
-                label = myfont.render("Key Down", 1, (config.white))
-                config.screen.blit(label, (960, 370))
+                label = myfont.render(
+                    "run past the guards in order to get to the parking lot, once you are running and avoiding ", 1,
+                    (config.white))
+                config.screen.blit(label, (100, 420))
 
-                label = myfont.render("Key Left and Key Right", 1, (config.white))
-                config.screen.blit(label, (960, 400))
+                label = myfont.render(
+                    "the guards try to pick up banana's to get extra points. Once you passed all the guards ", 1,
+                    (config.white))
+                config.screen.blit(label, (100, 450))
 
-                label = myfont.render("Pause Button or Key Escape", 1, (config.white))
-                config.screen.blit(label, (960, 430))
+                label = myfont.render(
+                    "and you make it to the parking lot, you will earn your well deserved points, but beware, ", 1,
+                    (config.white))
+                config.screen.blit(label, (100, 480))
 
-                label = myfont.render("Quit The Game:", 1, (config.white))
-                config.screen.blit(label, (780, 460))
+                label = myfont.render("if you get caught halfway, you lose all the points you collected that round.", 1,
+                                      (config.white))
+                config.screen.blit(label, (100, 510))
 
-                label = myfont.render("Top Right X", 1, (config.white))
-                config.screen.blit(label, (960, 460))
+                # label = myfont.render("Top Right X", 1, (config.white))
+                # config.screen.blit(label, (960, 460))
 
-                label = myfont.render("The purpose of this game is to get to the ", 1, (config.white))
-                config.screen.blit(label, (780, 520))
+                # label = myfont.render("The purpose of this game is to get to the ", 1, (config.white))
+                # config.screen.blit(label, (780, 520))
 
-                label = myfont.render("other side of the zoo before the guards ", 1, (config.white))
-                config.screen.blit(label, (780, 550))
-
-                label = myfont.render("spot you, while you try to escape, ", 1, (config.white))
-                config.screen.blit(label, (780, 580))
-
-                label = myfont.render("get banana's for extra credits !", 1, (config.white))
-                config.screen.blit(label, (780, 610))
-
-                label = myfont.render("Good luck, see you on the other side ! ;)", 1, (config.white))
-                config.screen.blit(label, (780, 670))
+                label = myfont.render("Good luck, see you on the parking lot! ;)", 1, (config.white))
+                config.screen.blit(label, (100, 560))
 
                 self.button("Lets Play", 500, 580, 20, 20, config.playgame, config.playgamehover, self.level_1)
                 self.button("Back to menu", 660, 580, 100, 50, config.exitgame, config.exitgamehover, self.back)
