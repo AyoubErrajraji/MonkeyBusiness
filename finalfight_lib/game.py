@@ -197,14 +197,14 @@ class Score(Game):
 
 
     def getMemory(key):
-        with open("data/finalfight/memory.json", "r+") as jsonFile:
+        with open("data/memory.json", "r+") as jsonFile:
             data = json.load(jsonFile)
 
             return data[key]
 
     def setMemory(key, value):
-        # type: (object) -> object
-        with open("data/finalfight/memory.json", "r+") as jsonFile:
+
+        with open("data/memory.json", "r+") as jsonFile:
             data = json.load(jsonFile)
 
             data[key] = value
