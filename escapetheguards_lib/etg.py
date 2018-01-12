@@ -619,7 +619,7 @@ class run():
             thing_height = 100
 
 
-            
+
 
             dodged = 0
             banana = 0
