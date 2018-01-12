@@ -5,6 +5,17 @@ from crosstheroad_lib.button import *
 from crosstheroad_lib.monkey import *
 from crosstheroad_lib.car import *
 
+def appUnlocked(key):
+    unlocked = getMemory('unlocked')
+    unlocked.append(key)
+
+    with open("data/memory.json", "r+") as jsonFile:
+        data = json.load(jsonFile)
+        data['unlocked'] = unlocked
+        jsonFile.seek(0)
+        json.dump(data, jsonFile)
+        jsonFile.truncate()
+
 def getSettings(key):
     with open("crosstheroad_lib/settings.json", "r+") as jsonFile:
         data = json.load(jsonFile)
@@ -212,6 +223,8 @@ class Crosstheroad:
 
         self.timer = round(self.timer, 1)
         if self.timer <= 0:
+            if 4 not in getMemory('unlocked'):
+                appUnlocked(4)
             self.state = 'TimeOver'
 
     def move(self, e):
