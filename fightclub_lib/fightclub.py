@@ -14,6 +14,7 @@ font1 = pygame.font.Font("data/bananattack/FEASFBRG.ttf", 60)
 font2 = pygame.font.Font("data/bananattack/FEASFBRG.ttf", 45)
 font3 = pygame.font.Font("data/bananattack/FEASFBRG.ttf", 30)
 done = False
+pause = False
 
 exitButton = pygame.image.load("data/fightclub/exit.png")
 hoverExit = pygame.image.load("data/fightclub/exit1.png")
@@ -304,17 +305,39 @@ def updateFrameImages():
     player2.score()
     player1.score()
 
-def button(msg, x, y, w, h, iimg, aimg, action=None):
-    mouse = pygame.mouse.get_pos()
-    click = pygame.mouse.get_pressed()
-    if x + w > mouse[0] > x and y + h > mouse[1] + y:
-        gameDisplay.blit(aimg, (x, y, w, h))
+class button():
+    def __init__(self, msg, x, y, w, h, iimg, aimg, action=None):
+        self.x = x
+        self.y = y
+        self.w = w
+        self.h = h
 
-        if click[0] == 1 and action != None:
-            action()
+        self.msg = msg
 
-    else:
-        gameDisplay.blit(iimg, (x, y, w, h))
+        self.iimg = iimg
+        self.aimg = aimg
+
+        self.action = action
+
+        self.paint()
+
+    def paint(self):
+        print("Button painted!")
+
+        mouse = pygame.mouse.get_pos()
+        click = pygame.mouse.get_pressed()
+        if self.x + self.w > mouse[0] > self.x and self.y + self.h > mouse[1] + self.y:
+            gameDisplay.blit(self.aimg, (self.x, self.y, self.w, self.h))
+
+            if click[0] == 1 and self.action != None:
+                self.action()
+
+        else:
+            gameDisplay.blit(self.iimg, (self.x, self.y, self.w, self.h))
+        pygame.display.update()
+
+    def game_logic(self):
+        self.paint()
 
 def preGameScreen():
     gameDisplay.blit(background.backgroundImage, screenDims)
@@ -333,6 +356,8 @@ def preGameScreen():
 
 
 def gameOver1():
+    points = getMemory("balance")
+    points += 250
 
     s = pygame.Surface((width, height), pygame.SRCALPHA)
     s.fill((0, 0, 0, 150))
@@ -345,10 +370,10 @@ def gameOver1():
 
     gameDisplay.blit(s, (0, 0))
 
-    draw_text1(gameDisplay, "Player 1 has won!", 60, width / 2, height / 2)
+    draw_text1(gameDisplay, "Player 1 has won!", 60, width / 2, height / 4)
 
     # button("Play Again", 450, 400, 20, 20, play, hoverPlay, restart)
-    button("Back To Menu", 600, 280, 100, 50, exitButton, hoverExit, exitGame)
+    button("Back To Menu", width / 2, height / 2, 100, 50, exitButton, hoverExit, exitGame)
 
     pygame.display.update()
     waiting = True
@@ -357,6 +382,7 @@ def gameOver1():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
+                quit()
 
 
 
@@ -372,10 +398,10 @@ def gameOver2():
 
     gameDisplay.blit(s, (0, 0))
 
-    draw_text1(gameDisplay, "Player 1 has won!", 60, width / 2, height / 2)
+    draw_text1(gameDisplay, "Player 2 has won!", 60, width / 2, height / 4)
 
     # button("Play Again", 450, 400, 20, 20, play, hoverPlay, restart)
-    button("Back To Menu", 600, 280, 100, 50, exitButton, hoverExit, exitGame)
+    button("Back To Menu", width / 2, height/ 2, 100, 50, exitButton, hoverExit, exitGame)
 
     pygame.display.update()
     waiting = True
@@ -384,20 +410,19 @@ def gameOver2():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
+                quit()
 
 
 def paused():
-    largeText = pygame.font.SysFont("comicsansms", 115)
-    TextSurf, TextRect = text_objects("Paused", largeText)
-    TextRect.center = ((width / 2), (height/2))
-    gameDisplay.blit(TextSurf, TextRect)
-
-    button("Continue", 400, 450, 20, 20, play, hoverPlay, unpause)
-    button("Back To Menu", 600, 450, 100, 50, exitButton, hoverExit, exitGame)
+    global pause
+    draw_text1(gameDisplay, "Paused", 80, width / 2, height / 4)
 
     pygame.display.update()
+
     while pause:
         game.frame.tick(60)
+        button("Continue", 400, 450, 20, 20, play, hoverPlay, unpause)
+        button("Back To Menu", 600, 450, 100, 50, exitButton, hoverExit, exitGame)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -434,18 +459,21 @@ class run():
     def run(self):
         done = False
         intro = True
-        game_over = False
+        game_over1 = False
+        game_over2 = False
+        global points
         global pause
         while not done:
-            if game_over:
+            if game_over1:
                 gameOver1()
+                setMemory("balance", points)
+
+            if game_over2:
+                gameOver2()
 
             elif intro:
                 preGameScreen()
                 intro = False
-
-
-
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -468,6 +496,10 @@ class run():
                         pause = True
                         paused()
 
+                        while pause:
+                            paused()
+                            pause = False
+
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                         player1.x_change = 0
@@ -484,9 +516,9 @@ class run():
                         player2.y_change = player2.speedneg
                     elif event.key == pygame.K_s:
                         player2.y_change = player2.speedpos
-                    if event.key == pygame.K_ESCAPE:
-                        pause = True
-                        paused()
+                    # if event.key == pygame.K_ESCAPE:
+                        # pause = True
+                        # paused()
 
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_a or event.key == pygame.K_d:
@@ -535,7 +567,10 @@ class run():
                     player1.image = player1.flagMonkey
 
             if player1.points == 250:
-                game_over = True
+                game_over1 = True
+
+            if player2.points == 250:
+                game_over2 = True
 
             updateFrameImages()
             game.updateFrame()
