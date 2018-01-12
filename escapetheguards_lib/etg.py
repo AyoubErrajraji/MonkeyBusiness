@@ -206,7 +206,7 @@ class run():
                 # pygame.display.flip()
                 # clock.tick(60)
                 # continue
-                # break
+                
 
                 pygame.display.update()
                 clock.tick(15)
