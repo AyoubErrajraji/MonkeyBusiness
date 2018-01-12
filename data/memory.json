@@ -1,9 +1,1 @@
-<<<<<<< HEAD
-{"player": "AragueraFTW", "balance": 2710, "unlocked": [0, 1, 2], "monkey": "ninja_monkey.png", "bought": ["ninja_monkey.png"]}
-=======
-<<<<<<< HEAD
-{"player": "AragueraFTW", "balance": 1275, "unlocked": [0, 1, 2, 3, 4, 5, 6], "monkey": "super_monkey.png", "bought": ["apprentice_monkey.png"]}
-=======
-{"player": "AragueraFTW", "balance": 9000, "unlocked": [0, 1, 2, 3, 4, 5, 6], "monkey": "default_monkey.png", "bought": ["default_monkey.png"]}
->>>>>>> master
->>>>>>> master
+{"player": "AragueraFTW", "balance": 1210, "unlocked": [0, 1, 2], "monkey": "apprentice_monkey.png", "bought": ["apprentice_monkey.png"]}

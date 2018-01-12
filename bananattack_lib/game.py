@@ -54,15 +54,6 @@ class Game:
                     if self.state == config.BA_CLEAR:
                         self.state = config.BA_PAUSE
 
-                # did the user use the money cheat?
-                if e.type == pygame.KEYUP and e.key == pygame.K_m and self.state == config.BA_PAUSE:
-                    self.money += 100
-
-                # did the user use the wave cheat?
-                if e.type == pygame.KEYUP and e.key == pygame.K_n and self.state == config.BA_PAUSE:
-                    self.state = config.BA_SUCCESS
-
-
                 # track which keys are currently set
                 if e.type == pygame.KEYDOWN:
                     keys.add(e.key)
