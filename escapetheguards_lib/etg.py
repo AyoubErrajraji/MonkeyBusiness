@@ -45,6 +45,17 @@ class run():
         def things_dodged(self,count):
             font = pygame.font.SysFont(None, 30)
             text = font.render("Current Score: " + str(count), True, config.white)
+
+
+            #if self.things_dodged(count) == True:
+               # if 3 not in self.getMemory("unlocked"):
+                   # unlocked = self.getMemory("unlocked")
+                    #unlocked.append(3)
+                    #self.setMemory("unlocked", unlocked)
+
+
+
+
             config.screen.blit(text, (982, 70))
 
         def banana_count(self,count):
@@ -456,15 +467,7 @@ class run():
         def things(self,thingx, thingy, thingw, thingh, color):
             pygame.draw.rect(config.screen, color, [thingx, thingy, thingw, thingh])
 
-        def message_display(self,text):
-            largeText = pygame.font.Font('freesansbold.ttf', 115)
-            TextSurf, TextRect = text_objects(text, largeText)
-            TextRect.center = ((config.screen_width / 2), (config.screen_height / 2))
-            config.screen.blit(TextSurf, TextRect)
 
-            pygame.display.update()
-
-            time.sleep(2)
 
         def face_level1(self):
             gameExit = False
@@ -615,6 +618,9 @@ class run():
             thing_width = 100
             thing_height = 100
 
+
+            
+
             dodged = 0
             banana = 0
 
@@ -646,13 +652,15 @@ class run():
                             y_change = 5
                         if event.key == pygame.K_ESCAPE:
                             pause = True
-                            paused(self)
+                            self.paused()
 
                     if event.type == pygame.KEYUP:
                         if event.key == pygame.K_a or event.key == pygame.K_d:
                             x_change = 0
                         if event.key == pygame.K_w or event.key == pygame.K_s:
                             y_change = 0
+
+
 
                 x += x_change
                 y += y_change
