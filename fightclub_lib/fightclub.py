@@ -326,7 +326,7 @@ class button():
 
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
-        if self.x + self.w > mouse[0] > self.x and self.y + self.h > mouse[1] + self.y:
+        if self.x + self.w >= mouse[0] >= self.x and self.y + self.h >= mouse[1] >= self.y:
             gameDisplay.blit(self.aimg, (self.x, self.y, self.w, self.h))
 
             if click[0] == 1 and self.action != None:
