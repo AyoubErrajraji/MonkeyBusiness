@@ -18,7 +18,7 @@ screen_width = w
 screen_height = h
 screenDim = (screen_width, screen_height)
 screen = pygame.display.set_mode(screenDim)
-gs_width = 880
+gs_width = 900
 gs_height = 720
 player_width = 70
 player_height = 70
@@ -44,6 +44,8 @@ guard_rightImg = pygame.image.load('data/escapetheguards/guards_right.png').conv
 guard_leftImg = pygame.image.load('data/escapetheguards/guards_left.png').convert_alpha()
 guard_topImg = pygame.image.load('data/escapetheguards/guards_top.png').convert_alpha()
 guard_bottomImg = pygame.image.load('data/escapetheguards/guards_bottom.png').convert_alpha()
+bullet = pygame.image.load("data/escapetheguards/bullet.png").convert_alpha()
+
 
 
 
@@ -78,6 +80,7 @@ charwFlagImg = pygame.image.load('data/escapetheguards/charwflag.png').convert_a
 flagImg = pygame.image.load("data/escapetheguards/flag.png").convert_alpha()
 noFlagImg = pygame.image.load("data/escapetheguards/noflag.png").convert_alpha()
 targetImg = pygame.image.load("data/escapetheguards/target.png").convert_alpha()
+roboguard = pygame.image.load("data./escapetheguards/robo_monkey_top.png").convert_alpha()
 
 
 
@@ -90,6 +93,8 @@ engineer = pygame.transform.scale(engineer, (70,70))
 farmer = pygame.transform.scale(farmer, (70,70))
 ninja = pygame.transform.scale(ninja, (70,70))
 robo = pygame.transform.scale(robo, (70,70))
+roboguard = pygame.transform.scale(roboguard, (100,100))
+roboguard = pygame.transform.rotate(roboguard, (270))
 acid = pygame.transform.scale(acid, (150, 300))
 backgroundintro = pygame.transform.scale(backgroundintro, (screen_width, screen_height))
 bananaImg = pygame.transform.scale(bananaImg, (30,30))
@@ -117,6 +122,7 @@ exitgame = pygame.transform.scale(exitgame, (50,50))
 exitgamehover = pygame.transform.scale(exitgamehover, (50,50))
 exitwoodgame = pygame.transform.scale(exitwoodgame, (280,100))
 exitwoodgamehover = pygame.transform.scale(exitwoodgamehover, (280,100))
+bullet = pygame.transform.scale(bullet, (150,50))
 
 
 

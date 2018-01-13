@@ -456,8 +456,8 @@ class run():
                     if event.key == pygame.K_ESCAPE:
                         pause = True
                         paused()
-                    if pause:
-                        if event.key == pygame.K_ESCAPE:
+
+                    if event.key == pygame.K_ESCAPE:
                             pause = False
 
                 if event.type == pygame.KEYUP:

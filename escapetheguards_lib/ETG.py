@@ -42,9 +42,10 @@ class run():
             mymenu = slidemenu.run()
             mymenu.runm()
 
-        def things_dodged(self,count):
+        def things_dodged(self,points):
+
             font = pygame.font.SysFont(None, 30)
-            text = font.render("Current Score: " + str(count), True, config.white)
+            text = font.render("Current Score: " + str(self.points), False, config.white)
 
 
             #if self.things_dodged(count) == True:
@@ -54,46 +55,46 @@ class run():
 
             config.screen.blit(text, (982, 70))
 
-        def banana_count(self,count):
+        def banana_count(self,bananapoints):
             font = pygame.font.SysFont(None, 30)
-            text = font.render("Banana's picked up: " + str(count), True, config.white)
+            text = font.render("Banana's picked up: " + str(self.bananapoints), True, config.white)
             config.screen.blit(text, (982, 20))
 
         def loadImages(self):
-            self.monkey = getMemory("bought")
+            self.monkey = self.getMemory("bought")
             if self.monkey == ["apprentice_monkey.png"]:
                 self.monkey = pygame.image.load("data/apprentice_monkey_top.png").convert_alpha()
-                self.flagMonkey = pygame.image.load("data/fightclub/images/apprentice_monkey_flag.png").convert_alpha()
+
             elif self.monkey == ["acid_monkey.png"]:
                 self.monkey = pygame.image.load("data/acid_monkey.png").convert_alpha()
-                self.flagMonkey = pygame.image.load("data/fightclub/images/acid_monkey_flag.png").convert_alpha()
+
             elif self.monkey == ["dragon_monkey.png"]:
                 self.monkey = pygame.image.load("data/dragon_monkey_top.png").convert_alpha()
-                self.flagMonkey = pygame.image.load("data/fightclub/images/dragon_monkey_flag.png").convert_alpha()
+
             elif self.monkey == ["engineer_monkey.png"]:
                 self.monkey = pygame.image.load("data/engineer_monkey_top.png").convert_alpha()
-                self.flagMonkey = pygame.image.load("data/fightclub/images/engineer_monkey_flag.png").convert_alpha()
+
             elif self.monkey == ["farmer_monkey.png"]:
                 self.monkey = pygame.image.load("data/farmer_monkey.png").convert_alpha()
-                self.flagMonkey = pygame.image.load("data/fightclub/images/farmer_monkey_flag.png").convert_alpha()
+
             elif self.monkey == ["ninja_monkey.png"]:
                 self.monkey = pygame.image.load("data/ninja_monkey_top.png").convert_alpha()
-                self.flagMonkey = pygame.image.load("data/fightclub/images/ninja_monkey_flag.png").convert_alpha()
+
             elif self.monkey == ["robo_monkey.png"]:
                 self.monkey = pygame.image.load("data/robo_monkey_top.png").convert_alpha()
-                self.flagMonkey = pygame.image.load("data/fightclub/images/robo_monkey_flag.png").convert_alpha()
+
             elif self.monkey == ["super_monkey.png"]:
                 self.monkey = pygame.image.load("data/super_monkey_top.png").convert_alpha()
-                self.flagMonkey = pygame.image.load("data/fightclub/images/super_monkey_flag.png").convert_alpha()
+
             else:
                 self.monkey = pygame.image.load("data/default_monkey_top.png").convert_alpha()
                 self.flagMonkey = pygame.image.load("data/fightclub/images/charwflag.png").convert_alpha()
             self.monkey = pygame.transform.scale(self.monkey, (50, 50))
 
         def blitMonkey(self):
-            self.rect.x = 300
-            self.rect.y = 100
-            self.gameDisplay.blit(self.image, (self.rect.x, self.rect.y))
+            rect_x = 300
+            rect_y = 100
+            config.screen.blit(self.image, (rect_x, rect_y))
 
         def getMemory(self,key):
             with open("data/memory.json", "r+") as jsonFile:
@@ -284,7 +285,7 @@ class run():
                 config.screen.blit(s, (0, 0))
 
                 myfont = pygame.font.SysFont("comicsansms", 60)
-                label = myfont.render("YOU'VE BEEN SPOTTED!!", 2, (config.white))
+                label = myfont.render("YOU'VE BEEN KILLED!!", 2, (config.white))
                 config.screen.blit(label, (260, 280))
 
                 # button("Back to Intro", 590, 350, 100, 50, config.black, config.yellow, "leave")
@@ -473,6 +474,7 @@ class run():
 
         player_y = 120
         player_x = 280
+        player_speed = 0
 
 
         def character(self,x, y):
@@ -543,7 +545,7 @@ class run():
         y_target2 = config.screen_height * 0.2
 
         points = 0
-        points2 = 0
+        bananapoints = 0
 
         # def getMemory(key):
         # with open("data/memory.json", "r+") as jsonFile:
@@ -691,9 +693,23 @@ class run():
                 pygame.display.update()
                 config.clock.tick(60)
 
+        def guardblocks(self, blockx, blocky):
+            config.screen.blit(config.bullet, (blockx, blocky))
+
+
+
         def level_1(self):
 
+            self.points = 0
+            self.bananapoints = 0
+            block_startx = 30
+            block_starty = random.randrange(0, 720)
+            block_speed = 10
+            block_width = 150
+            block_height = 50
+
             global pause
+            player_speed = 0
 
             x_flag = 600
             y_flag = 300
@@ -715,6 +731,7 @@ class run():
 
             player_y = 120
             player_x = 280
+            player_speed = 0
 
 
 
@@ -749,17 +766,26 @@ class run():
 
                     # Moving Player 1
                     if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_a:
+                        if event.key == pygame.K_a :
                             x_change = -5
-                        elif event.key == pygame.K_d:
+
+                        if event.key == pygame.K_d :
                             x_change = 5
-                        elif event.key == pygame.K_w:
+                        if event.key == pygame.K_w:
                             y_change = -5
-                        elif event.key == pygame.K_s:
+                        if event.key == pygame.K_s:
                             y_change = 5
-                        elif event.key == pygame.K_ESCAPE:
+                        if event.key == pygame.K_ESCAPE:
                             pause = True
                             self.paused()
+
+                        if event.key == pygame.K_DELETE:
+                            pygame.quit()
+                            quit()
+
+                        else:
+                            print("else is true")
+                            player_speed = -1
 
 
 
@@ -775,17 +801,8 @@ class run():
                 player_y += y_change
 
                 config.screen.fill(config.light_black)
-                pygame.draw.rect(config.screen, config.dark_green, [980, 0, 300, 720])
-
-                pygame.draw.rect(config.screen, config.brown, [650, 370, 300, 30])  # Middle row!!
-                pygame.draw.rect(config.screen, config.brown, [950, 0, 30, 720])  # Right row!!
-                pygame.draw.rect(config.screen, config.brown, [290, 0, 660, 30])  # Top row!!
-                pygame.draw.rect(config.screen, config.brown, [0, 0, 30, 720])  # Left row!!
-                pygame.draw.rect(config.screen, config.brown, [0, 690, 750, 30])  # Bottom row!!
 
                 pygame.draw.rect(config.screen, config.brown, [0, 250, 500, 30])  # Left middle row!!
-
-                pygame.draw.rect(config.screen, config.brown, [0, 690, 750, 30])  # Bottom row!!
 
                 config.screen.blit(config.cage2Img, (30, 0))
                 config.screen.blit(config.cage3Img, (30, 490))
@@ -796,39 +813,116 @@ class run():
                 config.screen.blit(config.guard_leftImg, (550, 30))
                 config.screen.blit(config.guard_topImg, (230, 320))
 
-                config.screen.blit(config.logoImg, (1010, 340))
+                flag = self.setFlag
+                player = self.char
 
-                config.screen.blit(config.roboflat, (1130, 150))
+                self.player(player_x, player_y)
+
+                pygame.draw.rect(config.screen, config. light_black, [30, 0, 70 ,690])
+                pygame.draw.rect(config.screen, config.white, [30,0, 70, 5])
+                pygame.draw.rect(config.screen, config.white, [100, 0, 5, 690])
+                pygame.draw.rect(config.screen, config.white, [30, 685, 70, 5])
+
+
+                config.screen.blit(config.roboguard, (-30, 15))
+                config.screen.blit(config.roboguard, (-30, 85))
+                config.screen.blit(config.roboguard, (-30, 155))
+                config.screen.blit(config.roboguard, (-30, 225))
+                config.screen.blit(config.roboguard, (-30, 295))
+                config.screen.blit(config.roboguard, (-30, 365))
+                config.screen.blit(config.roboguard, (-30, 435))
+                config.screen.blit(config.roboguard, (-30, 505))
+                config.screen.blit(config.roboguard, (-30, 575))
+
+                pygame.draw.rect(config.screen, config.brown, [650, 370, 300, 30])  # Middle row!!
+
+                pygame.draw.rect(config.screen, config.brown, [290, 0, 660, 30])  # Top row!!
+
+                pygame.draw.rect(config.screen, config.brown, [0, 690, 700, 30])  # Bottom row!!
+
 
 
 
                 # things(thing_startx, thing_starty, thing_width, thing_height, config.black)
-                thing_starty += thing_speed
+                #thing_starty += thing_speed
 
-                if thing_starty > config.gs_height:
-                    thing_starty = 0 - thing_height
-                    thing_startx = random.randrange(0, config.gs_width)
-                    dodged += 1
-                    banana += 2
-                if y < thing_starty + thing_height:
-                    print('y crossover')
+                #if thing_starty > config.gs_height:
+                    #thing_starty = 0 - thing_height
+                    #thing_startx = random.randrange(0, config.gs_width)
+                    #dodged += 1
+                    #banana += 2
+                #if y < thing_starty + thing_height:
+                    #print('y crossover')
 
-                    if x > thing_startx and x < thing_startx + thing_width or x + config.player_width > thing_startx and x + config.player_width < thing_startx + thing_width:
-                        print('x crossover')
-                        print('player spotted!!')
+                    #if x > thing_startx and x < thing_startx + thing_width or x + config.player_width > thing_startx and x + config.player_width < thing_startx + thing_width:
+                        #print('x crossover')
+                        #print('player spotted!!')
                     #self.spot()
+
+                self.guardblocks(block_startx, block_starty)
+                block_startx += block_speed
+
+                if block_startx > config.gs_width:
+                    block_startx = 0 - block_height
+                    block_starty = random.randrange(0, config.screen_width)
+
+                if x < block_startx + block_width:
+                    print("there is x crossover!")
+
+                if y > block_starty and y < block_starty +block_height or y + player_height > block_starty and y + player_height < block_starty + block_height:
+                    print("y crossover")
+                    print("player spotted!")
+                    self.spot()
+
+                if player_x > 0 and player_x < 500 and player_y > 180 and player_y < 280:
+                    self.game_intro()
+
+                if player_x > 650 and player_x < 950 and player_y > 300 and player_y < 400:
+                    print("on top")
+
+                if player_x > 30 and player_x < 290 and player_y > 0 and player_y < 250:
+                    print("on top")
+
+                if player_x > 30 and player_x < 280 and player_y > 490 and player_x < 690:
+                    print("on top")
+
+                if player_x > 400 and player_x < 650 and player_y > 490 and player_y < 690:
+                    print("on top")
+
+
+
+                pygame.draw.rect(config.screen, config.brown, [950, 0, 30, 720])  # Right row!!
+
+                pygame.draw.rect(config.screen, config.dark_green, [980, 0, 300, 720])
+                config.screen.blit(config.logoImg, (1010, 340))
+                config.screen.blit(config.roboflat, (1130, 150))
+                pygame.draw.rect(config.screen, config.brown, [0, 0, 30, 720])  # Left row!!
+
+
 
                 if player_y > 720 and player_x > 750 and player_x < 950:
                     print("You Won!!!")
+                    self.points += 50
+                    self.bananapoints += 10
                     self.win()
+                    self.points = 0
+                    self.bananapoints = 0
 
-                if player_x > 550 and player_x < 950 and player_y > 30 and player_y < 280:
-                    print("You have been spotted!!")
-                    self.spot()
 
-                if player_x > 230 and player_x < 510 and player_y > 320 and player_y < 670:
-                    print("You have been spotted!!")
-                    self.spot()
+
+                #if player_x > 550 and player_x < 950 and player_y > 30 and player_y < 280:
+                    #print("You have been spotted!!")
+                    #player_speed += -1
+
+                #if player_x > 230 and player_x < 510 and player_y > 320 and player_y < 670:
+                    #print("You have been spotted!!")
+                    #self.spot()
+
+                if player_x > 600 and player_x < 630 and player_y > 300 and player_y < 330:
+                    config.screen.blit(config.noFlagImg, (600,300))
+
+
+
 
                 self.things_dodged(dodged)
                 self.banana_count(banana)
@@ -836,10 +930,7 @@ class run():
                 # button("Back to Intro", 1140, 670, 140, 50, config.black, config.yellow, "leave")
                 # button("Start Game", 980, 670, 140, 50, config.black, config.yellow, "level1")
 
-                flag = self.setFlag
-                player = self.char
 
-                self.player(player_x, player_y)
 
 
 
@@ -884,6 +975,6 @@ class run():
             self.face_level1()
             self.paused()
             pygame.quit()
-            sys.quit()
+            quit()
 
 
