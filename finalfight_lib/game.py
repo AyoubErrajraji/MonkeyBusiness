@@ -295,7 +295,7 @@ class Pause(Game):
         self.exitButton = pygame.transform.scale(self.exitButton, (50, 50))
 
     def blitExitButton(self, screen):
-        screen.blit(self.exitButton, (650, 320))
+        screen.blit(self.exitButton, (700, 320))
 
     def loadHoverExitButton(self, name):
         self.hoverExitButton = pygame.image.load(name).convert_alpha()
@@ -303,7 +303,7 @@ class Pause(Game):
         self.hoverExitButton = pygame.transform.scale(self.hoverExitButton, (50, 50))
 
     def blitHoverExitButton(self, screen):
-        screen.blit(self.hoverExitButton, (650, 320))
+        screen.blit(self.hoverExitButton, (700, 320))
 
     def loadReplayButton(self, name):
         self.replayButton = pygame.image.load(name).convert_alpha()
@@ -311,7 +311,7 @@ class Pause(Game):
         self.replayButton = pygame.transform.scale(self.replayButton, (50, 50))
 
     def blitReplayButton(self, screen):
-        screen.blit(self.replayButton, (700, 320))
+        screen.blit(self.replayButton, (650, 320))
 
     def loadHoverReplayButton(self, name):
         self.hoverReplayButton = pygame.image.load(name).convert_alpha()
@@ -319,7 +319,7 @@ class Pause(Game):
         self.hoverReplayButton = pygame.transform.scale(self.hoverReplayButton, (50, 50))
 
     def blitHoverReplayButton(self, screen):
-        screen.blit(self.hoverReplayButton, (700, 320))
+        screen.blit(self.hoverReplayButton, (650, 320))
 
     def loadNextButton(self,name):
         self.nextButton = pygame.image.load(name).convert_alpha()
@@ -405,7 +405,7 @@ class run():
 
         newPause.loadHoverNextButton("data/finalfight/hoverNext_button.png")
 
-        newBoss.loadBoss("data/finalfight/boss2.png")
+        newBoss.loadBoss("data/finalfight/boss.png")
 
         newWolk.loadWolk("data/finalfight/spreekwolk.png")
 
@@ -517,9 +517,9 @@ class run():
                         newScore.setMemory("unlocked", unlocked)
                 if player.health <= 0 and newScore.score < 100:
                     state = GAMEOVER
-                if player.health <= 0 and newScore.score > 100 and newScore.score < 400:
+                if player.health <= 0 and newScore.score >= 100 and newScore.score < 400:
                     state = GAMEOVER2
-                if player.health <= 0 and newScore.score > 400 and newScore.score < 1000:
+                if player.health <= 0 and newScore.score >= 400 and newScore.score < 1000:
                     state = GAMEOVER3
 
 
@@ -724,9 +724,9 @@ class run():
                     if pygame.mouse.get_pressed()[0] and 600 + 50 > mouse[0] > 600 and 320 + 50 > mouse[1] > 320:
                         state = old_state
                         old_state = PAUSE
-                    if pygame.mouse.get_pressed()[0] and 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
-                        newPause.restartGame()
                     if pygame.mouse.get_pressed()[0] and 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[1] > 320:
+                        newPause.restartGame()
+                    if pygame.mouse.get_pressed()[0] and 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
                         newPause.task2()
 
                     if 600 + 50 > mouse[0] > 600 and 320 + 50 > mouse[1] > 320:
@@ -734,12 +734,12 @@ class run():
                     else:
                         newPause.blitPlayButton(screen)
 
-                    if 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[1] > 320:
+                    if 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
                         newPause.blitHoverExitButton(screen)
                     else:
                         newPause.blitExitButton(screen)
 
-                    if 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
+                    if 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[1] > 320:
                         newPause.blitHoverReplayButton(screen)
                     else:
                         newPause.blitReplayButton(screen)
@@ -750,14 +750,14 @@ class run():
                     background.blitForrest()
                     screen.blit(s, (0, 0))
                     mouse = pygame.mouse.get_pos()
-                    if pygame.mouse.get_pressed()[0] and 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[
+                    if pygame.mouse.get_pressed()[0] and 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[
                         1] > 320 and state == YOUWON:
                         newPause.task()
-                    if pygame.mouse.get_pressed()[0] and 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
-                        newPause.restartGame()
-                    screen.blit(won_text, (550, 260))
+                    #if pygame.mouse.get_pressed()[0] and 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[1] > 320:
+                     #   newPause.restartGame()
+                    screen.blit(won_text, (600, 260))
 
-                    if 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[1] > 320:
+                    if 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
                         newPause.blitHoverExitButton(screen)
                     else:
                         newPause.blitExitButton(screen)
@@ -769,9 +769,9 @@ class run():
                     background.blitForrest()
                     screen.blit(s, (0, 0))
                     mouse = pygame.mouse.get_pos()
-                    if pygame.mouse.get_pressed()[0] and 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
-                        newPause.restartGame()
                     if pygame.mouse.get_pressed()[0] and 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[1] > 320:
+                        newPause.restartGame()
+                    if pygame.mouse.get_pressed()[0] and 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
                         newPause.task2()
 
                     #if 600 + 50 > mouse[0] > 600 and 320 + 50 > mouse[1] > 320:
@@ -779,12 +779,12 @@ class run():
                     #else:
                      #   newPause.blitPlayButton(screen)
 
-                    if 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[1] > 320:
+                    if 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
                         newPause.blitHoverExitButton(screen)
                     else:
                         newPause.blitExitButton(screen)
 
-                    if 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
+                    if 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[1] > 320:
                         newPause.blitHoverReplayButton(screen)
                     else:
                         newPause.blitReplayButton(screen)
@@ -795,9 +795,9 @@ class run():
                     background.blitForrest()
                     screen.blit(s, (0, 0))
                     mouse = pygame.mouse.get_pos()
-                    if pygame.mouse.get_pressed()[0] and 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
-                        newPause.restartGame()
                     if pygame.mouse.get_pressed()[0] and 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[1] > 320:
+                        newPause.restartGame()
+                    if pygame.mouse.get_pressed()[0] and 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
                         newPause.task3()
 
                     #if 600 + 50 > mouse[0] > 600 and 320 + 50 > mouse[1] > 320:
@@ -805,12 +805,12 @@ class run():
                     #else:
                      #   newPause.blitPlayButton(screen)
 
-                    if 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[1] > 320:
+                    if 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
                         newPause.blitHoverExitButton(screen)
                     else:
                         newPause.blitExitButton(screen)
 
-                    if 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
+                    if 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[1] > 320:
                         newPause.blitHoverReplayButton(screen)
                     else:
                         newPause.blitReplayButton(screen)
@@ -821,9 +821,9 @@ class run():
                     background.blitForrest()
                     screen.blit(s, (0, 0))
                     mouse = pygame.mouse.get_pos()
-                    if pygame.mouse.get_pressed()[0] and 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
-                        newPause.restartGame()
                     if pygame.mouse.get_pressed()[0] and 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[1] > 320:
+                        newPause.restartGame()
+                    if pygame.mouse.get_pressed()[0] and 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
                         newPause.task4()
 
                     #if 600 + 50 > mouse[0] > 600 and 320 + 50 > mouse[1] > 320:
@@ -831,12 +831,12 @@ class run():
                     #else:
                      #   newPause.blitPlayButton(screen)
 
-                    if 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[1] > 320:
+                    if 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
                         newPause.blitHoverExitButton(screen)
                     else:
                         newPause.blitExitButton(screen)
 
-                    if 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[1] > 320:
+                    if 650 + 50 > mouse[0] > 650 and 320 + 50 > mouse[1] > 320:
                         newPause.blitHoverReplayButton(screen)
                     else:
                         newPause.blitReplayButton(screen)
