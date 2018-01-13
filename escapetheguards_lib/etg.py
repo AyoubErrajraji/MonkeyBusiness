@@ -45,6 +45,13 @@ class run():
         def things_dodged(self,count):
             font = pygame.font.SysFont(None, 30)
             text = font.render("Current Score: " + str(count), True, config.white)
+
+
+            #if self.things_dodged(count) == True:
+
+
+
+
             config.screen.blit(text, (982, 70))
 
         def banana_count(self,count):
@@ -128,6 +135,105 @@ class run():
                     action()
             else:
                 config.screen.blit(iimg, (x, y, w, h))
+
+        def win(self):
+            dodged = 0
+            banana = 0
+            self.things_dodged(dodged)
+            self.banana_count(banana)
+            win = True
+
+            s = pygame.Surface((config.screen_width, config.screen_height), pygame.SRCALPHA)
+            s.fill((0, 0, 0, 150))
+
+            while win:
+                for event in pygame.event.get():
+
+                    if event.type == pygame.QUIT:
+                        quit()
+
+                    if 3 not in self.getMemory("unlocked"):
+                        unlocked = self.getMemory("unlocked")
+                        unlocked.append(0,1,2)
+                        self.setMemory("unlocked", unlocked)
+
+
+
+
+
+                config.screen.fill(config.light_black)
+                pygame.draw.rect(config.screen, config.dark_green, [980, 0, 300, 720])
+
+                pygame.draw.rect(config.screen, config.brown, [650, 370, 300, 30])  # Middle row!!
+                pygame.draw.rect(config.screen, config.brown, [950, 0, 30, 720])  # Right row!!
+                pygame.draw.rect(config.screen, config.brown, [290, 0, 660, 30])  # Top row!!
+                pygame.draw.rect(config.screen, config.brown, [0, 0, 30, 720])  # Left row!!
+                pygame.draw.rect(config.screen, config.brown, [0, 690, 750, 30])  # Bottom row!!
+
+                pygame.draw.rect(config.screen, config.brown, [0, 250, 500, 30])  # Left middle row!!
+
+                pygame.draw.rect(config.screen, config.brown, [0, 690, 750, 30])  # Bottom row!!
+
+                config.screen.blit(config.cage2Img, (30, 0))
+                config.screen.blit(config.cage3Img, (30, 490))
+                config.screen.blit(config.cage3Img, (400, 490))
+                config.screen.blit(config.cagedoorImg, (290, 70))
+                config.screen.blit(config.tableImg, (600, 200))
+
+                config.screen.blit(config.guard_leftImg, (550, 30))
+                config.screen.blit(config.guard_topImg, (230, 320))
+
+                config.screen.blit(config.logoImg, (1010, 350))
+                config.screen.blit(config.bananaImg, (300, 350))
+                config.screen.blit(config.bananaImg, (600, 620))
+                config.screen.blit(config.bananaImg, (900, 300))
+
+                self.things_dodged(dodged)
+                self.banana_count(banana)
+
+                config.screen.blit(s, (0, 0))
+
+                myfont = pygame.font.SysFont("comicsansms", 60)
+                label = myfont.render("You Win!!", 2, (config.white))
+                config.screen.blit(label, (260, 280))
+
+                myfont = pygame.font.SysFont("comicsansms", 20)
+                label = myfont.render("Your score: 200", 1, (config.black))
+                config.screen.blit(label, (300, 280))
+
+                # button("Back to Intro", 590, 350, 100, 50, config.black, config.yellow, "leave")
+                # button("Start Game", 590, 550, 100, 50, config.black, config.yellow, "level1")
+
+                self.button("Lets Play", 500, 380, 20, 20, config.replaygame, config.replaygamehover, self.level_1)
+                self.button("Back to menu", 660, 380, 100, 50, config.exitgame, config.exitgamehover, self.game_intro)
+
+
+
+
+                # button("Play Again!", 590, 350, 100, 50, config.yellow, config.light_black, level_1())
+
+                # button("Back to Intro!", 590, 550, 100, 50, config.yellow, config.light_black, game_intro())
+
+                # counter, text = 10, '10'.rjust(3)
+                # pygame.time.set_timer(pygame.USEREVENT, 1000)
+                # font = pygame.font.SysFont('comicsansms', 50)
+
+                # while True:
+                # for e in pygame.event.get():
+                # if e.type == pygame.USEREVENT:
+                # counter -= 1
+                # text = str(counter).rjust(3) if counter > 0 else face_level1()
+                # if e.type == pygame.QUIT: break
+                # else:
+
+                # pygame.display.flip()
+                # clock.tick(60)
+                # continue
+
+
+
+                pygame.display.update()
+                clock.tick(15)
 
         def spot(self):
             dodged = 0
@@ -362,7 +468,12 @@ class run():
 
         def player(self,x, y):
 
+
             config.screen.blit(config.robo, (x, y))
+
+        player_y = 120
+        player_x = 280
+
 
         def character(self,x, y):
             config.screen.blit(config.mainImg, (x, y))
@@ -456,15 +567,7 @@ class run():
         def things(self,thingx, thingy, thingw, thingh, color):
             pygame.draw.rect(config.screen, color, [thingx, thingy, thingw, thingh])
 
-        def message_display(self,text):
-            largeText = pygame.font.Font('freesansbold.ttf', 115)
-            TextSurf, TextRect = text_objects(text, largeText)
-            TextRect.center = ((config.screen_width / 2), (config.screen_height / 2))
-            config.screen.blit(TextSurf, TextRect)
 
-            pygame.display.update()
-
-            time.sleep(2)
 
         def face_level1(self):
             gameExit = False
@@ -483,6 +586,10 @@ class run():
                         if event.type == pygame.QUIT:
                             pygame.quit()
                             sys.exit()
+
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_SPACE:
+                            self.level_1()
 
                 config.screen.fill(config.light_black)
                 pygame.draw.rect(config.screen, config.dark_green, [980, 0, 300, 720])
@@ -521,59 +628,62 @@ class run():
 
                 myfont = pygame.font.SysFont("comicsansms", 50)
                 label = myfont.render("How to play??", 2, (config.white))
-                config.screen.blit(label, (470, 150))
+                config.screen.blit(label, (470, 100))
 
                 # button("Back to Intro", 590, 350, 100, 50, config.black, config.yellow, "leave")
                 # button("Start Game", 590, 550, 100, 50, config.black, config.yellow, "level1")
 
                 myfont = pygame.font.SysFont("comicsansms", 20)
-                label = myfont.render("Controls:", 1, (config.white))
-                config.screen.blit(label, (780, 280))
+                label = myfont.render("What's the goal of this game??", 1, (config.white))
+                config.screen.blit(label, (100, 200))
 
-                label = myfont.render("Move forwards:", 1, (config.white))
-                config.screen.blit(label, (780, 340))
+                label = myfont.render(
+                    "The goal of this game is to sneak past the guards and collect banana's to get more credits ", 1,
+                    (config.white))
+                config.screen.blit(label, (100, 250))
 
-                label = myfont.render("Move backwards:", 1, (config.white))
-                config.screen.blit(label, (780, 370))
+                label = myfont.render("so you can buy the powerfull robo monkey!! (or some of the other characters.)",
+                                      1, (config.white))
+                config.screen.blit(label, (100, 280))
 
-                label = myfont.render("Move Sideways:", 1, (config.white))
-                config.screen.blit(label, (780, 400))
+                label = myfont.render("But how do I escape those Guards???", 1, (config.white))
+                config.screen.blit(label, (100, 330))
 
-                label = myfont.render("Pause the game:", 1, (config.white))
-                config.screen.blit(label, (780, 430))
+                label = myfont.render("Well...", 1, (config.white))
+                config.screen.blit(label, (100, 360))
 
-                label = myfont.render("Key Up", 1, (config.white))
-                config.screen.blit(label, (960, 340))
+                label = myfont.render(
+                    "Use w/a/s/d to move your character around, once you are out of your cage you have to  ", 1,
+                    (config.white))
+                config.screen.blit(label, (100, 390))
 
-                label = myfont.render("Key Down", 1, (config.white))
-                config.screen.blit(label, (960, 370))
+                label = myfont.render(
+                    "run past the guards in order to get to the parking lot, once you are running and avoiding ", 1,
+                    (config.white))
+                config.screen.blit(label, (100, 420))
 
-                label = myfont.render("Key Left and Key Right", 1, (config.white))
-                config.screen.blit(label, (960, 400))
+                label = myfont.render(
+                    "the guards try to pick up banana's to get extra points. Once you passed all the guards ", 1,
+                    (config.white))
+                config.screen.blit(label, (100, 450))
 
-                label = myfont.render("Pause Button or Key Escape", 1, (config.white))
-                config.screen.blit(label, (960, 430))
+                label = myfont.render(
+                    "and you make it to the parking lot, you will earn your well deserved points, but beware, ", 1,
+                    (config.white))
+                config.screen.blit(label, (100, 480))
 
-                label = myfont.render("Quit The Game:", 1, (config.white))
-                config.screen.blit(label, (780, 460))
+                label = myfont.render("if you get caught halfway, you lose all the points you collected that round.", 1,
+                                      (config.white))
+                config.screen.blit(label, (100, 510))
 
-                label = myfont.render("Top Right X", 1, (config.white))
-                config.screen.blit(label, (960, 460))
+                # label = myfont.render("Top Right X", 1, (config.white))
+                # config.screen.blit(label, (960, 460))
 
-                label = myfont.render("The purpose of this game is to get to the ", 1, (config.white))
-                config.screen.blit(label, (780, 520))
+                # label = myfont.render("The purpose of this game is to get to the ", 1, (config.white))
+                # config.screen.blit(label, (780, 520))
 
-                label = myfont.render("other side of the zoo before the guards ", 1, (config.white))
-                config.screen.blit(label, (780, 550))
-
-                label = myfont.render("spot you, while you try to escape, ", 1, (config.white))
-                config.screen.blit(label, (780, 580))
-
-                label = myfont.render("get banana's for extra credits !", 1, (config.white))
-                config.screen.blit(label, (780, 610))
-
-                label = myfont.render("Good luck, see you on the other side ! ;)", 1, (config.white))
-                config.screen.blit(label, (780, 670))
+                label = myfont.render("Good luck, see you on the parking lot! ;)", 1, (config.white))
+                config.screen.blit(label, (100, 560))
 
                 self.button("Lets Play", 500, 580, 20, 20, config.playgame, config.playgamehover, self.level_1)
                 self.button("Back to menu", 660, 580, 100, 50, config.exitgame, config.exitgamehover, self.back)
@@ -603,6 +713,9 @@ class run():
             x_target2 = config.screen_width * 0.2
             y_target2 = config.screen_height * 0.2
 
+            player_y = 120
+            player_x = 280
+
 
 
             thing_startx = random.randrange(0, config.gs_width)
@@ -611,6 +724,9 @@ class run():
 
             thing_width = 100
             thing_height = 100
+
+
+
 
             dodged = 0
             banana = 0
@@ -633,7 +749,7 @@ class run():
 
                     # Moving Player 1
                     if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_a and x > config.w - config.w:
+                        if event.key == pygame.K_a:
                             x_change = -5
                         elif event.key == pygame.K_d:
                             x_change = 5
@@ -641,9 +757,11 @@ class run():
                             y_change = -5
                         elif event.key == pygame.K_s:
                             y_change = 5
-                        if event.key == pygame.K_ESCAPE:
+                        elif event.key == pygame.K_ESCAPE:
                             pause = True
-                            paused(self)
+                            self.paused()
+
+
 
                     if event.type == pygame.KEYUP:
                         if event.key == pygame.K_a or event.key == pygame.K_d:
@@ -651,8 +769,10 @@ class run():
                         if event.key == pygame.K_w or event.key == pygame.K_s:
                             y_change = 0
 
-                x += x_change
-                y += y_change
+
+
+                player_x += x_change
+                player_y += y_change
 
                 config.screen.fill(config.light_black)
                 pygame.draw.rect(config.screen, config.dark_green, [980, 0, 300, 720])
@@ -680,6 +800,8 @@ class run():
 
                 config.screen.blit(config.roboflat, (1130, 150))
 
+
+
                 # things(thing_startx, thing_starty, thing_width, thing_height, config.black)
                 thing_starty += thing_speed
 
@@ -696,6 +818,18 @@ class run():
                         print('player spotted!!')
                     #self.spot()
 
+                if player_y > 720 and player_x > 750 and player_x < 950:
+                    print("You Won!!!")
+                    self.win()
+
+                if player_x > 550 and player_x < 950 and player_y > 30 and player_y < 280:
+                    print("You have been spotted!!")
+                    self.spot()
+
+                if player_x > 230 and player_x < 510 and player_y > 320 and player_y < 670:
+                    print("You have been spotted!!")
+                    self.spot()
+
                 self.things_dodged(dodged)
                 self.banana_count(banana)
 
@@ -705,7 +839,7 @@ class run():
                 flag = self.setFlag
                 player = self.char
 
-                self.player(x, y)
+                self.player(player_x, player_y)
 
 
 
