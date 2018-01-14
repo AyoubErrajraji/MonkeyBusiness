@@ -908,6 +908,8 @@ class run():
                     self.points = 0
                     self.bananapoints = 0
 
+                   #print("prachtig")
+
 
 
                 #if player_x > 550 and player_x < 950 and player_y > 30 and player_y < 280:
