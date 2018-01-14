@@ -2,6 +2,7 @@
 import pygame, sys, time
 from pygame.locals import *
 from menu_lib import slidemenu
+import json
 
 pygame.font.init()
 WHITE = (255, 255, 255)
@@ -34,8 +35,12 @@ class run(object):
         font = pygame.font.SysFont("helvetica", 64)
 
         background = pygame.image.load('data/monkeywar/bg.png').convert()
+        pygame.mixer.music.load('data/monkeywar/music.mp3')
+        pygame.mixer.music.play(-1)
 
         while not Quit:
+
+
             # FPS
             clock.tick(60)
 
@@ -125,10 +130,12 @@ class run(object):
             if secondMonkey.health<=0:
                 fase = 6
                 firstMonkey.p1()
+                pygame.mixer.music.stop()
 
             if firstMonkey.health<=0:
                 fase = 7
                 secondMonkey.p2()
+                pygame.mixer.music.stop()
 
             if fase == 1:
                 secondMonkey.move()
@@ -182,11 +189,13 @@ class run(object):
 
             ## Restart ##
             if mouse[0] > 600 and mouse[0] < 680 and mouse[1] > 300 and mouse[1] < 380 and click[0] == True and fase == 6:
-                run.runm(self)
+                mymenu = slidemenu.run()
+                mymenu.runm(50)
 
             ## Quit ##
             if mouse[0] > 700 and mouse[0] < 780 and mouse[1] > 300 and mouse[1] < 380 and click[0] == True and fase == 6:
-                slidemenu.run().runm()
+                mymenu = slidemenu.run()
+                mymenu.runm(50)
 
             ## Resume ##
             if mouse[0] > 500 and mouse[0] < 580 and mouse[1] > 300 and mouse[1] < 380 and click[0] == True and fase == 7:
@@ -194,12 +203,13 @@ class run(object):
 
             ## Restart ##
             if mouse[0] > 600 and mouse[0] < 680 and mouse[1] > 300 and mouse[1] < 380 and click[0] == True and fase == 7:
-                run.runm(self)
+                mymenu = slidemenu.run()
+                mymenu.runm(50)
 
             ## Quit ##
             if mouse[0] > 700 and mouse[0] < 780 and mouse[1] > 300 and mouse[1] < 380 and click[0] == True and fase == 7:
-                slidemenu.run().runm()
-
+                mymenu = slidemenu.run()
+                mymenu.runm(50)
 
 
             # update display
@@ -294,6 +304,9 @@ class Monkey():
         self.eheart = pygame.image.load("data/monkeywar/Empty_Heart.png")
         self.aheart = pygame.image.load("data/monkeywar/2_3_Heart.png")
         self.bheart = pygame.image.load("data/monkeywar/1_3_Heart.png")
+        self.cannon = pygame.mixer.Sound("data/monkeywar/cannon.wav")
+        self.win = pygame.mixer.Sound("data/monkeywar/win.wav")
+
 
 
     def intro(self):
@@ -336,6 +349,7 @@ class Monkey():
         s = pygame.Surface((1280, 720), pygame.SRCALPHA)  # per-pixel alpha
         s.fill((0, 0, 0, 150))
         self.draw((self.x, 478))
+        self.win.play()
 
         ## Dark background ##
         surface.blit(s, (0, 0))
@@ -364,6 +378,7 @@ class Monkey():
         s = pygame.Surface((1280, 720), pygame.SRCALPHA)  # per-pixel alpha
         s.fill((0, 0, 0, 150))
         self.draw((self.x, 478))
+        self.win.play()
 
         ## Dark background ##
         surface.blit(s, (0, 0))
@@ -485,16 +500,20 @@ class Monkey():
             if self.movement == "ARROWS":
                 if self.amount < 3:
                         if key[pygame.K_UP]:
+                            self.cannon.play()
                             self.bullets.append(Bullet(self.x + 55, self.y))
                             self.bullet_timer = .3 # Reset the timer.
                             self.amount += 1
 
+
             if self.movement == "WASD":
                 if self.amount < 3:
                     if key[pygame.K_w]:
+                        self.cannon.play()
                         self.bullets.append(Bullet(self.x + 55, self.y))
                         self.bullet_timer = .3  # Reset the timer.
                         self.amount += 1
+
 
         #  print("Hit")
 
@@ -535,6 +554,26 @@ class Monkey():
 
 
         self.draw((self.x,478))
+
+        def exitGame():
+            mymenu = slidemenu.run()
+            mymenu.runm(50)
+
+        def getMemory(key):
+            with open("data/memory.json", "r+") as jsonFile:
+                data = json.load(jsonFile)
+
+                return data[key]
+
+        def setMemory(key, value):
+            with open("data/memory.json", "r+") as jsonFile:
+                data = json.load(jsonFile)
+
+                data[key] = value
+
+                jsonFile.seek(0)  # rewind
+                json.dump(data, jsonFile)
+                jsonFile.truncate()
 
 
 
