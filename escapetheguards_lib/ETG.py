@@ -707,6 +707,7 @@ class run():
             self.bananapoints = 0
             block_startx = 30
             block_starty = random.randrange(0, 720)
+
             block_speed = 12
             block_width = 150
             block_height = 50
@@ -855,6 +856,11 @@ class run():
                     #thing_startx = random.randrange(0, config.gs_width)
                     #dodged += 1
                     #banana += 2
+
+
+
+
+
                 #if y < thing_starty + thing_height:
                     #print('y crossover')
 
@@ -886,7 +892,13 @@ class run():
                     #print("player spotted!")
                     #self.spot()
 
-                if player_x
+                if player_x < block_startx + block_width:
+                    print("crossover")
+
+                #if player_x <
+
+                if y > block_starty and y < block_starty + block_height or y + player_height > block_starty and y + player_height < thing_starty +block_height:
+                    self.spot()
 
                 if player_x > 0 and player_x < 500 and player_y > 180 and player_y < 280:
                     x_change *= 0
@@ -994,10 +1006,10 @@ class run():
 
 
 
-                self.flag(x_flag, y_flag)
-                self.flag2(x2_flag, y2_flag)
-                self.flag3(x3_flag, y3_flag)
-                self.flag4(x4_flag, y4_flag)
+                #self.flag(x_flag, y_flag)
+                #self.flag2(x2_flag, y2_flag)
+                #self.flag3(x3_flag, y3_flag)
+                #self.flag4(x4_flag, y4_flag)
 
                 # Flag Collision Player 1
                 if flag == self.setFlag and player == self.char:
