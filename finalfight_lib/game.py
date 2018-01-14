@@ -111,10 +111,11 @@ class Player(Game):  # represents the bird, not the game
         if self.bullet_timer <= 0:
             self.bullet_timer = 0  # Bullet ready.
             if key[pygame.K_SPACE]:
-                self.bullets.append(Bullet(self.x + 64, self.y))
-                self.bullet_timer = .2  # Reset the timer.
                 pygame.mixer.music.load('data/finalfight/gunshot.wav')
                 pygame.mixer.music.play()
+                self.bullets.append(Bullet(self.x + 64, self.y))
+                self.bullet_timer = .2  # Reset the timer.
+
           #  print("Hit")
 
 
@@ -455,7 +456,6 @@ class run():
         old_state = PAUSE
         state = INTRO
 
-
         pause_text = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 60).render('Paused', True, pygame.color.Color('White'))
         won_text = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 60).render('You Won!!!', True, pygame.color.Color('White'))
         lose_text = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 60).render('Game Over!', True, pygame.color.Color('White'))
@@ -491,6 +491,7 @@ class run():
         thing_speed2 = 25
         thing_width = 25
         thing_height = 25
+        teller = 0
 
         while True:
 
@@ -512,6 +513,7 @@ class run():
                 if newScore.score >= 1000:
                     old_state = state
                     state = YOUWON
+
                     if 5 not in newScore.getMemory("unlocked") and 6 not in newScore.getMemory("unlocked"):
                         unlocked = newScore.getMemory("unlocked")
                         unlocked.append(5)
@@ -749,8 +751,17 @@ class run():
                     screen.blit(pause_text, (600, 260))
 
                 elif state == YOUWON:
+
                     background.blitForrest()
                     screen.blit(s, (0, 0))
+
+
+                    if teller == 0:
+                        pygame.mixer.music.load('data/finalfight/youwon.mp3')
+                        pygame.mixer.music.play()
+                        teller += 1
+
+
                     mouse = pygame.mouse.get_pos()
                     if pygame.mouse.get_pressed()[0] and 700 + 50 > mouse[0] > 700 and 320 + 50 > mouse[
                         1] > 320 and state == YOUWON:
