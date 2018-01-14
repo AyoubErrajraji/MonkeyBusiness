@@ -287,7 +287,7 @@ class Monkey():
                                                                                  pygame.color.Color('White'))
         self.win2 = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 90).render('P1 Wins!', True,
                                                                                  pygame.color.Color('White'))
-        self.health = 3
+        self.health = 9
         self.fheart = pygame.image.load("data/monkeywar/Full_Heart.png")
         self.eheart = pygame.image.load("data/monkeywar/Empty_Heart.png")
 
@@ -382,17 +382,17 @@ class Monkey():
         surface.blit(pygame.transform.scale(self.sprite, (110, 80)), position)
 
     def lives(self):
-        if self.health == 3:
+        if self.health <= 9 and self.health > 6:
             surface.blit(pygame.transform.scale(self.fheart, (20, 20)), (self.x+10, self.y -20))
             surface.blit(pygame.transform.scale(self.fheart, (20, 20)), (self.x + 35, self.y - 20))
             surface.blit(pygame.transform.scale(self.fheart, (20, 20)), (self.x + 60, self.y - 20))
 
-        if self.health == 2:
+        if self.health <= 6 and self.health > 3:
             surface.blit(pygame.transform.scale(self.fheart, (20, 20)), (self.x + 10, self.y - 20))
             surface.blit(pygame.transform.scale(self.fheart, (20, 20)), (self.x + 35, self.y - 20))
             surface.blit(pygame.transform.scale(self.eheart, (20, 20)), (self.x + 60, self.y - 20))
 
-        if self.health == 1:
+        if self.health <= 3 and self.health >0:
             surface.blit(pygame.transform.scale(self.fheart, (20, 20)), (self.x + 10, self.y - 20))
             surface.blit(pygame.transform.scale(self.eheart, (20, 20)), (self.x + 35, self.y - 20))
             surface.blit(pygame.transform.scale(self.eheart, (20, 20)), (self.x + 60, self.y - 20))
