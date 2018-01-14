@@ -29,7 +29,7 @@ elif debug == 4:
     mymenu.runm()
 elif debug == 5:
     mymenu = fightclub.run()
-    mymenu.runm()
+    mymenu.run()
 elif debug == 6:
     mymenu = monkeywar.run()
     mymenu.runm()
