@@ -21,6 +21,10 @@ exitButton = pygame.image.load("data/fightclub/exit.png")
 hoverExit = pygame.image.load("data/fightclub/exit1.png")
 play = pygame.image.load("data/fightclub/play.png")
 hoverPlay = pygame.image.load("data/Fightclub/play1.png")
+stopMusicButton = pygame.image.load("data/fightclub/music.png").convert_alpha()
+stopMusicButtonHover = pygame.image.load("data/fightclub/musicHover.png").convert_alpha()
+stopMusicButton = pygame.transform.scale(stopMusicButton, (50, 50))
+stopMusicButtonHover = pygame.transform.scale(stopMusicButtonHover, (50, 50))
 
 class Game:
     def __init__(self, gameDisplay, screenDims):
@@ -565,6 +569,7 @@ class run():
         game_over2 = False
         pygame.mixer.music.load("data/fightclub/CantinaBand.mp3")
         pygame.mixer.music.play(-1)
+        horn = pygame.mixer.Sound("data/fightclub/horn.wav")
         global points
         global pause
         while not done:
@@ -657,6 +662,7 @@ class run():
                     player1.image = player1.monkey
                     player1.points += 20
                     flag.image = flag.flag
+                    horn.play
 
                 elif pygame.sprite.spritecollide(player2, player1Group, False, pygame.sprite.collide_mask):
                     player1.image = player1.monkey
@@ -669,6 +675,7 @@ class run():
                     player2.image = player2.monkey
                     player2.points += 20
                     flag.image = flag.flag
+                    horn.play()
 
                 elif pygame.sprite.spritecollide(player1, player2Group, False, pygame.sprite.collide_mask):
                     player2.image = player2.monkey
