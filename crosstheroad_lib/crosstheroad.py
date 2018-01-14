@@ -32,6 +32,16 @@ def setSettings(key, value):
         json.dump(data, jsonFile)
         jsonFile.truncate()
 
+def setMemory(key, value):
+    with open("data/memory.json", "r+") as jsonFile:
+        data = json.load(jsonFile)
+
+        data[key] = value
+
+        jsonFile.seek(0)  # rewind
+        json.dump(data, jsonFile)
+        jsonFile.truncate()
+
 
 class Crosstheroad:
     def __init__(self, screen, config, settings):
@@ -264,6 +274,10 @@ class Crosstheroad:
         if self.timer <= 0:
             if 4 not in getMemory('unlocked'):
                 appUnlocked(4)
+
+            points = getMemory('balance')
+            setMemory('balance', points + self.score)
+            
             self.state = 'TimeOver'
 
     def move(self, e):
@@ -283,6 +297,11 @@ class Crosstheroad:
         # Reset the monkey when it reaches the finish
         if self.monkeys[0].y < 150:
             self.score += self.monkeys[0].amount
+
+            pygame.mixer.music.load("crosstheroad_lib/src/sounds/succes.mp3")
+            pygame.mixer.music.play()
+
+            pygame.time.wait(100)
             self.monkeys[0].reset()
 
     def collisionDet(self):
@@ -299,7 +318,7 @@ class Crosstheroad:
                 # Reset monkey that collided
                 self.monkeys[0].reset()
 
-                pygame.mixer.music.load("crosstheroad_lib/src/sounds/killed.wav")
+                pygame.mixer.music.load("crosstheroad_lib/src/sounds/killed.mp3")
                 pygame.mixer.music.play()
 
     def loadPause(self):
@@ -319,7 +338,7 @@ class Crosstheroad:
         self.loadGame()
 
     def exitGame(self):
-        slidemenu.run().runm(self.score)
+        slidemenu.run().runm()
         self.quit = True
 
     def toggleFPS(self):
