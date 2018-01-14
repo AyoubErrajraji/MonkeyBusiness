@@ -40,7 +40,7 @@ class run():
 
         def back(self):
             mymenu = slidemenu.run()
-            mymenu.runm()
+            mymenu.runm(100)
 
         def things_dodged(self,points):
 
@@ -867,8 +867,16 @@ class run():
                     block_startx = 0 - block_height
                     block_starty = random.randrange(0, config.screen_width)
 
-                if x < block_startx + block_width:
+
+                if y < block_starty + block_width:
+
                     print("there is x crossover!")
+
+
+                if x > block_startx and x < block_startx + block_width or x + player_width > block_startx and x + player_width < block_startx + block_width:
+                    print("x crossover")
+                    print("player spotted!")
+                    self.spot()
 
                 if y > block_starty and y < block_starty +block_height or y + player_height > block_starty and y + player_height < block_starty + block_height:
                     print("y crossover")
