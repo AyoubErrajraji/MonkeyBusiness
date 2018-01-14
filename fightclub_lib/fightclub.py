@@ -1,6 +1,7 @@
 import pygame
 import json
 from menu_lib import slidemenu
+from fightclub_lib import fightclub
 
 pygame.init()
 
@@ -39,11 +40,29 @@ class Background(Game):
         self.backgroundImage = None
 
     def loadImage(self, name):
-        self.backgroundImage = pygame.image.load("data/fightclub/background1.png")
+        self.backgroundImage = pygame.image.load("data/fightclub/background.png")
         self.backgroundImage = pygame.transform.scale(self.backgroundImage, self.screenDims)
 
     def blitBackground(self):
         self.gameDisplay.blit(self.backgroundImage, (0, 0))
+
+
+class Wall(Game, pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        Game.__init__(self, gameDisplay, screenDims)
+        pygame.sprite.Sprite.__init__(self)
+        self.loadImage()
+        self.image = self.image
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        self.mask = pygame.mask.from_surface(self.image)
+
+    def loadImage(self):
+        self.image = pygame.image.load("data/fightclub/bush.png").convert_alpha()
+        self.image = pygame.transform.scale(self.image, (80, 80))
+    def draw(self):
+        self.gameDisplay.blit(self.image, (self.rect.x, self.rect.y))
 
 
 class Flag(Game, pygame.sprite.Sprite):
@@ -56,6 +75,7 @@ class Flag(Game, pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = 600
         self.rect.y = 300
+        self.mask = pygame.mask.from_surface(self.image)
 
     def loadImages(self):
         self.flag = pygame.image.load("data/fightclub/flag.png")
@@ -113,6 +133,7 @@ class Player1(Game, pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = 1024
         self.rect.y = 576
+        self.mask = pygame.mask.from_surface(self.image)
 
     def loadImages(self):
         self.monkey = getMemory("bought")
@@ -172,6 +193,7 @@ class Player2(Game, pygame.sprite.Sprite):
         self.rect.x = 256
         self.rect.y = 144
         self.points = 0
+        self.mask = pygame.mask.from_surface(self.image)
 
     def loadImages(self):
         self.monkey = getMemory("bought")
@@ -239,15 +261,6 @@ def draw_text3(surf, text, size, x, y):
     text_rect.midtop = (x, y)
     gameDisplay.blit(text_surface, text_rect)
 
-def unpause():
-    global pause
-    pause = False
-
-
-def exitGame():
-    pygame.quit()
-    quit()
-
 
 def getMemory(key):
         with open("data/memory.json", "r+") as jsonFile:
@@ -276,6 +289,7 @@ player2Group = pygame.sprite.Group()
 flagGroup = pygame.sprite.Group()
 targetGroup1 = pygame.sprite.Group()
 targetGroup2 = pygame.sprite.Group()
+wallGroup = pygame.sprite.Group()
 
 
 def addSprites():
@@ -284,6 +298,22 @@ def addSprites():
     flagGroup.add(flag)
     targetGroup1.add(target1)
     targetGroup2.add(target2)
+    wallGroup.add(wall1)
+    wallGroup.add(wall1_1)
+    wallGroup.add(wall1_2)
+    wallGroup.add(wall1_3)
+    wallGroup.add(wall1_4)
+    wallGroup.add(wall1_5)
+    wallGroup.add(wall1_6)
+    wallGroup.add(wall2)
+    wallGroup.add(wall2_1)
+    wallGroup.add(wall2_2)
+    wallGroup.add(wall2_3)
+    wallGroup.add(wall2_4)
+    wallGroup.add(wall2_5)
+    wallGroup.add(wall2_6)
+    wallGroup.add(wall3)
+    wallGroup.add(wall4)
 
 
 def updateFrameImages():
@@ -304,6 +334,22 @@ def updateFrameImages():
     target1.update()
     player2.score()
     player1.score()
+    wall1.draw()
+    wall1_1.draw()
+    wall1_2.draw()
+    wall1_3.draw()
+    wall1_4.draw()
+    wall1_5.draw()
+    wall1_6.draw()
+    wall2.draw()
+    wall2_1.draw()
+    wall2_2.draw()
+    wall2_3.draw()
+    wall2_4.draw()
+    wall2_5.draw()
+    wall2_6.draw()
+    wall3.draw()
+    wall4.draw()
 
 class button():
     def __init__(self, msg, x, y, w, h, iimg, aimg, action=None):
@@ -322,7 +368,6 @@ class button():
         self.paint()
 
     def paint(self):
-        print("Button painted!")
 
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
@@ -340,7 +385,7 @@ class button():
         self.paint()
 
 def preGameScreen():
-    gameDisplay.blit(background.backgroundImage, screenDims)
+    gameDisplay.fill((0, 0, 0))
     draw_text1(gameDisplay, "Banana Fight CLub", 64, width / 2, height / 4)
     draw_text2(gameDisplay, "W/A/S/D Move left Player. Arrow Keys Move Right player", 32, width / 2, height / 2)
     draw_text3(gameDisplay, "Press A Key To Begin", 45, width / 2, height / 3)
@@ -353,6 +398,20 @@ def preGameScreen():
                 pygame.quit()
             if event.type == pygame.KEYUP:
                 waiting = False
+
+
+def unpause():
+    global pause
+    pause = False
+
+
+def exitGame():
+    mymenu = slidemenu.run()
+    mymenu.runm()
+
+def restart():
+    mymenu = fightclub.run()
+    mymenu.runm()
 
 
 def gameOver1():
@@ -371,14 +430,19 @@ def gameOver1():
     gameDisplay.blit(s, (0, 0))
 
     draw_text1(gameDisplay, "Player 1 has won!", 60, width / 2, height / 4)
-
-    # button("Play Again", 450, 400, 20, 20, play, hoverPlay, restart)
-    button("Back To Menu", width / 2, height / 2, 100, 50, exitButton, hoverExit, exitGame)
+    global intro
+    intro = False
+    player2.points = 0
+    player1.points = 0
+    player1.x_change = 0
+    player2.x_change = 0
 
     pygame.display.update()
     waiting = True
     while waiting:
         game.frame.tick(60)
+        button("Play Again", 580, height / 2, 20, 20, play, hoverPlay, restart)
+        button("Back To Menu", 700, height / 2, 100, 50, exitButton, hoverExit, exitGame)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -399,14 +463,19 @@ def gameOver2():
     gameDisplay.blit(s, (0, 0))
 
     draw_text1(gameDisplay, "Player 2 has won!", 60, width / 2, height / 4)
-
-    # button("Play Again", 450, 400, 20, 20, play, hoverPlay, restart)
-    button("Back To Menu", width / 2, height/ 2, 100, 50, exitButton, hoverExit, exitGame)
+    global intro
+    intro = False
+    player2.points = 0
+    player1.points = 0
+    player1.x_change = 0
+    player2.x_change = 0
 
     pygame.display.update()
     waiting = True
     while waiting:
         game.frame.tick(60)
+        button("Play Again", 580, height / 2, 20, 20, play, hoverPlay, restart)
+        button("Back To Menu", 700, height / 2, 100, 50, exitButton, hoverExit, exitGame)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -438,6 +507,23 @@ flag = Flag(gameDisplay, screenDims)
 background = Background(gameDisplay, screenDims)
 target1 = TargetP1(gameDisplay, screenDims)
 target2 = TargetP2(gameDisplay, screenDims)
+wall1 = Wall(400, 0)
+wall1_1 = Wall(400, 50)
+wall1_2 = Wall(400, 100)
+wall1_3 = Wall(400, 150)
+wall1_4 = Wall(400, 200)
+wall1_5 = Wall(400, 250)
+wall1_6 = Wall(400, 300)
+wall2 = Wall(820, 320)
+wall2_1 = Wall(820, 370)
+wall2_2 = Wall(820, 420)
+wall2_3 = Wall(820, 470)
+wall2_4 = Wall(820, 520)
+wall2_5 = Wall(820, 570)
+wall2_6 = Wall(820, 620)
+wall3 = Wall(1100, 180)
+wall4 = Wall(250, 500)
+
 
 
 # Loading
@@ -450,6 +536,22 @@ background.blitBackground()
 player1.blitMonkey()
 player2.blitMonkey()
 flag.blitFlag()
+wall1.draw()
+wall1_1.draw()
+wall1_2.draw()
+wall1_3.draw()
+wall1_4.draw()
+wall1_5.draw()
+wall1_6.draw()
+wall2.draw()
+wall2_1.draw()
+wall2_2.draw()
+wall2_3.draw()
+wall2_4.draw()
+wall2_5.draw()
+wall2_6.draw()
+wall3.draw()
+wall4.draw()
 
 
 class run():
@@ -461,6 +563,8 @@ class run():
         intro = True
         game_over1 = False
         game_over2 = False
+        pygame.mixer.music.load("data/fightclub/CantinaBand.mp3")
+        pygame.mixer.music.play(-1)
         global points
         global pause
         while not done:
@@ -533,44 +637,129 @@ class run():
             player2.rect.y += player2.y_change
 
             # Collisions
-
+            # Flag
             if player1.image == player1.monkey and player2.image == player2.monkey:
 
-                if pygame.sprite.spritecollide(player1, flagGroup, False):
+                if pygame.sprite.spritecollide(player1, flagGroup, False, pygame.sprite.collide_mask):
                     player1.image = player1.flagMonkey
                     target1.blitTarget()
                     flag.image = flag.noFlag
 
-                if pygame.sprite.spritecollide(player2, flagGroup, False):
+                if pygame.sprite.spritecollide(player2, flagGroup, False, pygame.sprite.collide_mask):
                     player2.image = player2.flagMonkey
                     target2.blitTarget()
                     flag.image = flag.noFlag
 
+            # Player 1
+
             if player1.image == player1.flagMonkey:
                 if pygame.sprite.spritecollide(player1, targetGroup1, False):
                     player1.image = player1.monkey
-                    player1.points += 250
+                    player1.points += 20
                     flag.image = flag.flag
 
-                if pygame.sprite.spritecollide(player2, player1Group, False):
+                elif pygame.sprite.spritecollide(player2, player1Group, False, pygame.sprite.collide_mask):
                     player1.image = player1.monkey
                     player2.image = player2.flagMonkey
+
+            # Player 2
 
             if player2.image == player2.flagMonkey:
                 if pygame.sprite.spritecollide(player2, targetGroup2, False):
                     player2.image = player2.monkey
-                    player2.points += 250
+                    player2.points += 20
                     flag.image = flag.flag
 
-                if pygame.sprite.spritecollide(player1, player2Group, False):
+                elif pygame.sprite.spritecollide(player1, player2Group, False, pygame.sprite.collide_mask):
                     player2.image = player2.monkey
                     player1.image = player1.flagMonkey
 
-            if player1.points == 250:
+            # Wall Collisions
+
+            if pygame.sprite.spritecollide(player1, wallGroup, False, pygame.sprite.collide_mask):
+                player1.x_change *= 0
+                player1.y_change *= 0
+
+            if pygame.sprite.spritecollide(player2, wallGroup, False, pygame.sprite.collide_mask):
+                player2.x_change *= 0
+                player2.y_change *= 0
+
+            if player1.points == 100:
                 game_over1 = True
 
-            if player2.points == 250:
+            if player2.points == 100:
                 game_over2 = True
+
+            # Out Of Boundary Player 2
+
+            angle = 90
+            rotplayer2 = pygame.transform.rotate(player2.image, angle)
+            position = rotplayer2.get_rect(center=(player2.rect.x, player2.rect.y))
+
+            wrap_around = False
+
+            if position[0] < 0:
+                # off screen left
+                position.move_ip(width, 0)
+                wrap_around = True
+
+            if position[0] + rotplayer2.get_width() > width:
+                # off screen right
+                position.move_ip(-width, 0)
+                wrap_around = True
+
+            if position[1] < 0:
+                # off screen top
+                position.move_ip(0, height)
+                wrap_around = True
+
+            if position[1] + rotplayer2.get_height() > height:
+                # off screen bottom
+                position.move_ip(0, -height)
+                wrap_around = True
+
+            if wrap_around:
+                gameDisplay.blit(rotplayer2, position)
+
+            position[0] %= width
+            position[1] %= height
+            player2.rect.x %= width
+            player2.rect.y %= height
+
+            # Out Of Boundary Player 1
+            angle = 90
+            rotplayer1 = pygame.transform.rotate(player1.image, angle)
+            position = rotplayer1.get_rect(center=(player1.rect.x, player1.rect.y))
+
+            wrap_around = False
+
+            if position[0] < 0:
+                # off screen left
+                position.move_ip(width, 0)
+                wrap_around = True
+
+            if position[0] + rotplayer1.get_width() > width:
+                # off screen right
+                position.move_ip(-width, 0)
+                wrap_around = True
+
+            if position[1] < 0:
+                # off screen top
+                position.move_ip(0, height)
+                wrap_around = True
+
+            if position[1] + rotplayer1.get_height() > height:
+                # off screen bottom
+                position.move_ip(0, -height)
+                wrap_around = True
+
+            if wrap_around:
+                gameDisplay.blit(rotplayer1, position)
+
+            position[0] %= width
+            position[1] %= height
+            player1.rect.x %= width
+            player1.rect.y %= height
 
             updateFrameImages()
             game.updateFrame()
