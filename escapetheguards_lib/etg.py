@@ -47,7 +47,7 @@ class run():
             text = font.render("Current Score: " + str(self.points), False, config.white)
 
 
-            #if self.things_dodged(count) == True:
+
 
 
 
@@ -158,7 +158,7 @@ class run():
 
                     if 3 not in self.getMemory("unlocked"):
                         unlocked = self.getMemory("unlocked")
-                        unlocked.append(0,1,2)
+                        unlocked.append(3)
                         self.setMemory("unlocked", unlocked)
 
 
@@ -214,25 +214,7 @@ class run():
 
 
 
-                # button("Play Again!", 590, 350, 100, 50, config.yellow, config.light_black, level_1())
 
-                # button("Back to Intro!", 590, 550, 100, 50, config.yellow, config.light_black, game_intro())
-
-                # counter, text = 10, '10'.rjust(3)
-                # pygame.time.set_timer(pygame.USEREVENT, 1000)
-                # font = pygame.font.SysFont('comicsansms', 50)
-
-                # while True:
-                # for e in pygame.event.get():
-                # if e.type == pygame.USEREVENT:
-                # counter -= 1
-                # text = str(counter).rjust(3) if counter > 0 else face_level1()
-                # if e.type == pygame.QUIT: break
-                # else:
-
-                # pygame.display.flip()
-                # clock.tick(60)
-                # continue
 
 
 
@@ -297,25 +279,7 @@ class run():
                 self.button("Lets Play", 500, 380, 20, 20, config.replaygame, config.replaygamehover, self.level_1)
                 self.button("Back to menu", 660, 380, 100, 50, config.exitgame, config.exitgamehover, self.game_intro)
 
-                # button("Play Again!", 590, 350, 100, 50, config.yellow, config.light_black, level_1())
 
-                # button("Back to Intro!", 590, 550, 100, 50, config.yellow, config.light_black, game_intro())
-
-                # counter, text = 10, '10'.rjust(3)
-                # pygame.time.set_timer(pygame.USEREVENT, 1000)
-                # font = pygame.font.SysFont('comicsansms', 50)
-
-                # while True:
-                # for e in pygame.event.get():
-                # if e.type == pygame.USEREVENT:
-                # counter -= 1
-                # text = str(counter).rjust(3) if counter > 0 else face_level1()
-                # if e.type == pygame.QUIT: break
-                # else:
-
-                # pygame.display.flip()
-                # clock.tick(60)
-                # continue
                 
 
                 pygame.display.update()
@@ -444,7 +408,7 @@ class run():
                 label = myfont.render("Quit The Game:", 1, (config.black))
                 config.screen.blit(label, (780, 460))
 
-                label = myfont.render("Top Right X", 1, (config.black))
+                label = myfont.render("Top Right X or Key Delete", 1, (config.black))
                 config.screen.blit(label, (960, 460))
 
                 label = myfont.render("The purpose of this game is to get to the ", 1, (config.black))
@@ -550,24 +514,7 @@ class run():
         points = 0
         bananapoints = 0
 
-        # def getMemory(key):
-        # with open("data/memory.json", "r+") as jsonFile:
-        # data = json.load(jsonFile)
 
-        # return data[key]
-
-        # def setMemory(key, value):
-        # data[key] = value
-
-        # jsonFile.seek(0)  # rewind
-        # json.dump(data, jsonFile)
-        # jsonFile.truncate()
-        # with open("data/memory.json", "r+") as jsonFile:
-        # data = json.load(jsonFile)
-
-
-        # balance = getMemory("balance")
-        # monkey = getMemory("bought")
 
         def things(self,thingx, thingy, thingw, thingh, color):
             pygame.draw.rect(config.screen, color, [thingx, thingy, thingw, thingh])
@@ -848,26 +795,7 @@ class run():
 
 
 
-                # things(thing_startx, thing_starty, thing_width, thing_height, config.black)
-                #thing_starty += thing_speed
 
-                #if thing_starty > config.gs_height:
-                    #thing_starty = 0 - thing_height
-                    #thing_startx = random.randrange(0, config.gs_width)
-                    #dodged += 1
-                    #banana += 2
-
-
-
-
-
-                #if y < thing_starty + thing_height:
-                    #print('y crossover')
-
-                    #if x > thing_startx and x < thing_startx + thing_width or x + config.player_width > thing_startx and x + config.player_width < thing_startx + thing_width:
-                        #print('x crossover')
-                        #print('player spotted!!')
-                    #self.spot()
 
                 self.guardblocks(block_startx, block_starty)
                 block_startx += block_speed
