@@ -704,7 +704,7 @@ class run():
             self.bananapoints = 0
             block_startx = 30
             block_starty = random.randrange(0, 720)
-            block_speed = 10
+            block_speed = 12
             block_width = 150
             block_height = 50
 
@@ -810,8 +810,9 @@ class run():
                 config.screen.blit(config.cagedoorImg, (290, 70))
                 config.screen.blit(config.tableImg, (600, 200))
 
-                config.screen.blit(config.guard_leftImg, (550, 30))
-                config.screen.blit(config.guard_topImg, (230, 320))
+                config.screen.blit(config.guard_rightImg, (100, 300))
+                config.screen.blit(config.guard_bottomImg, (850, 100))
+                config.screen.blit(config.guard_bottomImg, (850, 500))
 
                 flag = self.setFlag
                 player = self.char
@@ -872,24 +873,70 @@ class run():
                 if y > block_starty and y < block_starty +block_height or y + player_height > block_starty and y + player_height < block_starty + block_height:
                     print("y crossover")
                     print("player spotted!")
-                    self.spot()
+                    #self.spot()
 
                 if player_x > 0 and player_x < 500 and player_y > 180 and player_y < 280:
-                    self.game_intro()
+                    x_change *= 0
+                    y_change *= 0
 
                 if player_x > 650 and player_x < 950 and player_y > 300 and player_y < 400:
-                    print("on top")
+                    x_change *= 0
+                    y_change *= 0
 
                 if player_x > 30 and player_x < 290 and player_y > 0 and player_y < 250:
-                    print("on top")
+                    x_change *= 0
+                    y_change *= 0
 
-                if player_x > 30 and player_x < 280 and player_y > 490 and player_x < 690:
-                    print("on top")
+                if player_x > 30 and player_x < 280 and player_y > 420 and player_y < 690:
+                    x_change *= 0
+                    y_change *= 0
 
-                if player_x > 400 and player_x < 650 and player_y > 490 and player_y < 690:
-                    print("on top")
+                if player_x > 320 and player_x < 650 and player_y > 420 and player_y < 690:
+                    x_change *= 0
+                    y_change *= 0
+
+                if player_x > 600 and player_x < 830 and player_y > 150 and player_y < 350:
+                    x_change *= 0
+                    y_change *= 0
 
 
+
+
+
+                #Boven wall collision
+                if player_x > 290 and player_x < 950 and player_y > 0 and player_y < 30:
+                    x_change *= 0
+                    y_change *= 0
+
+                #Onder wall collision
+                if player_x > 0 and player_x < 700 and player_y > 620 and player_y < 720:
+                    x_change *= 0
+                    y_change *= 0
+
+                #Left wall collision
+                if player_x >0 and player_x < 100 and player_y > 0 and player_y < 720:
+                    x_change *= 0
+                    y_change *= 0
+
+                #right wall collision
+                if player_x > 880 and player_x < 980 and player_y > 0 and player_y < 720:
+                    x_change *= 0
+                    y_change *= 0
+
+                #guard left
+                if player_x > 100 and player_x < 200 and player_y > 0 and player_y < 400:
+                    x_change *= 0
+                    y_change *= 0
+
+                #guard right top
+                if player_x > 770 and player_x < 950 and player_y > 60 and player_y < 200:
+                    x_change *= 0
+                    y_change *= 0
+
+                #guard right bottom
+                if player_x > 780 and player_x < 950 and player_y > 450 and player_y < 580:
+                    x_change *= 0
+                    y_change *= 0
 
                 pygame.draw.rect(config.screen, config.brown, [950, 0, 30, 720])  # Right row!!
 
@@ -900,7 +947,7 @@ class run():
 
 
 
-                if player_y > 720 and player_x > 750 and player_x < 950:
+                if player_y > 720 and player_x > 680 and player_x < 950:
                     print("You Won!!!")
                     self.points += 50
                     self.bananapoints += 10

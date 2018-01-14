@@ -70,6 +70,7 @@ apprentice = pygame.image.load("data/escapetheguards/apprentice_monkey_top.png")
 default = pygame.image.load("data/escapetheguards/default_monkey_top.png").convert_alpha()
 dragon = pygame.image.load("data/escapetheguards/dragon_monkey_top.png").convert_alpha()
 engineer = pygame.image.load("data/escapetheguards/engineer_monkey_top.png").convert_alpha()
+engineerguard = pygame.image.load("data/escapetheguards/engineer_monkey_top.png").convert_alpha()
 farmer = pygame.image.load("data/escapetheguards/farmer_monkey.png").convert_alpha()
 ninja = pygame.image.load("data/escapetheguards/ninja_monkey_top.png").convert_alpha()
 robo = pygame.image.load("data/escapetheguards/robo_monkey_top.png").convert_alpha()
@@ -123,6 +124,7 @@ exitgamehover = pygame.transform.scale(exitgamehover, (50,50))
 exitwoodgame = pygame.transform.scale(exitwoodgame, (280,100))
 exitwoodgamehover = pygame.transform.scale(exitwoodgamehover, (280,100))
 bullet = pygame.transform.scale(bullet, (150,50))
+guard_bottomImg = pygame.transform.rotate(guard_bottomImg, (270))
 
 
 
