@@ -1,12 +1,16 @@
 # Monkey Business
 A game created with _pygame_ by us!
 
-Om de game te runnen moet je eerst de repository clonen en via de terminal naar de map gaan. Bijvoorbeeld:
-  cd MokeyBusiness
-
-Dan moet je er voor zorgen dat je PyGame hebt geinstalleerd in je pyhton 3.6. 
-Dat doe je via python3.6 pip install pygame
-
-Dan run je de game via python3.6 main.py
-
-Veel plezier
+## Installation
+1. Install python 3.6
+2. Install pygame:
+	`python3.6 pip install pygame`
+	Having trouble?
+	Try installing pip:
+	`wget https://bootstrap.pypa.io/get-pip.py`
+	`sudo python3.6 get-pip.py`
+	Then redo step 2
+3. Clone repository
+4. Go to repository directory using `cd`
+5. run game:
+	`python3.6 main.py`
