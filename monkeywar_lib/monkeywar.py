@@ -26,7 +26,7 @@ class run(object):
 
     def runm(self):
         pygame.init()
-        fase = 1
+        fase = 2
         win = projectWin(500, 500, 'MonkeyWar')
         Quit = False
         secondMonkey = Monkey(1080, "data/monkeywar/tankl.png", "ARROWS")
@@ -66,7 +66,7 @@ class run(object):
                 if bullet.y >= secondMonkey.y and bullet.y <= secondMonkey.y + 80 and bullet.x >= secondMonkey.x and bullet.x <= secondMonkey.x + 100:
                     firstMonkey.bullets.remove(bullet)
                     firstMonkey.amount -=1
-                    print("hitp1")
+                    secondMonkey.health -=1
                 if bullet.y < 0:
                     firstMonkey.bullets.remove(bullet)
                     firstMonkey.amount -= 1
@@ -96,7 +96,7 @@ class run(object):
                 if bullet.y >= firstMonkey.y and bullet.y <= firstMonkey.y + 80 and bullet.x >= firstMonkey.x and bullet.x <= firstMonkey.x + 100:
                     secondMonkey.bullets.remove(bullet)
                     secondMonkey.amount -=1
-                    print("hit")
+                    firstMonkey.health -=1
 
                 if bullet.y < 0:
                     secondMonkey.bullets.remove(bullet)
@@ -117,14 +117,26 @@ class run(object):
 
             #call classes
             win.ground()
+            if fase == 2:
+                secondMonkey.intro()
+                firstMonkey.intro()
+
+
+            if secondMonkey.health<=0:
+                fase = 6
+                firstMonkey.p1()
+
+            if firstMonkey.health<=0:
+                fase = 7
+                secondMonkey.p2()
 
             if fase == 1:
                 secondMonkey.move()
                 firstMonkey.move()
                 secondMonkey.shoot()
                 firstMonkey.shoot()
-                # secondMonkey.life()
-                # firstMonkey.life()
+                secondMonkey.lives()
+                firstMonkey.lives()
 
 
             if fase ==4:
@@ -141,17 +153,52 @@ class run(object):
                 fase = 4
 
             ## Resume ##
-            if mouse[0] > 500 and mouse[0] < 580 and mouse[1] > 300 and mouse[1] < 380 and click[0]==True and fase == 4:
+            if mouse[0] > 500 and mouse[0] < 580 and mouse[1] > 300 and mouse[1] < 380 and click[0]==True and fase == 2:
                fase = 1
 
             ## Restart ##
-            if mouse[0] > 600 and mouse[0] < 680 and mouse[1] > 300 and mouse[1] < 380 and click[0]==True and fase == 4:
+            if mouse[0] > 600 and mouse[0] < 680 and mouse[1] > 300 and mouse[1] < 380 and click[0]==True and fase == 2:
                 run.runm(self)
 
             ## Quit ##
-            if mouse[0] > 700 and mouse[0] < 780 and mouse[1] > 300 and mouse[1] < 380 and click[0]== True and fase == 4:
+            if mouse[0] > 700 and mouse[0] < 780 and mouse[1] > 300 and mouse[1] < 380 and click[0]== True and fase == 2:
                 slidemenu.run().runm()
 
+            ## Resume ##
+            if mouse[0] > 500 and mouse[0] < 580 and mouse[1] > 300 and mouse[1] < 380 and click[0] == True and fase == 4:
+                fase = 1
+
+            ## Restart ##
+            if mouse[0] > 600 and mouse[0] < 680 and mouse[1] > 300 and mouse[1] < 380 and click[0] == True and fase == 4:
+                run.runm(self)
+
+            ## Quit ##
+            if mouse[0] > 700 and mouse[0] < 780 and mouse[1] > 300 and mouse[1] < 380 and click[0] == True and fase == 4:
+                slidemenu.run().runm()
+
+                ## Resume ##
+            if mouse[0] > 500 and mouse[0] < 580 and mouse[1] > 300 and mouse[1] < 380 and click[0] == True and fase == 6:
+                fase = 1
+
+            ## Restart ##
+            if mouse[0] > 600 and mouse[0] < 680 and mouse[1] > 300 and mouse[1] < 380 and click[0] == True and fase == 6:
+                run.runm(self)
+
+            ## Quit ##
+            if mouse[0] > 700 and mouse[0] < 780 and mouse[1] > 300 and mouse[1] < 380 and click[0] == True and fase == 6:
+                slidemenu.run().runm()
+
+            ## Resume ##
+            if mouse[0] > 500 and mouse[0] < 580 and mouse[1] > 300 and mouse[1] < 380 and click[0] == True and fase == 7:
+                fase = 1
+
+            ## Restart ##
+            if mouse[0] > 600 and mouse[0] < 680 and mouse[1] > 300 and mouse[1] < 380 and click[0] == True and fase == 7:
+                run.runm(self)
+
+            ## Quit ##
+            if mouse[0] > 700 and mouse[0] < 780 and mouse[1] > 300 and mouse[1] < 380 and click[0] == True and fase == 7:
+                slidemenu.run().runm()
 
 
 
@@ -173,24 +220,6 @@ class run(object):
         sys.exit()
 
 
-class Lifes:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-        self.amount = 3
-        self.loadFullLife ("data/monkeywar/Full_Heart")
-        self.loadEmptylife ("data/monkeywar/Empty_Heart")
-
-    def loadFullLife(self, name):
-        self.fullpicture = pygame.image.load(name)
-        self.fullpicture = pygame.transfrom.scale(self.fullpicture, (15,15))
-
-    def loadEmptyLife(self, name):
-        self.emptypicture = pygame.image.load(name)
-        self.emptypicture = pygame.transfrom.scale(self.emptypicture, (15,15))
-
-    def blitFullLife(self, surface):
-        surface.blit(self.fullpicture, (self.x, self.y))
 
 class Bullet:
     def __init__(self, x, y):
@@ -242,7 +271,6 @@ class Monkey():
         self.bullet_timer = 0
         self.sprite = pygame.image.load(self.image).convert_alpha()
         self.amount = 0
-        self.life = 3
         self.play = pygame.image.load("data/monkeywar/play.png")
         self.restart = pygame.image.load("data/monkeywar/replay_button.png")
         self.quit = pygame.image.load("data/monkeywar/exitknop.png")
@@ -251,11 +279,123 @@ class Monkey():
         self.hquit = pygame.image.load("data/monkeywar/hoverexitknop.png")
         self.pause_text = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 90).render('Paused', True,
                                                                                  pygame.color.Color('White'))
+        self.intro_textp1 = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 30).render('P1: move with "Left" and "Right" arrows, shoot with "Up" arrow', True,
+                                                                                 pygame.color.Color('White'))
+        self.intro_textp2 = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 30).render('P2: move with "A" and "D", shoot with "W"', True,
+                                                                                        pygame.color.Color('White'))
+        self.win1 = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 90).render('P2 Wins!', True,
+                                                                                 pygame.color.Color('White'))
+        self.win2 = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 90).render('P1 Wins!', True,
+                                                                                 pygame.color.Color('White'))
+        self.health = 3
+        self.fheart = pygame.image.load("data/monkeywar/Full_Heart.png")
+        self.eheart = pygame.image.load("data/monkeywar/Empty_Heart.png")
 
+
+    def intro(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                raise SystemExit
+
+        s = pygame.Surface((1280, 720), pygame.SRCALPHA)  # per-pixel alpha
+        s.fill((0, 0, 0, 150))
+        self.draw((self.x, 478))
+
+        ## Dark background ##
+        surface.blit(s, (0, 0))
+
+        ## Buttons ##
+        mouse = pygame.mouse.get_pos()
+
+        if mouse[0] > 500 and mouse[0] < 580 and mouse[1] > 300 and mouse[1] < 380:
+            surface.blit(pygame.transform.scale(self.hplay, (80, 80)), (500, 300))
+        else:
+            surface.blit(pygame.transform.scale(self.play, (80, 80)), (500, 300))
+
+
+        if mouse[0] > 700 and mouse[0] < 780 and mouse[1] > 300 and mouse[1] < 380:
+            surface.blit(pygame.transform.scale(self.hquit, (80, 80)), (700, 300))
+        else:
+            surface.blit(pygame.transform.scale(self.quit, (80, 80)), (700, 300))
+
+        surface.blit(self.intro_textp1, (100, 200))
+        surface.blit(self.intro_textp2, (100, 100))
+
+    def p1(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                raise SystemExit
+
+        s = pygame.Surface((1280, 720), pygame.SRCALPHA)  # per-pixel alpha
+        s.fill((0, 0, 0, 150))
+        self.draw((self.x, 478))
+
+        ## Dark background ##
+        surface.blit(s, (0, 0))
+
+        ## Buttons ##
+        mouse = pygame.mouse.get_pos()
+
+        if mouse[0] > 600 and mouse[0] < 680 and mouse[1] > 300 and mouse[1] < 380:
+            surface.blit(pygame.transform.scale(self.hrestart, (80, 80)), (600, 300))
+        else:
+            surface.blit(pygame.transform.scale(self.restart, (80, 80)), (600, 300))
+
+        if mouse[0] > 700 and mouse[0] < 780 and mouse[1] > 300 and mouse[1] < 380:
+            surface.blit(pygame.transform.scale(self.hquit, (80, 80)), (700, 300))
+        else:
+            surface.blit(pygame.transform.scale(self.quit, (80, 80)), (700, 300))
+
+        surface.blit(self.win1, (525, 200))
+
+    def p2(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                raise SystemExit
+
+        s = pygame.Surface((1280, 720), pygame.SRCALPHA)  # per-pixel alpha
+        s.fill((0, 0, 0, 150))
+        self.draw((self.x, 478))
+
+        ## Dark background ##
+        surface.blit(s, (0, 0))
+
+        ## Buttons ##
+        mouse = pygame.mouse.get_pos()
+
+        if mouse[0] > 600 and mouse[0] < 680 and mouse[1] > 300 and mouse[1] < 380:
+            surface.blit(pygame.transform.scale(self.hrestart, (80, 80)), (600, 300))
+        else:
+            surface.blit(pygame.transform.scale(self.restart, (80, 80)), (600, 300))
+
+        if mouse[0] > 700 and mouse[0] < 780 and mouse[1] > 300 and mouse[1] < 380:
+            surface.blit(pygame.transform.scale(self.hquit, (80, 80)), (700, 300))
+        else:
+            surface.blit(pygame.transform.scale(self.quit, (80, 80)), (700, 300))
+
+        surface.blit(self.win2, (525, 200))
 
     def draw(self, position):
         surface.blit(pygame.transform.scale(self.sprite, (110, 80)), position)
 
+    def lives(self):
+        if self.health == 3:
+            surface.blit(pygame.transform.scale(self.fheart, (20, 20)), (self.x+10, self.y -20))
+            surface.blit(pygame.transform.scale(self.fheart, (20, 20)), (self.x + 35, self.y - 20))
+            surface.blit(pygame.transform.scale(self.fheart, (20, 20)), (self.x + 60, self.y - 20))
+
+        if self.health == 2:
+            surface.blit(pygame.transform.scale(self.fheart, (20, 20)), (self.x + 10, self.y - 20))
+            surface.blit(pygame.transform.scale(self.fheart, (20, 20)), (self.x + 35, self.y - 20))
+            surface.blit(pygame.transform.scale(self.eheart, (20, 20)), (self.x + 60, self.y - 20))
+
+        if self.health == 1:
+            surface.blit(pygame.transform.scale(self.fheart, (20, 20)), (self.x + 10, self.y - 20))
+            surface.blit(pygame.transform.scale(self.eheart, (20, 20)), (self.x + 35, self.y - 20))
+            surface.blit(pygame.transform.scale(self.eheart, (20, 20)), (self.x + 60, self.y - 20))
 
     def pause(self):
         keyinput = pygame.key.get_pressed()
@@ -308,14 +448,14 @@ class Monkey():
                 if self.amount < 3:
                         if key[pygame.K_UP]:
                             self.bullets.append(Bullet(self.x + 55, self.y))
-                            self.bullet_timer = .1 # Reset the timer.
+                            self.bullet_timer = .3 # Reset the timer.
                             self.amount += 1
 
             if self.movement == "WASD":
                 if self.amount < 3:
                     if key[pygame.K_w]:
                         self.bullets.append(Bullet(self.x + 55, self.y))
-                        self.bullet_timer = .1  # Reset the timer.
+                        self.bullet_timer = .3  # Reset the timer.
                         self.amount += 1
 
         #  print("Hit")
