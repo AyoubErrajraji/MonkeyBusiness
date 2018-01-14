@@ -295,9 +295,9 @@ class Monkey():
                                                                                  pygame.color.Color('White'))
         self.intro_textp3 = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 30).render('Win by shooting the your opponent until your opponent is out of lives', True,
                                                                                  pygame.color.Color('White'))
-        self.win1 = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 90).render('P2 Wins!', True,
+        self.win1 = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 90).render('Player 2 Wins!', True,
                                                                                  pygame.color.Color('White'))
-        self.win2 = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 90).render('P1 Wins!', True,
+        self.win2 = pygame.font.Font("data/finalfight/FEASFBRG.ttf", 90).render('Player 1 Wins!', True,
                                                                                  pygame.color.Color('White'))
         self.health = 9
         self.fheart = pygame.image.load("data/monkeywar/Full_Heart.png")
