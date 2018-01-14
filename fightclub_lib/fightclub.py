@@ -411,7 +411,7 @@ def unpause():
 
 def exitGame():
     mymenu = slidemenu.run()
-    mymenu.runm()
+    mymenu.runm(100)
 
 def restart():
     mymenu = fightclub.run()
