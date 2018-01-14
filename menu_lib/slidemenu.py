@@ -19,7 +19,7 @@ from purchase_lib import purchase
 from menu_lib import config
 from os.path import dirname, join
 
-def menu(menu, clickList, pos='center', font1=None, font2=None, color1=(128, 128, 128), color2=None, color3=(128, 128, 128), interline=5, justify=True, light=5, speed=300, lag=30):
+def menu(menu, clickList, pos='center', font1=None, font2=None, color1=(128, 128, 128), color2=None, interline=5, justify=True, light=5, speed=300, lag=30):
 
     class Item(Rect):
 
@@ -38,17 +38,12 @@ def menu(menu, clickList, pos='center', font1=None, font2=None, color1=(128, 128
 
         time.wait(50)
         scr.blit(bg, r2, r2)
-        for item in menu:
-            if item != menu[idx]:
-                if item.label in clickList:
-                    scr.blit(font1.render(item.label, 1, color1), item) #clickable items
-                else:
-                    scr.blit(font1.render(item.label, 1, color3), item) #nonclickable items
+        [scr.blit(font1.render(item.label, 1, color1), item)
+         for item in menu if item != menu[idx]]
         r = scr.blit(font2.render(menu[idx].label, 1, color2), i)
         display.update(r2)
 
         return r
-
 
     def anim():
         clk = time.Clock()
@@ -58,10 +53,7 @@ def menu(menu, clickList, pos='center', font1=None, font2=None, color1=(128, 128
             for i in a:
                 g = i.copy()
                 i.x = i.animx.pop(0)
-                if i.label in clickList:
-                    r = scr.blit(font1.render(i.label, 1, color1), i)
-                else:
-                    r = scr.blit(font1.render(i.label, 1, color3), i)
+                r = scr.blit(font1.render(i.label, 1, color1), i)
                 display.update((g, r))
 
                 scr.blit(bg, r, r)
@@ -139,15 +131,18 @@ def menu(menu, clickList, pos='center', font1=None, font2=None, color1=(128, 128
             if idx_ > -1 and idx_ != idx:
                 idx = idx_
                 r = show()
-        elif ev.type == MOUSEBUTTONUP and r.collidepoint(ev.pos) and menu[idx].label in clickList:
-            ret = menu[idx].label, idx                              #return item that was clicked
+        elif ev.type == MOUSEBUTTONUP and r.collidepoint(ev.pos):
+            if menu[idx].label in clickList:
+                ret = menu[idx].label, idx                              #clickable menu item
+            else:
+                ret = menu                                              #nonclickable menu item
             break
         elif ev.type == KEYDOWN:
             try:
                 idx = (idx + {K_UP: -1, K_DOWN: 1}[ev.key]) % len(menu)
                 r = show()
             except:
-                if ev.key in (K_RETURN, K_KP_ENTER) and menu[idx].label in clickList:
+                if ev.key in (K_RETURN, K_KP_ENTER):
                     ret = menu[idx].label, idx
                     break
                 elif ev.key == K_ESCAPE:
@@ -156,11 +151,7 @@ def menu(menu, clickList, pos='center', font1=None, font2=None, color1=(128, 128
     scr.blit(bg, r2, r2)
 
     if speed:
-        for i in menu:
-            if i.label in clickList:
-                scr.blit(font1.render(i.label, 1, color1), i)
-            else:
-                scr.blit(font1.render(i.label, 1, color3), i)
+        [scr.blit(font1.render(i.label, 1, color1), i) for i in menu]
         display.update(r2)
         time.wait(50) #tijd voor hij switched tussen menu
         scr.blit(bg, r2, r2)
@@ -171,7 +162,7 @@ def menu(menu, clickList, pos='center', font1=None, font2=None, color1=(128, 128
     for ev in events:
         event.post(ev)
 
-    if ret != 'Nonclick':
+    if ret != None:
         return ret
 
 
@@ -198,6 +189,7 @@ class run(object):
         from os.path import join
 
         scr = display.set_mode(resolution)
+        print(menu.__doc__)
         f = font.Font(join('data/menu/FEASFBRG.ttf'), 65)
         f1 = font.Font(join('data/menu/FEASFBRG.ttf'), 45)
         f2 = font.Font(join('data/menu/FEASFBRG.ttf'), 35)
@@ -223,14 +215,8 @@ class run(object):
         scr.blit(mainmenu, r)
         display.flip()
 
-        clickList = []
-        for index, game in enumerate(['BananAttack', 'EscapeTheGuards', 'CrossTheRoad', 'FinalFight', 'BananaFightClub', 'MonkeyWar']):
-            if index+1 in self.getMemory("unlocked"):
-                clickList.append(game)
-        clickList.append('BACK')
-
         menu1 = {"menu": ['PLAY', 'ABOUT','STORE', 'EXIT'], "clickList": ['PLAY', 'ABOUT','STORE', 'EXIT'], "font1": f1, "pos":'center', "color1": (154, 180, 61), "light": 6, "speed": 200, "lag": 20}
-        menu2 = {"menu": ['BananAttack', 'EscapeTheGuards', 'CrossTheRoad', 'FinalFight', 'BananaFightClub', 'MonkeyWar', 'BACK'], "clickList": clickList, "font1": f1, "font2": f, "pos": 'center', "color1": (154, 180, 61), "light": 5, "speed": 200, "lag": 20}
+        menu2 = {"menu": ['BananAttack', 'EscapeTheGuards', 'CrossTheRoad', 'FinalFight', 'BananaFightClub', 'MonkeyWar', 'BACK'], "clickList": ['BananAttack', 'EscapeTheGuards', 'CrossTheRoad', 'FinalFight', 'BananaFightClub', 'MonkeyWar', 'BACK'], "font1": f1, "font2": f, "pos": 'center', "color1": (154, 180, 61), "light": 5, "speed": 200, "lag": 20}
         menu3 = {"menu": ['Lex de Willigen', 'Luke Hol', 'Ayoub Errajraji', 'Richard van der Knaap', 'Wesley van Balen', 'Milo Brasser', 'BACK'], "clickList": ['BACK'], "font1": f1,"font2": f, "pos": 'center', "color1": (154, 180, 61), "light": 5, "speed": 200, "lag": 20}
         def response(resp):
             if resp == 'ABOUT':
@@ -285,8 +271,12 @@ class run(object):
                 sys.exit()
 
             else:
-                pygame.quit()
-                sys.exit()
+                scr.fill((0, 0, 0))
+                scr.blit(background_main, (0, 0))
+                scr.blit(f.render('Monkey Business', 1, (255, 255, 255)), (450, 180))
+                display.update()
+                resp = menu(**menu1)[0]
+                response(resp)
 
         resp = "re-show"
         while resp == "re-show":
