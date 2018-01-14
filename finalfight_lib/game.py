@@ -113,6 +113,8 @@ class Player(Game):  # represents the bird, not the game
             if key[pygame.K_SPACE]:
                 self.bullets.append(Bullet(self.x + 64, self.y))
                 self.bullet_timer = .2  # Reset the timer.
+                pygame.mixer.music.load('data/finalfight/gunshot.wav')
+                pygame.mixer.music.play()
           #  print("Hit")
 
 
