@@ -38,9 +38,8 @@ class run():
 
 
 
-        def back(self):
-            mymenu = slidemenu.run()
-            mymenu.runm(100)
+
+
 
         def things_dodged(self,points):
 
@@ -54,6 +53,10 @@ class run():
 
 
             config.screen.blit(text, (982, 70))
+
+        def back(self):
+            mymenu = slidemenu.run()
+            mymenu.runm(self.points)
 
         def banana_count(self,bananapoints):
             font = pygame.font.SysFont(None, 30)
@@ -554,14 +557,14 @@ class run():
         # return data[key]
 
         # def setMemory(key, value):
-        # with open("data/memory.json", "r+") as jsonFile:
-        # data = json.load(jsonFile)
-
         # data[key] = value
 
         # jsonFile.seek(0)  # rewind
         # json.dump(data, jsonFile)
         # jsonFile.truncate()
+        # with open("data/memory.json", "r+") as jsonFile:
+        # data = json.load(jsonFile)
+
 
         # balance = getMemory("balance")
         # monkey = getMemory("bought")
@@ -868,20 +871,22 @@ class run():
                     block_starty = random.randrange(0, config.screen_width)
 
 
-                if y < block_starty + block_width:
+                #if y < block_starty + block_width:
 
-                    print("there is x crossover!")
+                    #print("there is x crossover!")
 
 
-                if x > block_startx and x < block_startx + block_width or x + player_width > block_startx and x + player_width < block_startx + block_width:
-                    print("x crossover")
-                    print("player spotted!")
-                    self.spot()
-
-                if y > block_starty and y < block_starty +block_height or y + player_height > block_starty and y + player_height < block_starty + block_height:
-                    print("y crossover")
-                    print("player spotted!")
+               # if x > block_startx and x < block_startx + block_width or x + player_width > block_startx and x + player_width < block_startx + block_width:
+                    #print("x crossover")
+                    #print("player spotted!")
                     #self.spot()
+
+                #if y > block_starty and y < block_starty +block_height or y + player_height > block_starty and y + player_height < block_starty + block_height:
+                    #print("y crossover")
+                    #print("player spotted!")
+                    #self.spot()
+
+                if player_x
 
                 if player_x > 0 and player_x < 500 and player_y > 180 and player_y < 280:
                     x_change *= 0
