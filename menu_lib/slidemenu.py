@@ -189,7 +189,6 @@ class run(object):
         from os.path import join
 
         scr = display.set_mode(resolution)
-        print(menu.__doc__)
         f = font.Font(join('data/menu/FEASFBRG.ttf'), 65)
         f1 = font.Font(join('data/menu/FEASFBRG.ttf'), 45)
         f2 = font.Font(join('data/menu/FEASFBRG.ttf'), 35)
