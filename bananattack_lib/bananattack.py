@@ -30,8 +30,12 @@ class BananAttack(game.Game):
             [enemy.Enemy()],
             [enemy.Enemy()],
             [enemy.Enemy()],
-            [enemy.Enemy(),enemy.Enemy()],
-            [enemy.Enemy(), enemy.Enemy(), enemy.Enemy()]
+            [enemy.Enemy(), enemy.Enemy()],
+            [enemy.Enemy(), enemy.Enemy()],
+            [enemy.Enemy(), enemy.Enemy()],
+            [enemy.Enemy(), enemy.Enemy(), enemy.Enemy()],
+            [enemy.Enemy(), enemy.Enemy(), enemy.Enemy()],
+            [enemy.Enemy(), enemy.Enemy(), enemy.Enemy(), enemy.Enemy(), enemy.Enemy(), enemy.Enemy()]
         ]
 
         ### Set waves ###
