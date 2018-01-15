@@ -595,7 +595,7 @@ class run():
                     newBoss.blitBoss(screen)
                     player.draw(screen)
                     newScore.blitScore(screen)
-                    screen.blit(font.render(text, True, (0, 0, 0)), (620, 100))
+                    #screen.blit(font.render(text, True, (0, 0, 0)), (620, 100))
 
 
                 if state == RUNNING2:
@@ -643,7 +643,7 @@ class run():
                     newBoss.blitBoss(screen)
                     player.draw(screen)
                     newScore.blitScore(screen)
-                    screen.blit(font.render(text, True, (0, 0, 0)), (620, 100))
+                    #screen.blit(font.render(text, True, (0, 0, 0)), (620, 100))
 
                 if state == RUNNING3:
                     mouse = pygame.mouse.get_pos()
@@ -690,7 +690,7 @@ class run():
                     newBoss.blitBoss(screen)
                     player.draw(screen)
                     newScore.blitScore(screen)
-                    screen.blit(font.render(text, True, (0, 0, 0)), (620, 100))
+                    #screen.blit(font.render(text, True, (0, 0, 0)), (620, 100))
 
                 elif state == PAUSE:
                     background.blitForrest()
