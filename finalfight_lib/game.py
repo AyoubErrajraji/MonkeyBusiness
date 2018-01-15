@@ -346,7 +346,7 @@ class Pause(Game):
     def task3(self):
         slidemenu.run().runm(10)
     def task4(self):
-        slidemenu.run().runm(30)
+        slidemenu.run().runm(40)
 
     def restartGame(self):
         mymenu = finalfight.run()
