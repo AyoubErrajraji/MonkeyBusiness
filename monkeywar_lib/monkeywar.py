@@ -380,7 +380,7 @@ class Monkey():
         self.draw((self.x, 478))
         self.win.play()
 
-        ## Dark background ##
+        ## Dark background s##
         surface.blit(s, (0, 0))
 
         ## Buttons ##
