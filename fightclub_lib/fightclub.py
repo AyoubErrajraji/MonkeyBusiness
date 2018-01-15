@@ -410,6 +410,7 @@ def unpause():
 
 
 def exitGame():
+    pygame.mixer.stop()
     mymenu = slidemenu.run()
     mymenu.runm(100)
 
@@ -660,9 +661,9 @@ class run():
             if player1.image == player1.flagMonkey:
                 if pygame.sprite.spritecollide(player1, targetGroup1, False):
                     player1.image = player1.monkey
-                    player1.points += 20
+                    player1.points += 40
                     flag.image = flag.flag
-                    horn.play
+                    horn.play()
 
                 elif pygame.sprite.spritecollide(player2, player1Group, False, pygame.sprite.collide_mask):
                     player1.image = player1.monkey
@@ -673,7 +674,7 @@ class run():
             if player2.image == player2.flagMonkey:
                 if pygame.sprite.spritecollide(player2, targetGroup2, False):
                     player2.image = player2.monkey
-                    player2.points += 20
+                    player2.points += 40
                     flag.image = flag.flag
                     horn.play()
 
@@ -691,10 +692,10 @@ class run():
                 player2.x_change *= 0
                 player2.y_change *= 0
 
-            if player1.points == 100:
+            if player1.points == 200:
                 game_over1 = True
 
-            if player2.points == 100:
+            if player2.points == 200:
                 game_over2 = True
 
             # Out Of Boundary Player 2
