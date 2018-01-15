@@ -139,4 +139,3 @@ guard_bottomImg = pygame.transform.rotate(guard_bottomImg, (270))
 
 
 
-
